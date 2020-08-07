@@ -1,0 +1,168 @@
+
+
+
+
+CURDLE                                                     P. Kampanakis
+Internet-Draft                                             Cisco Systems
+Intended status: Experimental                                 D. Stebila
+Expires: 7 February 2021                          University of Waterloo
+                                                               M. Friedl
+                                                                 OpenSSH
+                                                               T. Hansen
+                                                                     AWS
+                                                            D. Sikeridis
+                                                University of New Mexico
+                                                           6 August 2020
+
+
+ Post-quantum public key algorithms for the Secure Shell (SSH) protocol
+                     draft-kampanakis-curdle-pq-ssh
+
+Abstract
+
+   Insert an abstract: MANDATORY.  This template is for creating an
+   Internet Draft.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 7 February 2021.
+
+Copyright Notice
+
+   Copyright (c) 2020 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+
+
+
+Kampanakis, et al.       Expires 7 February 2021                [Page 1]
+
+Internet-Draft              Abbreviated Title                August 2020
+
+
+   extracted from this document must include Simplified BSD License text
+   as described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   2
+   2.  Hybrid Key Exchange . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Key Authentication  . . . . . . . . . . . . . . . . . . . . .   2
+   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   2
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   2
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   3
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   3
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   3
+
+1.  Introduction
+
+   RFC 2629
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+2.  Hybrid Key Exchange
+
+   Text
+
+3.  Key Authentication
+
+   Text
+
+4.  Acknowledgements
+
+5.  IANA Considerations
+
+   This memo includes no request to IANA.
+
+   All drafts are required to have an IANA considerations section (see
+   RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs
+   for a guide).  If the draft does not require IANA to do anything, the
+   section contains an explicit statement that this is the case (as
+   above).  If there are no requirements for IANA, the section will be
+   removed during conversion into an RFC by the RFC Editor.
+
+
+
+Kampanakis, et al.       Expires 7 February 2021                [Page 2]
+
+Internet-Draft              Abbreviated Title                August 2020
+
+
+6.  Security Considerations
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+7.2.  Informative References
+
+   [RFC2629]  Rose, M., "Writing I-Ds and RFCs using XML", RFC 2629,
+              DOI 10.17487/RFC2629, June 1999,
+              <https://www.rfc-editor.org/info/rfc2629>.
+
+Authors' Addresses
+
+   Panos Kampanakis
+   Cisco Systems
+
+   Email: pkampana@cisco.com
+
+
+   Douglas Stebila
+   University of Waterloo
+
+   Email: dstebila@uwaterloo.ca
+
+
+   Markus Friedl
+   OpenSSH
+
+   Email: markus@openbsd.org
+
+
+   Torben Hansen
+   AWS
+
+   Email: htorben@amazon.com
+
+
+   Dimitrios Sikeridis
+   University of New Mexico
+
+   Email: dsike@unm.edu
+
+
+
+
+Kampanakis, et al.       Expires 7 February 2021                [Page 3]

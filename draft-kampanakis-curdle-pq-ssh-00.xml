@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+    which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629-xhtml.ent">
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+    please see http://xml.resource.org/authoring/README.html. -->
+<rfc
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      category="exp"
+      docName="draft-kampanakis-curdle-pq-ssh"
+      ipr="trust200902"
+      obsoletes=""
+      updates=""
+      submissionType="IETF"
+      xml:lang="en"
+      tocInclude="true"
+      tocDepth="4"
+      symRefs="true"
+      sortRefs="true"
+      version="3">
+  <!-- xml2rfc v2v3 conversion 2.38.1 -->
+  <!-- category values: std, bcp, info, exp, and historic
+    ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
+       or pre5378Trust200902
+    you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+    they will automatically be output with "(if approved)" -->
+
+ <!-- ***** FRONT MATTER ***** -->
+
+ <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+        full title is longer than 39 characters -->
+
+   <title abbrev="Abbreviated Title">Post-quantum public key algorithms for the Secure Shell (SSH) protocol</title>
+    <seriesInfo name="Internet-Draft" value="draft-kampanakis-curdle-pq-ssh-00"/>
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+   <!-- Another author who claims to be an editor -->
+
+   <!-- <author fullname="Panos Kampanakis" initials="P." role="editor"  surname="Kampanakis"> -->
+   <author fullname="Panos Kampanakis" initials="P." surname="Kampanakis">
+     <organization>Cisco Systems</organization>
+     <address>
+        <email>pkampana@cisco.com</email>
+        <!-- uri and facsimile elements may also be added -->
+     </address>
+    </author>
+   <author fullname="Douglas Stebila" initials="D." surname="Stebila">
+     <organization>University of Waterloo</organization>
+     <address>
+        <email>dstebila@uwaterloo.ca</email>
+        <!-- uri and facsimile elements may also be added -->
+     </address>
+    </author>
+   <author fullname="Markus Friedl" initials="M." surname="Friedl">
+     <organization>OpenSSH</organization>
+     <address>
+        <email>markus@openbsd.org</email>
+        <!-- uri and facsimile elements may also be added -->
+     </address>
+    </author>
+   <author fullname="Torben Hansen" initials="T." surname="Hansen">
+     <organization>AWS</organization>
+     <address>
+        <email>htorben@amazon.com</email>
+        <!-- uri and facsimile elements may also be added -->
+     </address>
+    </author>
+   <author fullname="Dimitrios Sikeridis" initials="D." surname="Sikeridis">
+     <organization>University of New Mexico</organization>
+     <address>
+        <email>dsike@unm.edu</email>
+        <!-- uri and facsimile elements may also be added -->
+     </address>
+    </author>
+    <date year="2020"/>
+    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+        in the current day for you. If only the current year is specified, xml2rfc will fill 
+	 in the current day and month for you. If the year is not the current one, it is 
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 specify just the year. -->
+
+   <!-- Meta-data Declarations -->
+
+   <area>Security</area>
+    <workgroup>CURDLE</workgroup>
+    <!-- WG name at the upperleft corner of the doc,
+        IETF is fine for individual submissions.  
+	 If this element is not present, the default is "Network Working Group",
+        which is used by the RFC Editor as a nod to the history of the IETF. -->
+
+   <keyword>post-quantum SSH</keyword>
+    <!-- Keywords will be incorporated into HTML output
+        files in a meta tag but they have no effect on text or nroff
+        output. If you submit your draft to the RFC Editor, the
+        keywords will be used for the search engine. -->
+
+   <abstract>
+      <t>Insert an abstract: MANDATORY. This template is for creating an
+     Internet Draft.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section numbered="true" toc="default">
+      <name>Introduction</name>
+      <t>RFC&nbsp;2629</t>
+	  
+      <section numbered="true" toc="default">
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+       "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+       document are to be interpreted as described in <xref target="RFC2119" format="default">RFC 2119</xref>.</t>
+      </section>
+    </section>
+	
+    <section anchor="kex" numbered="true" toc="default">
+	<name>Hybrid Key Exchange</name>
+	<t>Text</t>
+    </section>
+    <!-- This PI places the pagebreak correctly (before the section title) in the text output. -->
+
+   <section anchor="key_auth" numbered="true" toc="default">
+   <name>Key Authentication</name>
+	<t>Text</t>
+   </section>
+
+    <section anchor="Acknowledgements" numbered="true" toc="default">
+      <name>Acknowledgements</name>
+    </section>
+    <!-- Possibly a 'Contributors' section ... -->
+
+   <section anchor="IANA" numbered="true" toc="default">
+      <name>IANA Considerations</name>
+      <t>This memo includes no request to IANA.</t>
+      <t>All drafts are required to have an IANA considerations section (see
+     RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the
+     case (as above). If there are no requirements for IANA, the section will
+     be removed during conversion into an RFC by the RFC Editor.</t>
+    </section>
+
+    <section anchor="Security" numbered="true" toc="default">
+      <name>Security Considerations</name>
+    </section>
+  </middle>
+  <!--  *****BACK MATTER ***** -->
+
+ <back>
+    <!-- References split into informative and normative -->
+
+   <!-- There are 2 ways to insert reference entries from the citation libraries:
+    1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
+    2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
+       (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+
+    Both are cited textually in the same manner: by using xref elements.
+    If you use the PI option, xml2rfc will, by default, try to find included files in the same
+    directory as the including file. You can also define the XML_LIBRARY environment variable
+    with a value containing a set of directories to search.  These can be either in the local
+    filing system or remote ones accessed by http (http://domain/dir/... ).-->
+
+   <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
+	    <?rfc include="reference.RFC.2119.xml"?>
+        <!-- <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+             <front>
+               <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+               <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+               <seriesInfo name="RFC" value="2119"/>
+               <seriesInfo name="BCP" value="14"/>
+               <author initials="S." surname="Bradner" fullname="S. Bradner">
+                 <organization/>
+               </author>
+               <date year="1997" month="March"/>
+               <abstract>
+                 <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+               </abstract>
+             </front>
+        </reference> -->
+      </references>
+      <references>
+        <name>Informative References</name>
+        <!-- Here we use entities that we defined at the beginning. -->
+		<?rfc include="reference.RFC.2629.xml"?>
+
+        <!-- the following is the minimum to make xml2rfc happy -->
+        <!-- <reference anchor="min_ref">
+          <front>
+               <title>Minimal Reference</title>
+               <author initials="authInitials" surname="authSurName">
+                 <organization/>
+               </author>
+               <date year="2006"/>
+             </front>
+           </reference>-->
+      </references>
+    </references>
+    <!-- <section anchor="app-additional" numbered="true" toc="default">
+      <name>Additional Stuff</name>
+      <t>This becomes an Appendix.</t>
+    </section> -->
+ </back>
+</rfc>
