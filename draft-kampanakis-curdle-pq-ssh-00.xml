@@ -110,6 +110,8 @@
 	  
 	  <t>This document proposes to solve the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref> with public key methods based on post-quantum signature schemes<!--TODO: Update to hybrid if we end up doing hybrid. -->. A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistantance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange method.</t>
 	  
+	  <t>The post-quantum KEM algorithms used for hybrid key exchange in the document are NTRU and Dilithium as defined in <xref target="pq_nist" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Algorithms can change based on NIST's Round 3 standardization]</t>
+	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -120,7 +122,45 @@
 	
     <section anchor="kex" numbered="true" toc="default">
 	<name>Hybrid Key Exchange</name>
-	<t>Text</t>
+    	<section numbered="true" toc="default">
+    	<name>Hybrid Key Exchange Method Abstraction</name>
+    	<t>This section defines the abstract structure of a hybrid key exchange method. The structure must be instantiated with two key exchange schemes. Given key exchange schemes X and Y, the X+Y hybrid key exchange method is implemented using the following exchange messages.</t>
+
+        <t>The client sends</t>
+
+<artwork align="left" name="" type="" alt=""><![CDATA[
+    byte SSH_MSG_HY_X_Y_INIT
+    string C_X, X client message octet string
+    string C_Y, Y client message octet string
+]]></artwork>
+
+        <t>The server sends</t>
+
+<artwork align="left" name="" type="" alt=""><![CDATA[
+    byte SSH_MSG_HY_X_Y_REPLY
+    string S_X, X server message octet string
+    string S_Y, Y server message octet string
+]]></artwork>
+
+        <t>The string name of the key exchange schemes X and Y will replace the X and Y in the message names 'SSH_MSG_HY_X_Y_INIT' and 'SSH_MSG_HY_X_Y_REPLY' in specific instantiations.</t>
+
+        <t>A named hybrid key exchange name includes a named hash.  The exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named hybrid key exchange method name, over the concatenation of the following </t>
+    	</section>
+    	<section numbered="true" toc="default">
+    	<name>Key Derivation</name>
+    	<t>Derivation of encryption keys MUST be done according to Section 7.2 in <xref target="RFC4253" format="default">RFC4253</xref> with the following modifications. The shared secrets K_X and K_Y are the output from the two key exchange schemes X and Y, respectively, that instantiates an abstract hybrid key exchange method (see Section 3.2).  The SSH shared secret K is the concatenation of the two shared secrets K_X and K_Y. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name.  K MUST be encoded as an mpint.  However, K_X and K_Y MUST be encoded as octet strings.</t>
+    	</section>
+
+    	<section numbered="true" toc="default">
+    	<name>KEM Public Key Format</name>
+    	<t>Text</t>
+    	</section>
+		
+    	<section numbered="true" toc="default">
+    	<name>KEM Ciphertext Format</name>
+    	<t>Text</t>
+    	</section>
+
     </section>
     <!-- This PI places the pagebreak correctly (before the section title) in the text output. -->
 
@@ -153,10 +193,10 @@
    <section anchor="IANA" numbered="true" toc="default">
       <name>IANA Considerations</name>
       <t>This memo includes no request to IANA.</t>
-      <t>All drafts are required to have an IANA considerations section (see
+      <!-- <t>All drafts are required to have an IANA considerations section (see
      RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the
      case (as above). If there are no requirements for IANA, the section will
-     be removed during conversion into an RFC by the RFC Editor.</t>
+     be removed during conversion into an RFC by the RFC Editor.</t> -->
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
@@ -209,15 +249,15 @@
         <!-- Here we use entities that we defined at the beginning. -->
 
         <!-- the following is the minimum to make xml2rfc happy -->
-        <!-- <reference anchor="min_ref">
+        <reference anchor="pq_nist" target="https://csrc.nist.gov/projects/post-quantum-cryptography">
           <front>
-               <title>Minimal Reference</title>
-               <author initials="authInitials" surname="authSurName">
-                 <organization/>
+               <title>Post-Quantum Cryptography</title>
+               <author>
+                 <organization>NIST</organization>
                </author>
-               <date year="2006"/>
+               <date year="2020"/>
              </front>
-           </reference>-->
+           </reference>
       </references>
     </references>
     <!-- <section anchor="app-additional" numbered="true" toc="default">

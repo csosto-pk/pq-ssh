@@ -5,14 +5,14 @@
 CURDLE                                                     P. Kampanakis
 Internet-Draft                                             Cisco Systems
 Intended status: Experimental                                 D. Stebila
-Expires: 8 February 2021                          University of Waterloo
+Expires: 9 February 2021                          University of Waterloo
                                                                M. Friedl
                                                                  OpenSSH
                                                                T. Hansen
                                                                      AWS
                                                             D. Sikeridis
                                                 University of New Mexico
-                                                           7 August 2020
+                                                           8 August 2020
 
 
  Post-quantum public key algorithms for the Secure Shell (SSH) protocol
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 February 2021.
+   This Internet-Draft will expire on 9 February 2021.
 
 
 
 
 
 
-Kampanakis, et al.       Expires 8 February 2021                [Page 1]
+Kampanakis, et al.       Expires 9 February 2021                [Page 1]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -77,17 +77,21 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
    2.  Hybrid Key Exchange . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Key Authentication  . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Authentication Public Key Format  . . . . . . . . . . . .   3
-     3.2.  Authentication Signature Format . . . . . . . . . . . . .   3
-     3.3.  SSHFP DNS resource records  . . . . . . . . . . . . . . .   3
-   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   4
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   4
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   4
+     2.1.  Hybrid Key Exchange Method Abstraction  . . . . . . . . .   3
+     2.2.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   4
+     2.3.  KEM Public Key Format . . . . . . . . . . . . . . . . . .   4
+     2.4.  KEM Ciphertext Format . . . . . . . . . . . . . . . . . .   4
+   3.  Key Authentication  . . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  Authentication Public Key Format  . . . . . . . . . . . .   4
+     3.2.  Authentication Signature Format . . . . . . . . . . . . .   4
+     3.3.  SSHFP DNS resource records  . . . . . . . . . . . . . . .   5
+   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
 
@@ -102,18 +106,18 @@ Table of Contents
    However, when sufficiently large quantum computers becomes available
    these instances would no longer be computationally infeasable
    rendering the current key exchange methods in SSH insecure.  While
-   large quantum computers are not available today an adversary can
-   record the encrypted communication sent between the client and server
-   in an SSH session and then later decrypt the communication when
-   sufficiently large quantum computers become available.  This kind of
 
 
 
-Kampanakis, et al.       Expires 8 February 2021                [Page 2]
+Kampanakis, et al.       Expires 9 February 2021                [Page 2]
 
 Internet-Draft                   PQ SSH                      August 2020
 
 
+   large quantum computers are not available today an adversary can
+   record the encrypted communication sent between the client and server
+   in an SSH session and then later decrypt the communication when
+   sufficiently large quantum computers become available.  This kind of
    attack is known as a "record-and-harvest" attack.  "Record-and-
    harvest" attacks do not apply retroactively to authentication but a
    quantum computer could threaten SSH authentication by impersonating
@@ -131,6 +135,11 @@ Internet-Draft                   PQ SSH                      August 2020
    key exchange scheme executed as part of the hybrid key exchange
    method.
 
+   The post-quantum KEM algorithms used for hybrid key exchange in the
+   document are NTRU and Dilithium as defined in NIST Post-quantum
+   Project [pq_nist].[EDNOTE: Algorithms can change based on NIST's
+   Round 3 standardization]
+
 1.1.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -138,6 +147,59 @@ Internet-Draft                   PQ SSH                      August 2020
    document are to be interpreted as described in RFC 2119 [RFC2119].
 
 2.  Hybrid Key Exchange
+
+2.1.  Hybrid Key Exchange Method Abstraction
+
+   This section defines the abstract structure of a hybrid key exchange
+   method.  The structure must be instantiated with two key exchange
+   schemes.  Given key exchange schemes X and Y, the X+Y hybrid key
+   exchange method is implemented using the following exchange messages.
+
+   The client sends
+
+       byte SSH_MSG_HY_X_Y_INIT
+       string C_X, X client message octet string
+       string C_Y, Y client message octet string
+
+   The server sends
+
+
+
+Kampanakis, et al.       Expires 9 February 2021                [Page 3]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
+       byte SSH_MSG_HY_X_Y_REPLY
+       string S_X, X server message octet string
+       string S_Y, Y server message octet string
+
+   The string name of the key exchange schemes X and Y will replace the
+   X and Y in the message names 'SSH_MSG_HY_X_Y_INIT' and
+   'SSH_MSG_HY_X_Y_REPLY' in specific instantiations.
+
+   A named hybrid key exchange name includes a named hash.  The exchange
+   hash H is the result of computing the HASH, where HASH is the hash
+   algorithm specified in the named hybrid key exchange method name,
+   over the concatenation of the following
+
+2.2.  Key Derivation
+
+   Derivation of encryption keys MUST be done according to Section 7.2
+   in [RFC4253] with the following modifications.  The shared secrets
+   K_X and K_Y are the output from the two key exchange schemes X and Y,
+   respectively, that instantiates an abstract hybrid key exchange
+   method (see Section 3.2).  The SSH shared secret K is the
+   concatenation of the two shared secrets K_X and K_Y.  The order of
+   concatenation is the order that the corresponding key exchange scheme
+   appears in the hybrid key exchange method name.  K MUST be encoded as
+   an mpint.  However, K_X and K_Y MUST be encoded as octet strings.
+
+2.3.  KEM Public Key Format
+
+   Text
+
+2.4.  KEM Ciphertext Format
 
    Text
 
@@ -153,35 +215,28 @@ Internet-Draft                   PQ SSH                      August 2020
 
    Text
 
+
+
+
+
+
+
+Kampanakis, et al.       Expires 9 February 2021                [Page 4]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
 3.3.  SSHFP DNS resource records
 
    Usage and generation of SSHFP DNS resource record is described in
    [RFC4255].  This section illustrates the generation of SSHFP resource
    records.
 
-
-
-
-
-
-
-Kampanakis, et al.       Expires 8 February 2021                [Page 3]
-
-Internet-Draft                   PQ SSH                      August 2020
-
-
 4.  Acknowledgements
 
 5.  IANA Considerations
 
    This memo includes no request to IANA.
-
-   All drafts are required to have an IANA considerations section (see
-   RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs
-   for a guide).  If the draft does not require IANA to do anything, the
-   section contains an explicit statement that this is the case (as
-   above).  If there are no requirements for IANA, the section will be
-   removed during conversion into an RFC by the RFC Editor.
 
 6.  Security Considerations
 
@@ -208,6 +263,10 @@ Internet-Draft                   PQ SSH                      August 2020
 
 7.2.  Informative References
 
+   [pq_nist]  NIST, "Post-Quantum Cryptography", 2020,
+              <https://csrc.nist.gov/projects/post-quantum-
+              cryptography>.
+
 Authors' Addresses
 
    Panos Kampanakis
@@ -218,10 +277,7 @@ Authors' Addresses
 
 
 
-
-
-
-Kampanakis, et al.       Expires 8 February 2021                [Page 4]
+Kampanakis, et al.       Expires 9 February 2021                [Page 5]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -277,4 +333,4 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.       Expires 8 February 2021                [Page 5]
+Kampanakis, et al.       Expires 9 February 2021                [Page 6]
