@@ -78,7 +78,7 @@
         in the current day for you. If only the current year is specified, xml2rfc will fill 
 	 in the current day and month for you. If the year is not the current one, it is 
 	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
-	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 purpose of calculating the expiry date). With drafts it is normally sufficient to 
 	 specify just the year. -->
 
    <!-- Meta-data Declarations -->
@@ -86,7 +86,7 @@
    <area>Security</area>
     <workgroup>CURDLE</workgroup>
     <!-- WG name at the upperleft corner of the doc,
-        IETF is fine for individual submissions.  
+        IETF is fine for individual submissions. 
 	 If this element is not present, the default is "Network Working Group",
         which is used by the RFC Editor as a nod to the history of the IETF. -->
 
@@ -105,12 +105,12 @@
   <middle>
     <section numbered="true" toc="default">
       <name>Introduction</name>
-      <t>Secure Shell (SSH) <xref target="RFC4251" format="default">RFC4251</xref> performs key establishment using key exchange methods based exclusively on Diffie-Hellman style schemes. SSH <xref target="RFC4252" format="default">RFC4252</xref> also defines public key authentication methods based on RSA or ECDSA/EdDSA signatures schemes. The cryptographic security of these key exchange and signature schemes rely on certain instances of the discrete logarithm and integer factorization problem being computationally infeasable to solve for adversaries. </t>
-	  <t>However, when sufficiently large quantum computers becomes available these instances would no longer be computationally infeasable rendering the current key exchange methods in SSH insecure. While large quantum computers are not available today an adversary can record the encrypted communication sent between the client and server in an SSH session and then later decrypt the communication when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. "Record-and-harvest" attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. </t>
+      <t>Secure Shell (SSH) <xref target="RFC4251" format="default">RFC4251</xref> performs key establishment using key exchange methods based exclusively on (Elliptic Curve) Diffie-Hellman style schemes. SSH <xref target="RFC4252" format="default">RFC4252</xref>, <xref target="RFC8332" format="default">RFC8332</xref>, <xref target="RFC5656" format="default">RFC5656</xref>, <xref target="RFC8709" format="default">RFC8709</xref> also define public key authentication methods based on RSA or ECDSA/EdDSA signatures schemes. The cryptographic security of these key exchange and signature schemes relies on certain instances of the discrete logarithm and integer factorization problem being computationally infeasable to solve for adversaries. </t>
+	  <t>However, when sufficiently large quantum computers becomes available these instances would no longer be computationally infeasable rendering the current key exchange and authentication methods in SSH insecure. While large quantum computers are not available today an adversary can record the encrypted communication sent between the client and server in an SSH session and then later decrypt the communication when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. "Record-and-harvest" attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. </t>
 	  
-	  <t>This document proposes to solve the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref> with public key methods based on post-quantum signature schemes<!--TODO: Update to hybrid if we end up doing hybrid. -->. A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistantance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange method.</t>
+	  <t>This document proposes to address the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref> with public key methods based on post-quantum signature schemes<!--TODO: Update to hybrid if we end up doing hybrid. -->. A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistantance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange method.</t>
 	  
-	  <t>The post-quantum KEM algorithms used for hybrid key exchange in the document are TBD1, TBD2 and TBD3 [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.] as defined in <xref target="pq_nist" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Algorithms can change based on NIST's Round 3 standardization]</t>
+	  <t>The post-quantum key encapsulation mechanisms (KEM) used for hybrid key exchange in the document are TBD1, TBD2. The post-quantum signauture algorithm used for key based authentication is TBD3. [EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.] The post-quantunt algorithms are  defined in <xref target="pq_nist" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Update link. Algorithms can change based on NIST's Round 3 standardization]. </t>
 	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -122,13 +122,12 @@
 	
     <section anchor="kex" numbered="true" toc="default">
 	<name>Hybrid Key Exchange</name>
+	
     	<section numbered="true" toc="default">
     	<name>Hybrid Key Exchange Method Abstraction</name>
-    	<t>This section defines the abstract structure of a hybrid key exchange method. The structure must be instantiated with two key exchange schemes. Given key exchange schemes X and Y, the X+Y hybrid key exchange method is implemented using the following exchange messages.</t>
+    	<t>This section defines the abstract structure of a hybrid key exchange method. The structure must be instantiated with two key exchange schemes. Given key exchange schemes X and Y, the X+Y hybrid key exchange method is implemented using the following exchange messages below. The byte, string and mpint are to be intepreted in this document as described in <xref target="RFC4251" format="default">RFC4251</xref>.</t>
 
-        <t>The byte, string and mpint are to be intepreted in this
-   document as described in <xref target="RFC4251" format="default">RFC4251</xref>. The client sends</t>
-
+        <t>The client sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
     byte SSH_MSG_HBR_X_Y_INIT
     string C_CL
@@ -136,91 +135,108 @@
 ]]></artwork>
 
         <t>The server sends</t>
-
 <artwork align="left" name="" type="" alt=""><![CDATA[
     byte SSH_MSG_HBR_X_Y_REPLY
     string S_CL 
     string S_PQ
 ]]></artwork>
 
-        <t>The string name of the key exchange schemes X and Y will replace the X and Y in the message names 'SSH_MSG_HBR_X_Y_INIT' and 'SSH_MSG_HBR_X_Y_REPLY' in specific instantiations found in Section [EDNOTE: Update].</t>
-
-        <t>A named hybrid key exchange name includes a named hash.  The exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named hybrid key exchange method name, over the concatenation of the following ... The HASH used for the definitions in this specification is SHA-384.</t>
+        <t>The string name of the key exchange schemes X and Y will replace the X and Y in the message names 'SSH_MSG_HBR_X_Y_INIT' and 'SSH_MSG_HBR_X_Y_REPLY' in specific instantiations found in Section [EDNOTE: Update Section number.].</t>
 		
 		<t> </t>
     	</section>
 			
     	<section numbered="true" toc="default">
-    	<name>Hybrid Methods</name>
-    	<t>CL:ECDH, or X25519</t>
-		<t>PQ: TBD1, or TBD2 [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-    	</section> 
-
+    	<name>Key Derivation</name>
+    	<t>Derivation of encryption keys MUST be done according to Section 7.2 in <xref target="RFC4253" format="default">RFC4253</xref> with the following modifications. The shared secrets K_CL and K_PQ are the output from the two key exchange schemes X and Y, respectively, that instantiates an abstract hybrid key exchange method <xref target="kex" format="default"/>. The SSH shared secret K is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name. K_CL and K_PQ MUST be encoded as octet strings. K MUST be encoded as an mpint and the resulting bytes are fed as described <xref target="RFC4253" format="default"/> to the key exchange method's hash function to generate encryption keys.</t>
+    	</section>
+			
     	<section numbered="true" toc="default">
-    	<name>Method Names</name>
-		<artwork align="left" name="" type="" alt=""><![CDATA[
+    	<name>Hybrid Key Exchange Method Names</name>
+		
+		<t>The hybrid key exchange method names defined in this document are </t>
+<artwork align="left" name="" type="" alt=""><![CDATA[
       ecdh-nistp384-TBD1-sha384
-]]></artwork>
-    	<t></t>
-		<artwork align="left" name="" type="" alt=""><![CDATA[
       x25519-TBD1-sha384
 ]]></artwork>
-		<t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-    	</section> 
+		  <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
+		  
+    	  <section numbered="true" toc="default">
+    	  <name>ecdh-nistp384-TBD1-sha384</name>
+    	  <t>ecdh-nistp384-TBD1-sha384 defines that the classical C_CL or S_CL from the client or server NIST P-384 curve public key as defined in <xref target="nist-sp800-186" format="default"/>. Private and public keys are generated as described therein. Public keys are defined as strings of 32 bytes for NIST P-384. The K_CL shared secret is generated from the exchanged C_CL and S_CL public keys as defined in <xref target="RFC5656" format="default"/> (key agrement method ecdh-sha2-nistp384) with SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> instead of SHA-256 as the hash.</t>
+		  
+		  <t>The post-quantum C_PQ or S_PQ string from the client and server are TBD1. The K_PQ shared secret is generated from the exchanged C_PQ and S_PQ public keys as defined in [EDNOTE: Placeholdrer. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
+    	  </section>
+		  
+    	  <section numbered="true" toc="default">
+    	  <name>x25519-TBD1-sha384</name>
+          <t>x25519-TBD1-sha384 defines that the classical C_CL or S_CL from the client or server is Curve25519 public key as defined in <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. Public keys are defined as strings of 32 bytes for Curve25519. The K_CL shared secret is generated from the exchanged C_CL and S_CL public keys as defined in <xref target="RFC8731" format="default"/> (key agrement method curve25519-sha256) with SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> instead of SHA-256 as the hash.</t>
 		
-    	<section numbered="true" toc="default">
-    	<name>Key Derivation</name>
-    	<t>Derivation of encryption keys MUST be done according to Section 7.2 in <xref target="RFC4253" format="default">RFC4253</xref> with the following modifications. The shared secrets K_X and K_Y are the output from the two key exchange schemes X and Y, respectively, that instantiates an abstract hybrid key exchange method (see Section 3.2).  The SSH shared secret K is the concatenation of the two shared secrets K_X and K_Y. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name.  K MUST be encoded as an mpint.  However, K_X and K_Y MUST be encoded as octet strings.</t>
-    	</section>
+		  <t>The post-quantum C_PQ or S_PQ string from the client and server are TBD1. The K_PQ shared secret is generated from the exchanged C_PQ and S_PQ public keys as defined in [EDNOTE: Placeholdrer. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
+    	  </section>
+
+    	  <section numbered="true" toc="default">
+    	  <name>HASH</name>
+          <t>A named hybrid key exchange name includes a named hash. The exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named hybrid key exchange method name, over the concatenation of the following </t>
+
+<artwork align="left" name="" type="" alt=""><![CDATA[
+      string V_C, client identification string (CR and LF excluded)
+      string V_S, server identification string (CR and LF excluded)
+      string I_C, payload of the client's SSH_MSG_KEXINIT
+      string I_S, payload of the server's SSH_MSG_KEXINIT
+      string C_CL, X client message octet string
+      string C_PQ, Y client message octet string
+      string S_CL, X server message octet string
+      string S_PQ, Y server message octet string
+      mpint K, SSH shared secret
+]]></artwork>
+		
+		  <t>The HASH used for the definitions in this specification is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>.</t>
+    	  </section>
+		
+    	</section> 
 
     </section>
     <!-- This PI places the pagebreak correctly (before the section title) in the text output. -->
 
    <section anchor="key_auth" numbered="true" toc="default">
    <name>Key Authentication</name>
-	<t></t>
-	<t>Signatures are encoded as follows:</t>
-
-<artwork align="left" name="" type="" alt=""><![CDATA[
-      string   "ecdsa-sha2-[identifier]"
-      string   ecdsa_signature_blob
-]]></artwork>
 	  
-	<section anchor="sig-pk-format" numbered="true" toc="default">
-	<name>Public Key Format</name>
+	    <section anchor="sig-pk-format" numbered="true" toc="default">
+	    <name>Public Key Format</name>
 <artwork align="left" name="" type="" alt=""><![CDATA[
       string    "ssh-TBD3"
       string    key
 ]]></artwork>
-    <t>Here, 'key_auth' is the x-octet public key described in ...</t>
-	 <t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-	<!--TODO --> 
-	<!-- <t>string    "ssh-sphincsplus"
-       string    key</t>
-	 <t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t> -->
-	</section>
-	
-	<section anchor="sig-format" numbered="true" toc="default">
-	<name>Signature Format</name>
+        <t>Here, 'key_auth' is the x-octet public key described in ...</t>
+	    <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
+	    <!--TODO --> 
+	    <!-- <t>string    "ssh-sphincsplus"
+           string    key</t>
+	     <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t> -->
+	    </section>
+	    
+	    <section anchor="sig-format" numbered="true" toc="default">
+	    <name>Signature Format</name>
 <artwork align="left" name="" type="" alt=""><![CDATA[
        string  "ssh-TBD3"
        string  key
 ]]></artwork>
-    <t>Here, 'signature' is the x-octet signature produced in accordance with...</t>
-	<t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-	<!--TODO --> 
-	<!-- <t>string    "ssh-sphincsplus"
-       string    key</t>
-	 <t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t> -->
-	</section>
+        <t>Here, 'signature' is the x-octet signature produced in accordance with...</t>
+	    <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
+	    <!--TODO --> 
+	    <!-- <t>string    "ssh-sphincsplus"
+           string    key</t>
+	     <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t> -->
+	    </section>
 
-	<section anchor="sig-alg" numbered="true" toc="default">
-	<name>Signing and Verification</name>
-	<t>Signatures are generated according to the procedure in...</t>
-	
-	<t>Signatures are verified according to the procedure in...</t>
-	<t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-	</section>
+	    <section anchor="sig-alg" numbered="true" toc="default">
+	    <name>Signing and Verification</name>
+	    <t>Signatures are generated according to the procedure in...</t>
+	    
+	    <t>Signatures are verified according to the procedure in...</t>
+	    <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
+	    </section>
 	
 	<!-- TODO: Update this section later --> 
 	<!-- <section anchor="sshfp" numbered="true" toc="default">
@@ -233,7 +249,7 @@
 	<section numbered="true" toc="default">
 	<name>Message Size</name>
 	<t>An implementaton adhering to <xref target="RFC4253" format="default">RFC4253</xref> must be able to support packets with an uncompressed payload length of 32768 bytes or less and a total packet size of 35000 bytes or less (including
-   'packet_length', 'padding_length', 'payload', 'random padding', and 'mac').  These numbers represent what must be 'minimally supported' by implementations.  This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH.  This document does    not define any named domain parameters (see Section 7) that cause any hybrid key exchange method related packets to exceed the minimally supported packet length.  This document does not define behaviour in cases where a hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
+   'packet_length', 'padding_length', 'payload', 'random padding', and 'mac'). These numbers represent what must be 'minimally supported' by implementations. This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH. This document does    not define any named domain parameters (see Section 7) that cause any hybrid key exchange method related packets to exceed the minimally supported packet length. This document does not define behaviour in cases where a hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
 	</section>
 
     <section anchor="Acknowledgements" numbered="true" toc="default">
@@ -269,7 +285,7 @@
     Both are cited textually in the same manner: by using xref elements.
     If you use the PI option, xml2rfc will, by default, try to find included files in the same
     directory as the including file. You can also define the XML_LIBRARY environment variable
-    with a value containing a set of directories to search.  These can be either in the local
+    with a value containing a set of directories to search. These can be either in the local
     filing system or remote ones accessed by http (http://domain/dir/... ).-->
 
    <references>
@@ -292,7 +308,7 @@
                </author>
                <date year="1997" month="March"/>
                <abstract>
-                 <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+                 <t>In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
                </abstract>
              </front>
         </reference> -->
@@ -300,7 +316,12 @@
       <references>
         <name>Informative References</name>
         <!-- Here we use entities that we defined at the beginning. -->
-
+		<?rfc include="reference.RFC.5656.xml"?>
+		<?rfc include="reference.RFC.8332.xml"?>
+		<?rfc include="reference.RFC.8709.xml"?>
+		<?rfc include="reference.RFC.4634.xml"?>
+		<?rfc include="reference.RFC.8731.xml"?>
+		<?rfc include="reference.RFC.7748.xml"?>
         <!-- the following is the minimum to make xml2rfc happy -->
         <reference anchor="pq_nist" target="https://csrc.nist.gov/projects/post-quantum-cryptography">
           <front>
@@ -310,7 +331,25 @@
                </author>
                <date year="2020"/>
              </front>
-           </reference>
+        </reference>
+        <reference anchor="nist-sp800-186" target="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-186-draft.pdf">
+          <front>
+               <title>SP 800-186</title>
+               <author>
+                 <organization>NIST</organization>
+               </author>
+               <date year="2019"/>
+             </front>
+        </reference>
+        <reference anchor="nist-sha2" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">
+          <front>
+               <title>FIPS PUB 180-4</title>
+               <author>
+                 <organization>NIST</organization>
+               </author>
+               <date year="2015"/>
+             </front>
+        </reference>
       </references>
     </references>
     <!-- <section anchor="app-additional" numbered="true" toc="default">

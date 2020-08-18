@@ -5,14 +5,14 @@
 CURDLE                                                     P. Kampanakis
 Internet-Draft                                             Cisco Systems
 Intended status: Experimental                                 D. Stebila
-Expires: 9 February 2021                          University of Waterloo
+Expires: 19 February 2021                         University of Waterloo
                                                                M. Friedl
                                                                  OpenSSH
                                                                T. Hansen
                                                                      AWS
                                                             D. Sikeridis
                                                 University of New Mexico
-                                                           8 August 2020
+                                                          18 August 2020
 
 
  Post-quantum public key algorithms for the Secure Shell (SSH) protocol
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 February 2021.
+   This Internet-Draft will expire on 19 February 2021.
 
 
 
 
 
 
-Kampanakis, et al.       Expires 9 February 2021                [Page 1]
+Kampanakis, et al.      Expires 19 February 2021                [Page 1]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -79,51 +79,54 @@ Table of Contents
    2.  Hybrid Key Exchange . . . . . . . . . . . . . . . . . . . . .   3
      2.1.  Hybrid Key Exchange Method Abstraction  . . . . . . . . .   3
      2.2.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   4
-     2.3.  KEM Public Key Format . . . . . . . . . . . . . . . . . .   4
-     2.4.  KEM Ciphertext Format . . . . . . . . . . . . . . . . . .   4
-   3.  Key Authentication  . . . . . . . . . . . . . . . . . . . . .   4
-     3.1.  Authentication Public Key Format  . . . . . . . . . . . .   4
-     3.2.  Authentication Signature Format . . . . . . . . . . . . .   4
-     3.3.  SSHFP DNS resource records  . . . . . . . . . . . . . . .   5
-   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+     2.3.  Hybrid Key Exchange Method Names  . . . . . . . . . . . .   4
+       2.3.1.  ecdh-nistp384-TBD1-sha384 . . . . . . . . . . . . . .   5
+       2.3.2.  x25519-TBD1-sha384  . . . . . . . . . . . . . . . . .   5
+       2.3.3.  HASH  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   3.  Key Authentication  . . . . . . . . . . . . . . . . . . . . .   6
+     3.1.  Public Key Format . . . . . . . . . . . . . . . . . . . .   6
+     3.2.  Signature Format  . . . . . . . . . . . . . . . . . . . .   6
+     3.3.  Signing and Verification  . . . . . . . . . . . . . . . .   6
+   4.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
    Secure Shell (SSH) [RFC4251] performs key establishment using key
-   exchange methods based exclusively on Diffie-Hellman style schemes.
-   SSH [RFC4252] also defines public key authentication methods based on
-   RSA or ECDSA/EdDSA signatures schemes.  The cryptographic security of
-   these key exchange and signature schemes rely on certain instances of
-   the discrete logarithm and integer factorization problem being
-   computationally infeasable to solve for adversaries.
-
-   However, when sufficiently large quantum computers becomes available
-   these instances would no longer be computationally infeasable
-   rendering the current key exchange methods in SSH insecure.  While
+   exchange methods based exclusively on (Elliptic Curve) Diffie-Hellman
+   style schemes.  SSH [RFC4252], [RFC8332], [RFC5656], [RFC8709] also
+   define public key authentication methods based on RSA or ECDSA/EdDSA
+   signatures schemes.  The cryptographic security of these key exchange
+   and signature schemes relies on certain instances of the discrete
+   logarithm and integer factorization problem being computationally
+   infeasable to solve for adversaries.
 
 
 
-Kampanakis, et al.       Expires 9 February 2021                [Page 2]
+Kampanakis, et al.      Expires 19 February 2021                [Page 2]
 
 Internet-Draft                   PQ SSH                      August 2020
 
 
-   large quantum computers are not available today an adversary can
-   record the encrypted communication sent between the client and server
-   in an SSH session and then later decrypt the communication when
-   sufficiently large quantum computers become available.  This kind of
-   attack is known as a "record-and-harvest" attack.  "Record-and-
-   harvest" attacks do not apply retroactively to authentication but a
-   quantum computer could threaten SSH authentication by impersonating
-   as a legitimate client or server.
+   However, when sufficiently large quantum computers becomes available
+   these instances would no longer be computationally infeasable
+   rendering the current key exchange and authentication methods in SSH
+   insecure.  While large quantum computers are not available today an
+   adversary can record the encrypted communication sent between the
+   client and server in an SSH session and then later decrypt the
+   communication when sufficiently large quantum computers become
+   available.  This kind of attack is known as a "record-and-harvest"
+   attack.  "Record-and-harvest" attacks do not apply retroactively to
+   authentication but a quantum computer could threaten SSH
+   authentication by impersonating as a legitimate client or server.
 
-   This document proposes to solve the problem by extending the SSH
+   This document proposes to address the problem by extending the SSH
    Transport Layer Protocol [RFC4253] with hybrid key exchange methods
    and the SSH Authentication Protocol [RFC4252] with public key methods
    based on post-quantum signature schemes.  A hybrid key exchange
@@ -135,10 +138,13 @@ Internet-Draft                   PQ SSH                      August 2020
    key exchange scheme executed as part of the hybrid key exchange
    method.
 
-   The post-quantum KEM algorithms used for hybrid key exchange in the
-   document are NTRU and Dilithium as defined in NIST Post-quantum
-   Project [pq_nist].[EDNOTE: Algorithms can change based on NIST's
-   Round 3 standardization]
+   The post-quantum key encapsulation mechanisms (KEM) used for hybrid
+   key exchange in the document are TBD1, TBD2.  The post-quantum
+   signauture algorithm used for key based authentication is TBD3.
+   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
+   Round 3 concludes.]  The post-quantunt algorithms are defined in NIST
+   Post-quantum Project [pq_nist].[EDNOTE: Update link.  Algorithms can
+   change based on NIST's Round 3 standardization].
 
 1.1.  Requirements Language
 
@@ -153,96 +159,202 @@ Internet-Draft                   PQ SSH                      August 2020
    This section defines the abstract structure of a hybrid key exchange
    method.  The structure must be instantiated with two key exchange
    schemes.  Given key exchange schemes X and Y, the X+Y hybrid key
-   exchange method is implemented using the following exchange messages.
-
-   The client sends
-
-       byte SSH_MSG_HY_X_Y_INIT
-       string C_X, X client message octet string
-       string C_Y, Y client message octet string
-
-   The server sends
+   exchange method is implemented using the following exchange messages
+   below.  The byte, string and mpint are to be intepreted in this
+   document as described in [RFC4251].
 
 
 
-Kampanakis, et al.       Expires 9 February 2021                [Page 3]
+Kampanakis, et al.      Expires 19 February 2021                [Page 3]
 
 Internet-Draft                   PQ SSH                      August 2020
 
 
-       byte SSH_MSG_HY_X_Y_REPLY
-       string S_X, X server message octet string
-       string S_Y, Y server message octet string
+   The client sends
+
+       byte SSH_MSG_HBR_X_Y_INIT
+       string C_CL
+       string C_PQ
+
+   The server sends
+
+       byte SSH_MSG_HBR_X_Y_REPLY
+       string S_CL
+       string S_PQ
 
    The string name of the key exchange schemes X and Y will replace the
-   X and Y in the message names 'SSH_MSG_HY_X_Y_INIT' and
-   'SSH_MSG_HY_X_Y_REPLY' in specific instantiations.
+   X and Y in the message names 'SSH_MSG_HBR_X_Y_INIT' and
+   'SSH_MSG_HBR_X_Y_REPLY' in specific instantiations found in
+   Section [EDNOTE: Update Section number.].
+
+
+2.2.  Key Derivation
+
+   Derivation of encryption keys MUST be done according to Section 7.2
+   in [RFC4253] with the following modifications.  The shared secrets
+   K_CL and K_PQ are the output from the two key exchange schemes X and
+   Y, respectively, that instantiates an abstract hybrid key exchange
+   method Section 2.  The SSH shared secret K is the concatenation of
+   the two shared secrets K_CL and K_PQ.  The order of concatenation is
+   the order that the corresponding key exchange scheme appears in the
+   hybrid key exchange method name.  K_CL and K_PQ MUST be encoded as
+   octet strings.  K MUST be encoded as an mpint and the resulting bytes
+   are fed as described [RFC4253] to the key exchange method's hash
+   function to generate encryption keys.
+
+2.3.  Hybrid Key Exchange Method Names
+
+   The hybrid key exchange method names defined in this document are
+
+         ecdh-nistp384-TBD1-sha384
+         x25519-TBD1-sha384
+
+   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
+   Round 3 concludes.]
+
+
+
+
+
+
+
+
+
+
+Kampanakis, et al.      Expires 19 February 2021                [Page 4]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
+2.3.1.  ecdh-nistp384-TBD1-sha384
+
+   ecdh-nistp384-TBD1-sha384 defines that the classical C_CL or S_CL
+   from the client or server NIST P-384 curve public key as defined in
+   [nist-sp800-186].  Private and public keys are generated as described
+   therein.  Public keys are defined as strings of 32 bytes for NIST
+   P-384.  The K_CL shared secret is generated from the exchanged C_CL
+   and S_CL public keys as defined in [RFC5656] (key agrement method
+   ecdh-sha2-nistp384) with SHA-384 [nist-sha2] [RFC4634] instead of
+   SHA-256 as the hash.
+
+   The post-quantum C_PQ or S_PQ string from the client and server are
+   TBD1.  The K_PQ shared secret is generated from the exchanged C_PQ
+   and S_PQ public keys as defined in [EDNOTE: Placeholdrer.  Update
+   based on the algorithm identified after NIST Round 3 concludes.]
+
+2.3.2.  x25519-TBD1-sha384
+
+   x25519-TBD1-sha384 defines that the classical C_CL or S_CL from the
+   client or server is Curve25519 public key as defined in [RFC7748].
+   Private and public keys are generated as described therein.  Public
+   keys are defined as strings of 32 bytes for Curve25519.  The K_CL
+   shared secret is generated from the exchanged C_CL and S_CL public
+   keys as defined in [RFC8731] (key agrement method curve25519-sha256)
+   with SHA-384 [nist-sha2] [RFC4634] instead of SHA-256 as the hash.
+
+   The post-quantum C_PQ or S_PQ string from the client and server are
+   TBD1.  The K_PQ shared secret is generated from the exchanged C_PQ
+   and S_PQ public keys as defined in [EDNOTE: Placeholdrer.  Update
+   based on the algorithm identified after NIST Round 3 concludes.]
+
+2.3.3.  HASH
 
    A named hybrid key exchange name includes a named hash.  The exchange
    hash H is the result of computing the HASH, where HASH is the hash
    algorithm specified in the named hybrid key exchange method name,
    over the concatenation of the following
 
-2.2.  Key Derivation
-
-   Derivation of encryption keys MUST be done according to Section 7.2
-   in [RFC4253] with the following modifications.  The shared secrets
-   K_X and K_Y are the output from the two key exchange schemes X and Y,
-   respectively, that instantiates an abstract hybrid key exchange
-   method (see Section 3.2).  The SSH shared secret K is the
-   concatenation of the two shared secrets K_X and K_Y.  The order of
-   concatenation is the order that the corresponding key exchange scheme
-   appears in the hybrid key exchange method name.  K MUST be encoded as
-   an mpint.  However, K_X and K_Y MUST be encoded as octet strings.
-
-2.3.  KEM Public Key Format
-
-   Text
-
-2.4.  KEM Ciphertext Format
-
-   Text
-
-3.  Key Authentication
-
-   Text
-
-3.1.  Authentication Public Key Format
-
-   Text
-
-3.2.  Authentication Signature Format
-
-   Text
+         string V_C, client identification string (CR and LF excluded)
+         string V_S, server identification string (CR and LF excluded)
+         string I_C, payload of the client's SSH_MSG_KEXINIT
+         string I_S, payload of the server's SSH_MSG_KEXINIT
+         string C_CL, X client message octet string
+         string C_PQ, Y client message octet string
+         string S_CL, X server message octet string
+         string S_PQ, Y server message octet string
+         mpint K, SSH shared secret
 
 
 
 
-
-
-
-Kampanakis, et al.       Expires 9 February 2021                [Page 4]
+Kampanakis, et al.      Expires 19 February 2021                [Page 5]
 
 Internet-Draft                   PQ SSH                      August 2020
 
 
-3.3.  SSHFP DNS resource records
+   The HASH used for the definitions in this specification is SHA-384
+   [nist-sha2] [RFC4634].
 
-   Usage and generation of SSHFP DNS resource record is described in
-   [RFC4255].  This section illustrates the generation of SSHFP resource
-   records.
+3.  Key Authentication
 
-4.  Acknowledgements
+3.1.  Public Key Format
 
-5.  IANA Considerations
+         string    "ssh-TBD3"
+         string    key
+
+   Here, 'key_auth' is the x-octet public key described in ...
+
+   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
+   Round 3 concludes.]
+
+3.2.  Signature Format
+
+          string  "ssh-TBD3"
+          string  key
+
+   Here, 'signature' is the x-octet signature produced in accordance
+   with...
+
+   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
+   Round 3 concludes.]
+
+3.3.  Signing and Verification
+
+   Signatures are generated according to the procedure in...
+
+   Signatures are verified according to the procedure in...
+
+   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
+   Round 3 concludes.]
+
+4.  Message Size
+
+   An implementaton adhering to [RFC4253] must be able to support
+   packets with an uncompressed payload length of 32768 bytes or less
+   and a total packet size of 35000 bytes or less (including
+   'packet_length', 'padding_length', 'payload', 'random padding', and
+   'mac').  These numbers represent what must be 'minimally supported'
+   by implementations.  This can present a problem when using post-
+   quantum key exchange schemes because some post-quantum schemes can
+   produce much larger messages than what is normally produced by
+   existing key exchange methods defined for SSH.  This document does
+   not define any named domain parameters (see Section 7) that cause any
+   hybrid key exchange method related packets to exceed the minimally
+
+
+
+Kampanakis, et al.      Expires 19 February 2021                [Page 6]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
+   supported packet length.  This document does not define behaviour in
+   cases where a hybrid key exchange message cause a packet to exceed
+   the minimally supported packet length.
+
+5.  Acknowledgements
+
+6.  IANA Considerations
 
    This memo includes no request to IANA.
 
-6.  Security Considerations
+   SSH_MSG_HBR_X_Y_INIT, SSH_MSG_HBR_X_Y_REPLY,
 
-7.  References
+7.  Security Considerations
 
-7.1.  Normative References
+8.  References
+
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -261,11 +373,58 @@ Internet-Draft                   PQ SSH                      August 2020
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
-7.2.  Informative References
+8.2.  Informative References
+
+   [nist-sha2]
+              NIST, "FIPS PUB 180-4", 2015,
+              <https://nvlpubs.nist.gov/nistpubs/FIPS/
+              NIST.FIPS.180-4.pdf>.
+
+   [nist-sp800-186]
+              NIST, "SP 800-186", 2019,
+              <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
+              NIST.SP.800-186-draft.pdf>.
+
+
+
+
+
+Kampanakis, et al.      Expires 19 February 2021                [Page 7]
+
+Internet-Draft                   PQ SSH                      August 2020
+
 
    [pq_nist]  NIST, "Post-Quantum Cryptography", 2020,
               <https://csrc.nist.gov/projects/post-quantum-
               cryptography>.
+
+   [RFC4634]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
+              (SHA and HMAC-SHA)", RFC 4634, DOI 10.17487/RFC4634, July
+              2006, <https://www.rfc-editor.org/info/rfc4634>.
+
+   [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
+              Integration in the Secure Shell Transport Layer",
+              RFC 5656, DOI 10.17487/RFC5656, December 2009,
+              <https://www.rfc-editor.org/info/rfc5656>.
+
+   [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
+              for Security", RFC 7748, DOI 10.17487/RFC7748, January
+              2016, <https://www.rfc-editor.org/info/rfc7748>.
+
+   [RFC8332]  Bider, D., "Use of RSA Keys with SHA-256 and SHA-512 in
+              the Secure Shell (SSH) Protocol", RFC 8332,
+              DOI 10.17487/RFC8332, March 2018,
+              <https://www.rfc-editor.org/info/rfc8332>.
+
+   [RFC8709]  Harris, B. and L. Velvindron, "Ed25519 and Ed448 Public
+              Key Algorithms for the Secure Shell (SSH) Protocol",
+              RFC 8709, DOI 10.17487/RFC8709, February 2020,
+              <https://www.rfc-editor.org/info/rfc8709>.
+
+   [RFC8731]  Adamantiadis, A., Josefsson, S., and M. Baushke, "Secure
+              Shell (SSH) Key Exchange Method Using Curve25519 and
+              Curve448", RFC 8731, DOI 10.17487/RFC8731, February 2020,
+              <https://www.rfc-editor.org/info/rfc8731>.
 
 Authors' Addresses
 
@@ -275,17 +434,20 @@ Authors' Addresses
    Email: pkampana@cisco.com
 
 
-
-
-Kampanakis, et al.       Expires 9 February 2021                [Page 5]
-
-Internet-Draft                   PQ SSH                      August 2020
-
-
    Douglas Stebila
    University of Waterloo
 
    Email: dstebila@uwaterloo.ca
+
+
+
+
+
+
+
+Kampanakis, et al.      Expires 19 February 2021                [Page 8]
+
+Internet-Draft                   PQ SSH                      August 2020
 
 
    Markus Friedl
@@ -333,4 +495,10 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.       Expires 9 February 2021                [Page 6]
+
+
+
+
+
+
+Kampanakis, et al.      Expires 19 February 2021                [Page 9]
