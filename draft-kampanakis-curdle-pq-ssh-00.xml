@@ -110,7 +110,7 @@
 	  
 	  <t>This document proposes to solve the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref> with public key methods based on post-quantum signature schemes<!--TODO: Update to hybrid if we end up doing hybrid. -->. A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistantance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange method.</t>
 	  
-	  <t>The post-quantum KEM algorithms used for hybrid key exchange in the document are NTRU and Dilithium [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.] as defined in <xref target="pq_nist" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Algorithms can change based on NIST's Round 3 standardization]</t>
+	  <t>The post-quantum KEM algorithms used for hybrid key exchange in the document are TBD1, TBD2 and TBD3 [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.] as defined in <xref target="pq_nist" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Algorithms can change based on NIST's Round 3 standardization]</t>
 	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -127,14 +127,12 @@
     	<t>This section defines the abstract structure of a hybrid key exchange method. The structure must be instantiated with two key exchange schemes. Given key exchange schemes X and Y, the X+Y hybrid key exchange method is implemented using the following exchange messages.</t>
 
         <t>The byte, string and mpint are to be intepreted in this
-   document as described in [RFC4251]. The client sends</t>
+   document as described in <xref target="RFC4251" format="default">RFC4251</xref>. The client sends</t>
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
     byte SSH_MSG_HBR_X_Y_INIT
     string C_CL
-	byte[n]  ecc_key_blob as per rfc5656
     string C_PQ 
-	byte[n] client PQ public key
 ]]></artwork>
 
         <t>The server sends</t>
@@ -142,9 +140,7 @@
 <artwork align="left" name="" type="" alt=""><![CDATA[
     byte SSH_MSG_HBR_X_Y_REPLY
     string S_CL 
-	byte[n]  ecc_key_blob as per rfc5656
-    string S_PQ 
-	byte[n] server PQ ciphertext
+    string S_PQ
 ]]></artwork>
 
         <t>The string name of the key exchange schemes X and Y will replace the X and Y in the message names 'SSH_MSG_HBR_X_Y_INIT' and 'SSH_MSG_HBR_X_Y_REPLY' in specific instantiations found in Section [EDNOTE: Update].</t>
@@ -156,14 +152,20 @@
 			
     	<section numbered="true" toc="default">
     	<name>Hybrid Methods</name>
-    	<t>CL ECDH, or X25519</t>
-		<t>PQ NTRU [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
+    	<t>CL:ECDH, or X25519</t>
+		<t>PQ: TBD1, or TBD2 [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
     	</section> 
 
     	<section numbered="true" toc="default">
     	<name>Method Names</name>
-    	<t>ecdh-nistp384-ntruhrss701-sha384 [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-		<t>x25519-ntruhrss701-sha384 [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
+		<artwork align="left" name="" type="" alt=""><![CDATA[
+      ecdh-nistp384-TBD1-sha384
+]]></artwork>
+    	<t></t>
+		<artwork align="left" name="" type="" alt=""><![CDATA[
+      x25519-TBD1-sha384
+]]></artwork>
+		<t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
     	</section> 
 		
     	<section numbered="true" toc="default">
@@ -176,21 +178,48 @@
 
    <section anchor="key_auth" numbered="true" toc="default">
    <name>Key Authentication</name>
-	<t>Dilithium [EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
-	<t>
-   Signatures are encoded as follows:
+	<t></t>
+	<t>Signatures are encoded as follows:</t>
 
+<artwork align="left" name="" type="" alt=""><![CDATA[
       string   "ecdsa-sha2-[identifier]"
-      string   ecdsa_signature_blob</t>
-
+      string   ecdsa_signature_blob
+]]></artwork>
+	  
 	<section anchor="sig-pk-format" numbered="true" toc="default">
-	<name>Authentication Public Key Format</name>
-	<t>Text</t>
+	<name>Public Key Format</name>
+<artwork align="left" name="" type="" alt=""><![CDATA[
+      string    "ssh-TBD3"
+      string    key
+]]></artwork>
+    <t>Here, 'key_auth' is the x-octet public key described in ...</t>
+	 <t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
+	<!--TODO --> 
+	<!-- <t>string    "ssh-sphincsplus"
+       string    key</t>
+	 <t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t> -->
 	</section>
 	
 	<section anchor="sig-format" numbered="true" toc="default">
-	<name>Authentication Signature Format</name>
-	<t>Text</t>
+	<name>Signature Format</name>
+<artwork align="left" name="" type="" alt=""><![CDATA[
+       string  "ssh-TBD3"
+       string  key
+]]></artwork>
+    <t>Here, 'signature' is the x-octet signature produced in accordance with...</t>
+	<t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
+	<!--TODO --> 
+	<!-- <t>string    "ssh-sphincsplus"
+       string    key</t>
+	 <t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t> -->
+	</section>
+
+	<section anchor="sig-alg" numbered="true" toc="default">
+	<name>Signing and Verification</name>
+	<t>Signatures are generated according to the procedure in...</t>
+	
+	<t>Signatures are verified according to the procedure in...</t>
+	<t>[EDNOTE: Placeholdrer. Algorithm will be identified after NIST Round 3 concludes.]</t>
 	</section>
 	
 	<!-- TODO: Update this section later --> 
@@ -203,20 +232,8 @@
    
 	<section numbered="true" toc="default">
 	<name>Message Size</name>
-	<t>An implementaton adhering to [RFC4253] must be able to support
-   packets with an uncompressed payload length of 32768 bytes or less
-   and a total packet size of 35000 bytes or less (including
-   'packet_length', 'padding_length', 'payload', 'random padding', and
-   'mac').  These numbers represent what must be 'minimally supported'
-   by implementations.  This can present a problem when using post-
-   quantum key exchange schemes because some post-quantum schemes can
-   produce much larger messages than what is normally produced by
-   existing key exchange methods defined for SSH.  This document does
-   not define any named domain parameters (see Section 7) that cause any
-   hybrid key exchange method related packets to exceed the minimally
-   supported packet length.  This document does not define behaviour in
-   cases where a hybrid key exchange message cause a packet to exceed
-   the minimally supported packet length.</t>
+	<t>An implementaton adhering to <xref target="RFC4253" format="default">RFC4253</xref> must be able to support packets with an uncompressed payload length of 32768 bytes or less and a total packet size of 35000 bytes or less (including
+   'packet_length', 'padding_length', 'payload', 'random padding', and 'mac').  These numbers represent what must be 'minimally supported' by implementations.  This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH.  This document does    not define any named domain parameters (see Section 7) that cause any hybrid key exchange method related packets to exceed the minimally supported packet length.  This document does not define behaviour in cases where a hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
 	</section>
 
     <section anchor="Acknowledgements" numbered="true" toc="default">
