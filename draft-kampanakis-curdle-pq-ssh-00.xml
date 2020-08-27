@@ -99,6 +99,8 @@
    <abstract>
       <t>This document defines hybrid key exchange methods based on classical ECDH key exchange and post-quantum key encapsulation schemes. These methods are defined for use in the SSH Transport Layer Protocol. It also defines post-quantum public key authentication methods based on post-quantum signature schemes<!--TODO: Update to hybrid if we end up doing hybrid. -->. These methods are defined for use in the SSH Authentication Protocol.</t>
 	  
+	  <t>EDNOTE: The goal of this draft is to start the standardization of PQ algorithms in SSH early to mitigate the potential record-and-harvest later with a quantum computer attacks. This draft is not expected to be standardized before the NIST PQ Project has standardized PQ algorithms. After NIST has standardized then this docuement will replace TBD1, TBD2, TBD3 with the appropriate algorithms parameters before proceeding to standardization.</t>
+	  
 	  <t>EDNOTE: Discussion of this work is encouraged to happen on the IETF WG Mailing List or in the GitHub repository which contains the draft: https://github.com/csosto-pk/pq-ssh/issues .</t>
     </abstract>
   </front>
@@ -150,6 +152,25 @@
     	<name>Key Derivation</name>
     	<t>Derivation of encryption keys MUST be done according to Section 7.2 in <xref target="RFC4253" format="default">RFC4253</xref> with the following modifications. The shared secrets K_CL and K_PQ are the output from the two key exchange schemes X and Y, respectively, that instantiates an abstract hybrid key exchange method <xref target="kex" format="default"/>. The SSH shared secret K is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name. K_CL and K_PQ MUST be encoded as octet strings. K MUST be encoded as an mpint and the resulting bytes are fed as described <xref target="RFC4253" format="default"/> to the key exchange method's hash function to generate encryption keys.</t>
     	</section>
+    	
+		<section numbered="true" toc="default">
+    	<name>HASH</name>
+        <t>A named hybrid key exchange name includes a named hash. The exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named hybrid key exchange method name, over the concatenation of the following </t>
+
+<artwork align="left" name="" type="" alt=""><![CDATA[
+      string V_C, client identification string (CR and LF excluded)
+      string V_S, server identification string (CR and LF excluded)
+      string I_C, payload of the client's SSH_MSG_KEXINIT
+      string I_S, payload of the server's SSH_MSG_KEXINIT
+      string C_CL, X client message octet string
+      string C_PQ, Y client message octet string
+      string S_CL, X server message octet string
+      string S_PQ, Y server message octet string
+      mpint K, SSH shared secret
+]]></artwork>
+		
+		<t>The HASH functions used for the definitions in this specification are SHA-256 or SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>.</t>
+    	</section>
 			
     	<section numbered="true" toc="default">
     	<name>Hybrid Key Exchange Method Names</name>
@@ -169,31 +190,12 @@
     	  </section>
 		  
     	  <section numbered="true" toc="default">
-    	  <name>x25519-TBD1-sha384</name>
-          <t>x25519-TBD1-sha384 defines that the classical C_CL or S_CL from the client or server is Curve25519 public key as defined in <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. Public keys are defined as strings of 32 bytes for Curve25519. The K_CL shared secret is generated from the exchanged C_CL and S_CL public keys as defined in <xref target="RFC8731" format="default"/> (key agrement method curve25519-sha256) with SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> instead of SHA-256 as the hash.</t>
+    	  <name>x25519-TBD1-sha256</name>
+          <t>x25519-TBD1-sha256 defines that the classical C_CL or S_CL from the client or server is Curve25519 public key as defined in <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. Public keys are defined as strings of 32 bytes for Curve25519. The K_CL shared secret is generated from the exchanged C_CL and S_CL public keys as defined in <xref target="RFC8731" format="default"/> (key agrement method curve25519-sha256) with SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> instead of SHA-256 as the hash.</t>
 		
 		  <t>The post-quantum C_PQ or S_PQ string from the client and server are TBD1. The K_PQ shared secret is generated from the exchanged C_PQ and S_PQ public keys as defined in [EDNOTE: Placeholdrer. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
     	  </section>
-
-    	  <section numbered="true" toc="default">
-    	  <name>HASH</name>
-          <t>A named hybrid key exchange name includes a named hash. The exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named hybrid key exchange method name, over the concatenation of the following </t>
-
-<artwork align="left" name="" type="" alt=""><![CDATA[
-      string V_C, client identification string (CR and LF excluded)
-      string V_S, server identification string (CR and LF excluded)
-      string I_C, payload of the client's SSH_MSG_KEXINIT
-      string I_S, payload of the server's SSH_MSG_KEXINIT
-      string C_CL, X client message octet string
-      string C_PQ, Y client message octet string
-      string S_CL, X server message octet string
-      string S_PQ, Y server message octet string
-      mpint K, SSH shared secret
-]]></artwork>
-		
-		  <t>The HASH used for the definitions in this specification is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>.</t>
-    	  </section>
-		
+		  
     	</section> 
 
     </section>
@@ -201,6 +203,7 @@
 
    <section anchor="key_auth" numbered="true" toc="default">
    <name>Key Authentication</name>
+   <t>[EDNOTE: Discuss is hybrid auth keys which combine classical and PQ signatures are necessary. Since authentication cannot be broken retroactively, even if the PQ signature algorithms got broken, we could switch to a classical algorithm to at least keep the classical security. On the other hand, that would take time to deploy while these entities would be vulnerabile to impersonation attacks. Hybrid signatures add some overhead, but could provide the peace of mind of remaining secure with the classical algorithm without scrambling to deploy a change even if the PQ algorithms got broken. ]</t>
 	  
 	    <section anchor="sig-pk-format" numbered="true" toc="default">
 	    <name>Public Key Format</name>
@@ -208,7 +211,7 @@
       string    "ssh-TBD3"
       string    key
 ]]></artwork>
-        <t>Here, 'key_auth' is the x-octet public key described in ...</t>
+        <t>Here, 'key' is the x-octet public key described in the TBD3 specification.</t>
 	    <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
 	    <!--TODO --> 
 	    <!-- <t>string    "ssh-sphincsplus"
@@ -220,9 +223,9 @@
 	    <name>Signature Format</name>
 <artwork align="left" name="" type="" alt=""><![CDATA[
        string  "ssh-TBD3"
-       string  key
+       string  signature
 ]]></artwork>
-        <t>Here, 'signature' is the x-octet signature produced in accordance with...</t>
+        <t>Here, 'signature' is the x-octet signature produced in accordance with the TBD3 specification. </t>
 	    <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
 	    <!--TODO --> 
 	    <!-- <t>string    "ssh-sphincsplus"
@@ -232,9 +235,9 @@
 
 	    <section anchor="sig-alg" numbered="true" toc="default">
 	    <name>Signing and Verification</name>
-	    <t>Signatures are generated according to the procedure in...</t>
+	    <t>Signatures are generated according to the procedure in TBD3 specification</t>
 	    
-	    <t>Signatures are verified according to the procedure in...</t>
+	    <t>Signatures are verified according to the procedure in TBD3 specification</t>
 	    <t>[EDNOTE: Placeholdrer. Algorithms will be identified after NIST Round 3 concludes.]</t>
 	    </section>
 	
@@ -259,17 +262,18 @@
 
    <section anchor="IANA" numbered="true" toc="default">
       <name>IANA Considerations</name>
-      <t>This memo includes no request to IANA.</t>
+      <t>This memo includes requests of IANA for 
       <!-- <t>All drafts are required to have an IANA considerations section (see
      RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the
      case (as above). If there are no requirements for IANA, the section will
      be removed during conversion into an RFC by the RFC Editor.</t> -->
-	 <t>SSH_MSG_HBR_X_Y_INIT, 
-	 SSH_MSG_HBR_X_Y_REPLY, </t>
+	 SSH_MSG_HBR_X_Y_INIT, 
+	 SSH_MSG_HBR_X_Y_REPLY, ecdh-nistp384-TBD1-sha384, x25519-TBD1-sha384, ssh-TBD3 </t>
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
+	  <t>[EDNOTE: The security considerations given in [RFC5656] therefore also applies to the ECDH key exchange scheme defined in this document. Similarly for the X25519 document. PQ Algorithms are newer and standardized by NIST. And more.  ] </t>
     </section>
   </middle>
   <!--  *****BACK MATTER ***** -->
