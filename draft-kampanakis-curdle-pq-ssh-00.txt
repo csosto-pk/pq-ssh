@@ -5,14 +5,14 @@
 CURDLE                                                     P. Kampanakis
 Internet-Draft                                             Cisco Systems
 Intended status: Experimental                                 D. Stebila
-Expires: 28 February 2021                         University of Waterloo
+Expires: 1 March 2021                             University of Waterloo
                                                                M. Friedl
                                                                  OpenSSH
                                                                T. Hansen
                                                                      AWS
                                                             D. Sikeridis
                                                 University of New Mexico
-                                                          27 August 2020
+                                                          28 August 2020
 
 
  Post-quantum public key algorithms for the Secure Shell (SSH) protocol
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 1]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 1]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -63,7 +63,7 @@ Internet-Draft                   PQ SSH                      August 2020
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 February 2021.
+   This Internet-Draft will expire on 1 March 2021.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 2]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 2]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -142,7 +142,7 @@ Internet-Draft                   PQ SSH                      August 2020
    and the SSH Authentication Protocol [RFC4252] with public key methods
    based on post-quantum signature schemes.  A hybrid key exchange
    method maintains the same level of security provided by current key
-   exchange methods, but also adds quantum resistantance.  The security
+   exchange methods, but also adds quantum resistance.  The security
    provided by the individual key exchange scheme in a hybrid key
    exchange method is independent.  This means that the hybrid key
    exchange method will always be at least as secure as the most secure
@@ -151,9 +151,9 @@ Internet-Draft                   PQ SSH                      August 2020
 
    The post-quantum key encapsulation mechanisms (KEM) used for hybrid
    key exchange in the document are TBD1, TBD2.  The post-quantum
-   signauture algorithm used for key based authentication is TBD3.
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]  The post-quantunt algorithms are defined in NIST
+   signature algorithm used for key based authentication is TBD3.
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]  The post-quantum algorithms are defined in NIST
    Post-quantum Project [pq_nist].[EDNOTE: Update link.  Algorithms can
    change based on NIST's Round 3 standardization].
 
@@ -165,7 +165,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 3]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 3]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -178,7 +178,7 @@ Internet-Draft                   PQ SSH                      August 2020
    method.  The structure must be instantiated with two key exchange
    schemes.  Given key exchange schemes X and Y, the X+Y hybrid key
    exchange method is implemented using the following exchange messages
-   below.  The byte, string and mpint are to be intepreted in this
+   below.  The byte, string and mpint are to be interpreted in this
    document as described in [RFC4251].
 
    The client sends
@@ -221,7 +221,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 4]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 4]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -253,8 +253,8 @@ Internet-Draft                   PQ SSH                      August 2020
          ecdh-nistp384-TBD1-sha384
          x25519-TBD1-sha384
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 2.4.1.  ecdh-nistp384-TBD1-sha384
 
@@ -263,13 +263,13 @@ Internet-Draft                   PQ SSH                      August 2020
    [nist-sp800-186].  Private and public keys are generated as described
    therein.  Public keys are defined as strings of 32 bytes for NIST
    P-384.  The K_CL shared secret is generated from the exchanged C_CL
-   and S_CL public keys as defined in [RFC5656] (key agrement method
+   and S_CL public keys as defined in [RFC5656] (key agreement method
    ecdh-sha2-nistp384) with SHA-384 [nist-sha2] [RFC4634] instead of
    SHA-256 as the hash.
 
    The post-quantum C_PQ or S_PQ string from the client and server are
    TBD1.  The K_PQ shared secret is generated from the exchanged C_PQ
-   and S_PQ public keys as defined in [EDNOTE: Placeholdrer.  Update
+   and S_PQ public keys as defined in [EDNOTE: Placeholder.  Update
    based on the algorithm identified after NIST Round 3 concludes.]
 
 
@@ -277,7 +277,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 5]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 5]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -285,16 +285,16 @@ Internet-Draft                   PQ SSH                      August 2020
 2.4.2.  x25519-TBD1-sha256
 
    x25519-TBD1-sha256 defines that the classical C_CL or S_CL from the
-   client or server is Curve25519 public key as defined in [RFC7748].
+   client or server is a Curve25519 public key as defined in [RFC7748].
    Private and public keys are generated as described therein.  Public
    keys are defined as strings of 32 bytes for Curve25519.  The K_CL
    shared secret is generated from the exchanged C_CL and S_CL public
-   keys as defined in [RFC8731] (key agrement method curve25519-sha256)
+   keys as defined in [RFC8731] (key agreement method curve25519-sha256)
    with SHA-384 [nist-sha2] [RFC4634] instead of SHA-256 as the hash.
 
    The post-quantum C_PQ or S_PQ string from the client and server are
    TBD1.  The K_PQ shared secret is generated from the exchanged C_PQ
-   and S_PQ public keys as defined in [EDNOTE: Placeholdrer.  Update
+   and S_PQ public keys as defined in [EDNOTE: Placeholder.  Update
    based on the algorithm identified after NIST Round 3 concludes.]
 
 3.  Key Authentication
@@ -304,7 +304,7 @@ Internet-Draft                   PQ SSH                      August 2020
    retroactively, even if the PQ signature algorithms got broken, we
    could switch to a classical algorithm to at least keep the classical
    security.  On the other hand, that would take time to deploy while
-   these entities would be vulnerabile to impersonation attacks.  Hybrid
+   these entities would be vulnerable to impersonation attacks.  Hybrid
    signatures add some overhead, but could provide the peace of mind of
    remaining secure with the classical algorithm without scrambling to
    deploy a change even if the PQ algorithms got broken. ]
@@ -317,8 +317,8 @@ Internet-Draft                   PQ SSH                      August 2020
    Here, 'key' is the x-octet public key described in the TBD3
    specification.
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 3.2.  Signature Format
 
@@ -328,12 +328,12 @@ Internet-Draft                   PQ SSH                      August 2020
    Here, 'signature' is the x-octet signature produced in accordance
    with the TBD3 specification.
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 6]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 6]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -346,12 +346,12 @@ Internet-Draft                   PQ SSH                      August 2020
    Signatures are verified according to the procedure in TBD3
    specification
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 4.  Message Size
 
-   An implementaton adhering to [RFC4253] must be able to support
+   An implementation adhering to [RFC4253] must be able to support
    packets with an uncompressed payload length of 32768 bytes or less
    and a total packet size of 35000 bytes or less (including
    'packet_length', 'padding_length', 'payload', 'random padding', and
@@ -379,7 +379,8 @@ Internet-Draft                   PQ SSH                      August 2020
    [EDNOTE: The security considerations given in [RFC5656] therefore
    also applies to the ECDH key exchange scheme defined in this
    document.  Similarly for the X25519 document.  PQ Algorithms are
-   newer and standardized by NIST.  And more.  ]
+   newer and standardized by NIST.  And more.  Should include something
+   about the combination method for the KEM shared secrets.]
 
 8.  References
 
@@ -388,8 +389,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-
-Kampanakis, et al.      Expires 28 February 2021                [Page 7]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 7]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -445,7 +445,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 8]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 8]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -501,4 +501,4 @@ Authors' Addresses
 
 
 
-Kampanakis, et al.      Expires 28 February 2021                [Page 9]
+Kampanakis, et al.        Expires 1 March 2021                  [Page 9]
