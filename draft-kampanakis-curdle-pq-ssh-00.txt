@@ -5,14 +5,14 @@
 CURDLE                                                     P. Kampanakis
 Internet-Draft                                             Cisco Systems
 Intended status: Experimental                                 D. Stebila
-Expires: 3 March 2021                             University of Waterloo
+Expires: 4 March 2021                             University of Waterloo
                                                                M. Friedl
                                                                  OpenSSH
                                                                T. Hansen
                                                                      AWS
                                                             D. Sikeridis
                                                 University of New Mexico
-                                                          30 August 2020
+                                                          31 August 2020
 
 
  Post-quantum public key algorithms for the Secure Shell (SSH) protocol
@@ -31,9 +31,9 @@ Abstract
    algorithms in SSH early to mitigate the potential record-and-harvest
    later with a quantum computer attacks.  This draft is not expected to
    be standardized before the NIST PQ Project has standardized PQ
-   algorithms.  After NIST has standardized then this docuement will
-   replace TBD1, TBD2, TBD3 with the appropriate algorithms parameters
-   before proceeding to standardization.
+   algorithms.  After NIST has standardized then this document will
+   replace TBD1, TBD2, TBD3 with the appropriate algorithms and
+   parameters before proceeding to standardization.
 
    EDNOTE: Discussion of this work is encouraged to happen on the IETF
    WG Mailing List or in the GitHub repository which contains the draft:
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Kampanakis, et al.        Expires 3 March 2021                  [Page 1]
+Kampanakis, et al.        Expires 4 March 2021                  [Page 1]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -63,7 +63,7 @@ Internet-Draft                   PQ SSH                      August 2020
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 March 2021.
+   This Internet-Draft will expire on 4 March 2021.
 
 Copyright Notice
 
@@ -83,25 +83,25 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
-   2.  Hybrid Key Exchange . . . . . . . . . . . . . . . . . . . . .   4
-     2.1.  Hybrid Key Exchange Method Abstraction  . . . . . . . . .   4
+   2.  Hybrid Key Exchange . . . . . . . . . . . . . . . . . . . . .   5
+     2.1.  Hybrid Key Exchange Method Abstraction  . . . . . . . . .   5
      2.2.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   5
-     2.3.  HASH  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     2.3.  HASH  . . . . . . . . . . . . . . . . . . . . . . . . . .   6
      2.4.  Hybrid Key Exchange Method Names  . . . . . . . . . . . .   6
        2.4.1.  ecdh-nistp256-TBD1-sha256 . . . . . . . . . . . . . .   6
-       2.4.2.  x25519-TBD1-sha256  . . . . . . . . . . . . . . . . .   6
+       2.4.2.  x25519-TBD1-sha256  . . . . . . . . . . . . . . . . .   7
    3.  Key Authentication  . . . . . . . . . . . . . . . . . . . . .   7
      3.1.  Public Key Format . . . . . . . . . . . . . . . . . . . .   7
      3.2.  Signature Format  . . . . . . . . . . . . . . . . . . . .   7
-     3.3.  Signing and Verification  . . . . . . . . . . . . . . . .   7
+     3.3.  Signing and Verification  . . . . . . . . . . . . . . . .   8
    4.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   8
    5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Kampanakis, et al.        Expires 3 March 2021                  [Page 2]
+Kampanakis, et al.        Expires 4 March 2021                  [Page 2]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -128,14 +128,14 @@ Internet-Draft                   PQ SSH                      August 2020
    However, when sufficiently large quantum computers becomes available
    these instances would no longer be computationally infeasable
    rendering the current key exchange and authentication methods in SSH
-   insecure.  While large quantum computers are not available today an
-   adversary can record the encrypted communication sent between the
-   client and server in an SSH session and then later decrypt the
-   communication when sufficiently large quantum computers become
-   available.  This kind of attack is known as a "record-and-harvest"
-   attack.  "Record-and-harvest" attacks do not apply retroactively to
-   authentication but a quantum computer could threaten SSH
-   authentication by impersonating as a legitimate client or server.
+   insecure [I-D.hoffman-c2pq].  While large quantum computers are not
+   available today an adversary can record the encrypted communication
+   sent between the client and server in an SSH session and then later
+   decrypt the communication when sufficiently large quantum computers
+   become available.  This kind of attack is known as a "record-and-
+   harvest" attack.  "Record-and-harvest" attacks do not apply
+   retroactively to authentication but a quantum computer could threaten
+   SSH authentication by impersonating as a legitimate client or server.
 
    This document proposes to address the problem by extending the SSH
    Transport Layer Protocol [RFC4253] with hybrid key exchange methods
@@ -150,8 +150,8 @@ Internet-Draft                   PQ SSH                      August 2020
    method.
 
    In the context of the NIST Post-Quantum Cryptography Standardization
-   Project, key exchange algorithms are formulated as key encapsulation
-   mechanisms (KEMs), which consist of three algorithms:
+   Project [NIST_PQ], key exchange algorithms are formulated as key
+   encapsulation mechanisms (KEMs), which consist of three algorithms:
 
    *  'KeyGen() -> (pk, sk)': A probabilistic key generation algorithm,
       which generates a public key 'pk' and a secret key 'sk'.
@@ -165,7 +165,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
 
 
-Kampanakis, et al.        Expires 3 March 2021                  [Page 3]
+Kampanakis, et al.        Expires 4 March 2021                  [Page 3]
 
 Internet-Draft                   PQ SSH                      August 2020
 
@@ -186,12 +186,27 @@ Internet-Draft                   PQ SSH                      August 2020
    of the public key.  IND-CPA roughly corresponds to security against a
    passive attacker, and sometimes corresponds to one-time key exchange.
 
+   The corresponsonding post-quantum signature algorithms defined in the
+   NIST Post-Quantum Cryptography Standardization Project [NIST_PQ] are
+
+   *  'KeyGen() -> (pk, sk)': A probabilistic key generation algorithm,
+      which generates a public key 'pk' and a secret key 'sk'.
+
+   *  'Sign(m, sk) -> sig': A deterministic signing algorithm, which
+      takes as input a message 'm' and a private key 'sk' and outputs a
+      signature 'sig'.
+
+   *  'Verify(m, pk, sigma) -> pass/fail': A verification algorithm,
+      which takes as input a message 'm', a public key 'pk' and a
+      signature 'sig' and outputs a verification pass or failure of the
+      signature on the message.
+
    The post-quantum KEMs used for hybrid key exchange in the document
    are TBD1, TBD2.  The post-quantum signauture algorithm used for key
    based authentication is TBD3.  [EDNOTE: Placeholdrer.  Algorithms
    will be identified after NIST Round 3 concludes.]  The post-quantunt
    algorithms are defined in NIST Post-quantum Project
-   [pq_nist].[EDNOTE: Update link.  Algorithms can change based on
+   [NIST_PQ].[EDNOTE: Update link.  Algorithms can change based on
    NIST's Round 3 standardization].
 
 1.1.  Requirements Language
@@ -199,6 +214,17 @@ Internet-Draft                   PQ SSH                      August 2020
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in RFC 2119 [RFC2119].
+
+
+
+
+
+
+
+Kampanakis, et al.        Expires 4 March 2021                  [Page 4]
+
+Internet-Draft                   PQ SSH                      August 2020
+
 
 2.  Hybrid Key Exchange
 
@@ -219,37 +245,42 @@ Internet-Draft                   PQ SSH                      August 2020
 
    The server sends
 
-
-
-Kampanakis, et al.        Expires 3 March 2021                  [Page 4]
-
-Internet-Draft                   PQ SSH                      August 2020
-
-
        byte SSH_MSG_HBR_X_Y_REPLY
        string S_CL
        string S_PQ
 
-   C_PQ represents the client post-quantum publoc key.  S_CL represents
-   the ciphertext which encapsulates a shared secret randomly generated
-   by the server to the client's public key.  The client wll decapsulate
-   it using its private key.
+   C_CL and S_CL represent the ephemeral public key of the client and
+   server respectively used for the classical (EC)DH key exchange which
+   leads to K_CL, a classical shared secret for SSH.
+
+   C_PQ represents the 'pk' output of the corresponding KEMs' 'KeyGen'
+   at the client.  S_PQ represents the ciphertext 'ct' output of the
+   corresponding KEMs' 'Encaps' algorithm generated by the server to the
+   client's public key.  The client decapsulate ct using its private key
+   which leads to K_PQ, a post-quantum shared secret for SSH.
 
    The string name of the key exchange schemes X and Y will replace the
    X and Y in the message names 'SSH_MSG_HBR_X_Y_INIT' and
    'SSH_MSG_HBR_X_Y_REPLY' in specific instantiations found in
    Section [EDNOTE: Update Section number.].
 
-
 2.2.  Key Derivation
 
-   Derivation of encryption keys MUST be done according to Section 7.2
-   in [RFC4253] with the following modifications.  The shared secrets
-   K_CL and K_PQ are the output from the two key exchange schemes X and
-   Y, respectively, that instantiates an abstract hybrid key exchange
-   method Section 2.  The SSH shared secret K defined as
+   The shared secrets K_CL and K_PQ are the output from the two key
+   exchange schemes X and Y, respectively, that instantiates an abstract
+   hybrid key exchange method Section 2.  The SSH shared secret K
+   derived as
 
                    K = PRF(K_PQ, K_CL) [EDNOTE: Define PRF]
+
+
+
+
+
+Kampanakis, et al.        Expires 4 March 2021                  [Page 5]
+
+Internet-Draft                   PQ SSH                      August 2020
+
 
    K MUST be encoded as an mpint and the resulting bytes are fed as
    described [RFC4253] to the key exchange method's hash function to
@@ -257,10 +288,11 @@ Internet-Draft                   PQ SSH                      August 2020
 
 2.3.  HASH
 
-   A named hybrid key exchange name includes a named hash.  The exchange
-   hash H is the result of computing the HASH, where HASH is the hash
-   algorithm specified in the named hybrid key exchange method name,
-   over the concatenation of the following
+   Derivation of encryption keys MUST be done according to Section 7.2
+   in [RFC4253] with a modification on the exchange hash H.  The hybrid
+   key exchange hash H is the result of computing the HASH, where HASH
+   is the hash algorithm specified in the named hybrid key exchange
+   method name, over the concatenation of the following
 
          string V_C, client identification string (CR and LF excluded)
          string V_S, server identification string (CR and LF excluded)
@@ -272,15 +304,8 @@ Internet-Draft                   PQ SSH                      August 2020
          string S_PQ, Y server message octet string
          mpint K, SSH shared secret
 
-   The HASH functions used for the definitions in this specification are
+   The HASH function used for the definitions in this specification are
    SHA-256 [nist-sha2] [RFC4634].
-
-
-
-Kampanakis, et al.        Expires 3 March 2021                  [Page 5]
-
-Internet-Draft                   PQ SSH                      August 2020
-
 
 2.4.  Hybrid Key Exchange Method Names
 
@@ -303,6 +328,16 @@ Internet-Draft                   PQ SSH                      August 2020
    ecdh-sha2-nistp256) with SHA-256 [nist-sha2] [RFC4634] instead of
    SHA-256 as the hash.
 
+
+
+
+
+
+Kampanakis, et al.        Expires 4 March 2021                  [Page 6]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
    The post-quantum C_PQ or S_PQ string from the client and server are
    TBD1.  The K_PQ shared secret is decapsulated from the ciphertext
    S_PQ using the client private key [EDNOTE: Placeholdrer.  Update
@@ -323,20 +358,6 @@ Internet-Draft                   PQ SSH                      August 2020
    S_PQ using the client private key as defined in [EDNOTE:
    Placeholdrer.  Update based on the algorithm identified after NIST
    Round 3 concludes.]
-
-
-
-
-
-
-
-
-
-
-Kampanakis, et al.        Expires 3 March 2021                  [Page 6]
-
-Internet-Draft                   PQ SSH                      August 2020
-
 
 3.  Key Authentication
 
@@ -366,6 +387,13 @@ Internet-Draft                   PQ SSH                      August 2020
           string  "ssh-TBD3"
           string  signature
 
+
+
+Kampanakis, et al.        Expires 4 March 2021                  [Page 7]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
    Here, 'signature' is the x-octet signature produced in accordance
    with the TBD3 specification.
 
@@ -382,17 +410,6 @@ Internet-Draft                   PQ SSH                      August 2020
 
    [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
    Round 3 concludes.]
-
-
-
-
-
-
-
-Kampanakis, et al.        Expires 3 March 2021                  [Page 7]
-
-Internet-Draft                   PQ SSH                      August 2020
-
 
 4.  Message Size
 
@@ -426,8 +443,24 @@ Internet-Draft                   PQ SSH                      August 2020
    document.  Similarly for the X25519 document.  PQ Algorithms are
    newer and standardized by NIST.  And more.  ]
 
+
+
+Kampanakis, et al.        Expires 4 March 2021                  [Page 8]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
    [EDNOTE: Discussion on whether an IND-CCA KEM is required or whether
-   IND-CPA suffices.]
+   IND-CPA suffices.]  Any KEM used in the manner described in this
+   document MUST explicitly be designed to be secure in the event that
+   the public key is re-used, such as achieving IND-CCA2 security or
+   having a transform like the Fujisaki-Okamoto transform [FO][HHK]
+   applied.  While it is recommended that implementations avoid reuse of
+   KEM public keys, implementations that do reuse KEM public keys MUST
+   ensure that the number of reuses of a KEM public key abides by any
+   bounds in the specification of the KEM or subsequent security
+   analyses.  Implementations MUST NOT reuse randomness in the
+   generation of KEM ciphertexts.
 
 8.  References
 
@@ -442,14 +475,6 @@ Internet-Draft                   PQ SSH                      August 2020
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
               January 2006, <https://www.rfc-editor.org/info/rfc4251>.
 
-
-
-
-Kampanakis, et al.        Expires 3 March 2021                  [Page 8]
-
-Internet-Draft                   PQ SSH                      August 2020
-
-
    [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
               January 2006, <https://www.rfc-editor.org/info/rfc4252>.
@@ -459,6 +484,33 @@ Internet-Draft                   PQ SSH                      August 2020
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
 8.2.  Informative References
+
+   [FO]       Fujisaki, E. and T. Okamoto, "Secure Integration of
+              Asymmetric and Symmetric Encryption Schemes",
+              DOI 10.1007/s00145-011-9114-1, Journal of Cryptology Vol.
+              26, pp. 80-101, December 2011,
+              <https://doi.org/10.1007/s00145-011-9114-1>.
+
+   [HHK]      Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
+              Analysis of the Fujisaki-Okamoto Transformation",
+              DOI 10.1007/978-3-319-70500-2_12, Theory of
+              Cryptography pp. 341-371, 2017,
+              <https://doi.org/10.1007/978-3-319-70500-2_12>.
+
+
+
+
+
+Kampanakis, et al.        Expires 4 March 2021                  [Page 9]
+
+Internet-Draft                   PQ SSH                      August 2020
+
+
+   [I-D.hoffman-c2pq]
+              Hoffman, P., "The Transition from Classical to Post-
+              Quantum Cryptography", Work in Progress, Internet-Draft,
+              draft-hoffman-c2pq-07, 26 May 2020,
+              <https://tools.ietf.org/html/draft-hoffman-c2pq-07>.
 
    [nist-sha2]
               NIST, "FIPS PUB 180-4", 2015,
@@ -470,7 +522,7 @@ Internet-Draft                   PQ SSH                      August 2020
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
               NIST.SP.800-186-draft.pdf>.
 
-   [pq_nist]  NIST, "Post-Quantum Cryptography", 2020,
+   [NIST_PQ]  NIST, "Post-Quantum Cryptography", 2020,
               <https://csrc.nist.gov/projects/post-quantum-
               cryptography>.
 
@@ -497,19 +549,18 @@ Internet-Draft                   PQ SSH                      August 2020
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-
-
-
-
-Kampanakis, et al.        Expires 3 March 2021                  [Page 9]
-
-Internet-Draft                   PQ SSH                      August 2020
-
-
    [RFC8731]  Adamantiadis, A., Josefsson, S., and M. Baushke, "Secure
               Shell (SSH) Key Exchange Method Using Curve25519 and
               Curve448", RFC 8731, DOI 10.17487/RFC8731, February 2020,
               <https://www.rfc-editor.org/info/rfc8731>.
+
+
+
+
+Kampanakis, et al.        Expires 4 March 2021                 [Page 10]
+
+Internet-Draft                   PQ SSH                      August 2020
+
 
 Authors' Addresses
 
@@ -557,4 +608,9 @@ Authors' Addresses
 
 
 
-Kampanakis, et al.        Expires 3 March 2021                 [Page 10]
+
+
+
+
+
+Kampanakis, et al.        Expires 4 March 2021                 [Page 11]
