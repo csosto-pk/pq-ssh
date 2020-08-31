@@ -97,7 +97,7 @@ Table of Contents
    4.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   8
    5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   9
@@ -142,7 +142,7 @@ Internet-Draft                   PQ SSH                      August 2020
    and the SSH Authentication Protocol [RFC4252] with public key methods
    based on post-quantum signature schemes.  A hybrid key exchange
    method maintains the same level of security provided by current key
-   exchange methods, but also adds quantum resistantance.  The security
+   exchange methods, but also adds quantum resistance.  The security
    provided by the individual key exchange scheme in a hybrid key
    exchange method is independent.  This means that the hybrid key
    exchange method will always be at least as secure as the most secure
@@ -202,9 +202,9 @@ Internet-Draft                   PQ SSH                      August 2020
       signature on the message.
 
    The post-quantum KEMs used for hybrid key exchange in the document
-   are TBD1, TBD2.  The post-quantum signauture algorithm used for key
-   based authentication is TBD3.  [EDNOTE: Placeholdrer.  Algorithms
-   will be identified after NIST Round 3 concludes.]  The post-quantunt
+   are TBD1, TBD2.  The post-quantum signature algorithm used for key
+   based authentication is TBD3.  [EDNOTE: Placeholder.  Algorithms will
+   be identified after NIST Round 3 concludes.]  The post-quantunt
    algorithms are defined in NIST Post-quantum Project
    [NIST_PQ].[EDNOTE: Update link.  Algorithms can change based on
    NIST's Round 3 standardization].
@@ -234,7 +234,7 @@ Internet-Draft                   PQ SSH                      August 2020
    method.  The structure must be instantiated with two key exchange
    schemes.  Given key exchange schemes X and Y, the X+Y hybrid key
    exchange method is implemented using the following exchange messages
-   below.  The byte, string and mpint are to be intepreted in this
+   below.  The byte, string and mpint are to be interpreted in this
    document as described in [RFC4251].
 
    The client sends
@@ -314,8 +314,8 @@ Internet-Draft                   PQ SSH                      August 2020
          ecdh-nistp256-TBD1-sha256
          x25519-TBD1-sha256
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 2.4.1.  ecdh-nistp256-TBD1-sha256
 
@@ -324,7 +324,7 @@ Internet-Draft                   PQ SSH                      August 2020
    [nist-sp800-186].  Private and public keys are generated as described
    therein.  Public keys are defined as strings of 32 bytes for NIST
    P-256.  The K_CL shared secret is generated from the exchanged C_CL
-   and S_CL public keys as defined in [RFC5656] (key agrement method
+   and S_CL public keys as defined in [RFC5656] (key agreement method
    ecdh-sha2-nistp256) with SHA-256 [nist-sha2] [RFC4634] instead of
    SHA-256 as the hash.
 
@@ -340,8 +340,8 @@ Internet-Draft                   PQ SSH                      August 2020
 
    The post-quantum C_PQ or S_PQ string from the client and server are
    TBD1.  The K_PQ shared secret is decapsulated from the ciphertext
-   S_PQ using the client private key [EDNOTE: Placeholdrer.  Update
-   based on the algorithm identified after NIST Round 3 concludes.]
+   S_PQ using the client private key [EDNOTE: Placeholder.  Update based
+   on the algorithm identified after NIST Round 3 concludes.]
 
 2.4.2.  x25519-TBD1-sha256
 
@@ -350,18 +350,18 @@ Internet-Draft                   PQ SSH                      August 2020
    Private and public keys are generated as described therein.  Public
    keys are defined as strings of 32 bytes for Curve25519.  The K_CL
    shared secret is generated from the exchanged C_CL and S_CL public
-   keys as defined in [RFC8731] (key agrement method curve25519-sha256)
+   keys as defined in [RFC8731] (key agreement method curve25519-sha256)
    with SHA-256 [nist-sha2] [RFC4634] instead of SHA-256 as the hash.
 
    The post-quantum C_PQ or S_PQ string from the client and server are
    TBD1.  The K_PQ shared secret is decapsulated from the ciphertext
-   S_PQ using the client private key as defined in [EDNOTE:
-   Placeholdrer.  Update based on the algorithm identified after NIST
-   Round 3 concludes.]
+   S_PQ using the client private key as defined in [EDNOTE: Placeholder.
+   Update based on the algorithm identified after NIST Round 3
+   concludes.]
 
 3.  Key Authentication
 
-   [EDNOTE: Discuss is hybrid auth keys which combine classical and PQ
+   [EDNOTE: Discuss if hybrid auth keys which combine classical and PQ
    signatures are necessary.  Since authentication cannot be broken
    retroactively, even if the PQ signature algorithms got broken, we
    could switch to a classical algorithm to at least keep the classical
@@ -379,8 +379,8 @@ Internet-Draft                   PQ SSH                      August 2020
    Here, 'key' is the x-octet public key described in the TBD3
    specification.
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 3.2.  Signature Format
 
@@ -397,8 +397,8 @@ Internet-Draft                   PQ SSH                      August 2020
    Here, 'signature' is the x-octet signature produced in accordance
    with the TBD3 specification.
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 3.3.  Signing and Verification
 
@@ -408,12 +408,12 @@ Internet-Draft                   PQ SSH                      August 2020
    Signatures are verified according to the procedure in TBD3
    specification
 
-   [EDNOTE: Placeholdrer.  Algorithms will be identified after NIST
-   Round 3 concludes.]
+   [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
+   3 concludes.]
 
 4.  Message Size
 
-   An implementaton adhering to [RFC4253] must be able to support
+   An implementation adhering to [RFC4253] must be able to support
    packets with an uncompressed payload length of 32768 bytes or less
    and a total packet size of 35000 bytes or less (including
    'packet_length', 'padding_length', 'payload', 'random padding', and
@@ -436,12 +436,12 @@ Internet-Draft                   PQ SSH                      August 2020
    SSH_MSG_HBR_X_Y_REPLY, ecdh-nistp256-TBD1-sha256, x25519-TBD1-sha256,
    ssh-TBD3
 
-7.  Security Considerations
 
-   [EDNOTE: The security considerations given in [RFC5656] therefore
-   also applies to the ECDH key exchange scheme defined in this
-   document.  Similarly for the X25519 document.  PQ Algorithms are
-   newer and standardized by NIST.  And more.  ]
+
+
+
+
+
 
 
 
@@ -449,6 +449,14 @@ Kampanakis, et al.        Expires 4 March 2021                  [Page 8]
 
 Internet-Draft                   PQ SSH                      August 2020
 
+
+7.  Security Considerations
+
+   [EDNOTE: The security considerations given in [RFC5656] therefore
+   also applies to the ECDH key exchange scheme defined in this
+   document.  Similarly for the X25519 document.  PQ Algorithms are
+   newer and standardized by NIST.  And more.  Should include something
+   about the combination method for the KEM shared secrets. ]
 
    [EDNOTE: Discussion on whether an IND-CCA KEM is required or whether
    IND-CPA suffices.]  Any KEM used in the manner described in this
@@ -491,20 +499,18 @@ Internet-Draft                   PQ SSH                      August 2020
               26, pp. 80-101, December 2011,
               <https://doi.org/10.1007/s00145-011-9114-1>.
 
-   [HHK]      Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
-              Analysis of the Fujisaki-Okamoto Transformation",
-              DOI 10.1007/978-3-319-70500-2_12, Theory of
-              Cryptography pp. 341-371, 2017,
-              <https://doi.org/10.1007/978-3-319-70500-2_12>.
-
-
-
 
 
 Kampanakis, et al.        Expires 4 March 2021                  [Page 9]
 
 Internet-Draft                   PQ SSH                      August 2020
 
+
+   [HHK]      Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
+              Analysis of the Fujisaki-Okamoto Transformation",
+              DOI 10.1007/978-3-319-70500-2_12, Theory of
+              Cryptography pp. 341-371, 2017,
+              <https://doi.org/10.1007/978-3-319-70500-2_12>.
 
    [I-D.hoffman-c2pq]
               Hoffman, P., "The Transition from Classical to Post-
@@ -549,18 +555,17 @@ Internet-Draft                   PQ SSH                      August 2020
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-   [RFC8731]  Adamantiadis, A., Josefsson, S., and M. Baushke, "Secure
-              Shell (SSH) Key Exchange Method Using Curve25519 and
-              Curve448", RFC 8731, DOI 10.17487/RFC8731, February 2020,
-              <https://www.rfc-editor.org/info/rfc8731>.
-
-
 
 
 Kampanakis, et al.        Expires 4 March 2021                 [Page 10]
 
 Internet-Draft                   PQ SSH                      August 2020
 
+
+   [RFC8731]  Adamantiadis, A., Josefsson, S., and M. Baushke, "Secure
+              Shell (SSH) Key Exchange Method Using Curve25519 and
+              Curve448", RFC 8731, DOI 10.17487/RFC8731, February 2020,
+              <https://www.rfc-editor.org/info/rfc8731>.
 
 Authors' Addresses
 
@@ -592,11 +597,6 @@ Authors' Addresses
    University of New Mexico
 
    Email: dsike@unm.edu
-
-
-
-
-
 
 
 
