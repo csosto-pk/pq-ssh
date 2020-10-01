@@ -232,26 +232,22 @@ Internet-Draft                   PQ SSH                      August 2020
 
    This section defines the abstract structure of a hybrid key exchange
    method.  The structure must be instantiated with two key exchange
-   schemes.  Given key exchange schemes X and Y, the X+Y hybrid key
-   exchange method is implemented using the following exchange messages
-   below.  The byte, string and mpint are to be interpreted in this
+   schemes.  The byte, string and mpint are to be interpreted in this
    document as described in [RFC4251].
 
    The client sends
 
-       byte SSH_MSG_HBR_X_Y_INIT
-       string C_CL
-       string C_PQ
+       byte SSH_MSG_HBR_INIT
+       string C_INIT
+
+   Where C_INIT would be the concatentation of C_PQ and C_CL.
 
    The server sends
 
-       byte SSH_MSG_HBR_X_Y_REPLY
-       string S_CL
-       string S_PQ
+       byte SSH_MSG_HBR_REPLY
+       string S_REPLY
 
-   C_CL and S_CL represent the ephemeral public key of the client and
-   server respectively used for the classical (EC)DH key exchange which
-   leads to K_CL, a classical shared secret for SSH.
+   Where S_REPLY would be the concatenation of S_PQ and S_CL.
 
    C_PQ represents the 'pk' output of the corresponding KEMs' 'KeyGen'
    at the client.  S_PQ represents the ciphertext 'ct' output of the
@@ -259,22 +255,22 @@ Internet-Draft                   PQ SSH                      August 2020
    client's public key.  The client decapsulate ct using its private key
    which leads to K_PQ, a post-quantum shared secret for SSH.
 
-   The string name of the key exchange schemes X and Y will replace the
-   X and Y in the message names 'SSH_MSG_HBR_X_Y_INIT' and
-   'SSH_MSG_HBR_X_Y_REPLY' in specific instantiations found in
-   Section [EDNOTE: Update Section number.].
+   C_CL and S_CL represent the ephemeral public key of the client and
+   server respectively used for the classical (EC)DH key exchange which
+   leads to K_CL, a classical shared secret for SSH.
+
+   XXX For Curve25519 the C_CL is represented as a fixed length 32 byte string,
+   for example. XXX
 
 2.2.  Key Derivation
 
    The shared secrets K_CL and K_PQ are the output from the two key
    exchange schemes X and Y, respectively, that instantiates an abstract
-   hybrid key exchange method Section 2.  The SSH shared secret K
-   derived as
+   hybrid key exchange method Section 2.  The SSH shared secret K is
+   derived as the hash algorithm specified in the named hybrid key exchange
+   method name over the concatentation of K_PQ and K_CL:
 
-                   K = PRF(K_PQ, K_CL) [EDNOTE: Define PRF]
-
-
-
+	K = HASH(K_PQ, K_CL)
 
 
 Kampanakis, et al.        Expires 4 March 2021                  [Page 5]
@@ -282,9 +278,8 @@ Kampanakis, et al.        Expires 4 March 2021                  [Page 5]
 Internet-Draft                   PQ SSH                      August 2020
 
 
-   K MUST be encoded as an mpint and the resulting bytes are fed as
-   described [RFC4253] to the key exchange method's hash function to
-   generate encryption keys.
+   The resulting bytes are fed as to the key exchange method's
+   hash function to generate encryption keys.
 
 2.3.  HASH
 
@@ -298,11 +293,9 @@ Internet-Draft                   PQ SSH                      August 2020
          string V_S, server identification string (CR and LF excluded)
          string I_C, payload of the client's SSH_MSG_KEXINIT
          string I_S, payload of the server's SSH_MSG_KEXINIT
-         string C_CL, X client message octet string
-         string C_PQ, Y client message octet string
-         string S_CL, X server message octet string
-         string S_PQ, Y server message octet string
-         mpint K, SSH shared secret
+         string C_INIT, client message octet string
+         string S_REPLY, server message octet string
+         string K, SSH shared secret
 
    The HASH function used for the definitions in this specification are
    SHA-256 [nist-sha2] [RFC4634].
@@ -313,6 +306,7 @@ Internet-Draft                   PQ SSH                      August 2020
 
          ecdh-nistp256-TBD1-sha256
          x25519-TBD1-sha256
+	XXX we have the PQ first: sntrup4591761x25519-sha512@tinyssh.org XXX
 
    [EDNOTE: Placeholder.  Algorithms will be identified after NIST Round
    3 concludes.]
@@ -432,8 +426,8 @@ Internet-Draft                   PQ SSH                      August 2020
 
 6.  IANA Considerations
 
-   This memo includes requests of IANA for SSH_MSG_HBR_X_Y_INIT,
-   SSH_MSG_HBR_X_Y_REPLY, ecdh-nistp256-TBD1-sha256, x25519-TBD1-sha256,
+   This memo includes requests of IANA for SSH_MSG_HBR_INIT,
+   SSH_MSG_HBR_REPLY, ecdh-nistp256-TBD1-sha256, x25519-TBD1-sha256,
    ssh-TBD3
 
 
