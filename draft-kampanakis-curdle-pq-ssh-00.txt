@@ -1,3 +1,7 @@
+
+
+
+
 CURDLE                                                     P. Kampanakis
 Internet-Draft                                             Cisco Systems
 Intended status: Experimental                                 D. Stebila
@@ -182,7 +186,7 @@ Internet-Draft                   PQ SSH                     October 2020
    of the public key.  IND-CPA roughly corresponds to security against a
    passive attacker, and sometimes corresponds to one-time key exchange.
 
-   The corresponsonding post-quantum signature algorithms defined in the
+   The corresponding post-quantum signature algorithms defined in the
    NIST Post-Quantum Cryptography Standardization Project [NIST_PQ] are
 
    *  'KeyGen() -> (pk, sk)': A probabilistic key generation algorithm,
@@ -200,7 +204,7 @@ Internet-Draft                   PQ SSH                     October 2020
    The post-quantum KEMs used for hybrid key exchange in the document
    are TBD1, TBD2.  The post-quantum signature algorithm used for key
    based authentication is TBD3.  [EDNOTE: Placeholder.  Algorithms will
-   be identified after NIST Round 3 concludes.]  The post-quantunt
+   be identified after NIST Round 3 concludes.]  The post-quantum
    algorithms are defined in NIST Post-quantum Project
    [NIST_PQ].[EDNOTE: Update link.  Algorithms can change based on
    NIST's Round 3 standardization].
@@ -236,7 +240,7 @@ Internet-Draft                   PQ SSH                     October 2020
           byte SSH_MSG_HBR_INIT
           string C_INIT
 
-   Where C_INIT would be the concatentation of C_PQ and C_CL.
+   Where C_INIT would be the concatenation of C_PQ and C_CL.
 
    The server sends
 
@@ -264,7 +268,7 @@ Internet-Draft                   PQ SSH                     October 2020
    exchange schemes X and Y, respectively, that instantiates an abstract
    hybrid key exchange method Section 2.  The SSH shared secret K is
    derived as the hash algorithm specified in the named hybrid key
-   exchange method name over the concatentation of K_PQ and K_CL:
+   exchange method name over the concatenation of K_PQ and K_CL:
 
            K = HASH(K_PQ, K_CL)
 
@@ -588,3 +592,25 @@ Authors' Addresses
    University of New Mexico
 
    Email: dsike@unm.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kampanakis, et al.        Expires 12 April 2021                [Page 11]
