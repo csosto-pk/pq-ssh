@@ -121,14 +121,14 @@
 	  	 
       <t>The main security property for KEMs is indistinguishability under adaptive chosen ciphertext attack (IND-CCA2), which means that shared secret values should be indistinguishable from random strings even given the ability to have arbitrary ciphertexts decapsulated.  IND-CCA2 corresponds to security against an active attacker, and the public key / secret key pair can be treated as a long-term key or reused.  <!-- A common design pattern for obtaining security under key reuse is to apply the Fujisaki-Okamoto (FO) transform <xref target="FO" format="default"/> or a variant thereof <xref target="HHK" format="default"/>. --> A weaker security notion is indistinguishability under chosen plaintext attack (IND-CPA), which means that the shared secret values should be indistinguishable from random strings given a copy of the public key.  IND-CPA roughly corresponds to security against a passive attacker, and sometimes corresponds to one-time key exchange.</t>
 	  
-	  <t>The corresponsonding post-quantum signature algorithms defined in the <xref target="NIST_PQ" format="default">NIST Post-Quantum Cryptography Standardization Project</xref> are </t>
+	  <t>The corresponding post-quantum signature algorithms defined in the <xref target="NIST_PQ" format="default">NIST Post-Quantum Cryptography Standardization Project</xref> are </t>
       <ul>
         <li>'KeyGen() -> (pk, sk)': A probabilistic key generation algorithm, which generates a public key 'pk' and a secret key 'sk'.</li>
         <li>'Sign(m, sk) -> sig': A deterministic signing algorithm, which takes as input a message 'm' and a private key 'sk' and outputs a signature 'sig'. </li>
         <li>'Verify(m, pk, sigma) -> pass/fail': A verification algorithm, which takes as input a message 'm', a public key 'pk' and a signature 'sig' and outputs a verification pass or failure of the signature on the message.</li>
       </ul>
 	 
-	  <t>The post-quantum KEMs used for hybrid key exchange in the document are TBD1, TBD2. The post-quantum signature algorithm used for key based authentication is TBD3. [EDNOTE: Placeholder. Algorithms will be identified after NIST Round 3 concludes.] The post-quantunt algorithms are  defined in <xref target="NIST_PQ" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Update link. Algorithms can change based on NIST's Round 3 standardization]. </t>
+	  <t>The post-quantum KEMs used for hybrid key exchange in the document are TBD1, TBD2. The post-quantum signature algorithm used for key based authentication is TBD3. [EDNOTE: Placeholder. Algorithms will be identified after NIST Round 3 concludes.] The post-quantum algorithms are  defined in <xref target="NIST_PQ" format="default">NIST Post-quantum Project</xref>.<!--TODO: Update link reference--> [EDNOTE: Update link. Algorithms can change based on NIST's Round 3 standardization]. </t>
 	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -150,7 +150,7 @@
        byte SSH_MSG_HBR_INIT
        string C_INIT
 ]]></artwork>
-        <t>Where C_INIT would be the concatentation of C_PQ and C_CL.</t>
+        <t>Where C_INIT would be the concatenation of C_PQ and C_CL.</t>
         <t>The server sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
        byte SSH_MSG_HBR_REPLY
@@ -168,7 +168,7 @@
 			
     	<section numbered="true" toc="default">
     	<name>Key Derivation</name>
-    	<t>The shared secrets K_CL and K_PQ are the output from the two key exchange schemes X and Y, respectively, that instantiates an abstract hybrid key exchange method <xref target="kex" format="default"/>. The SSH shared secret K is derived as the hash algorithm specified in the named hybrid key exchange method name over the concatentation of K_PQ and K_CL:</t>
+    	<t>The shared secrets K_CL and K_PQ are the output from the two key exchange schemes X and Y, respectively, that instantiates an abstract hybrid key exchange method <xref target="kex" format="default"/>. The SSH shared secret K is derived as the hash algorithm specified in the named hybrid key exchange method name over the concatenation of K_PQ and K_CL:</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = HASH(K_PQ, K_CL)
 ]]></artwork>
