@@ -96,7 +96,15 @@
 	  <t>EDNOTE: The goal of this draft is to start the standardization of PQ algorithms in SSH early to mitigate the potential record-and-harvest later with a quantum computer attacks. This draft is not expected to be finalized before the NIST PQ Project has standardized PQ algorithms. After NIST has standardized then this document will replace TBD1, TBD3 with the appropriate algorithms and parameters before proceeding to ratification.</t>
 	  
 	  <t>EDNOTE: Discussion of this work is encouraged to happen on the IETF WG Mailing List or in the GitHub repository which contains the draft: https://github.com/csosto-pk/pq-ssh/issues .</t>
-	  
+	 
+    </note>
+  </front>
+  <middle>
+  
+    <section numbered="true" toc="default">
+   
+      <name>Introduction</name>
+
 	  <t><strong>Change Log</strong>
 	  [EDNOTE: Remove before publicaton].</t>
 	  <dl>
@@ -107,14 +115,6 @@
 		</ul>
 	   </dd>
           </dl>
-	 
-	 
-    </note>
-  </front>
-  <middle>
-  
-    <section numbered="true" toc="default">
-      <name>Introduction</name>
 		
       <t>Secure Shell (SSH) <xref target="RFC4251" format="default">RFC4251</xref> performs key establishment using key exchange methods based exclusively on (Elliptic Curve) Diffie-Hellman style schemes. SSH <xref target="RFC4252" format="default">RFC4252</xref>, <xref target="RFC8332" format="default">RFC8332</xref>, <xref target="RFC5656" format="default">RFC5656</xref>, <xref target="RFC8709" format="default">RFC8709</xref> also defines public key authentication methods based on RSA or ECDSA/EdDSA signature schemes. The cryptographic security of these key exchange and signature schemes relies on certain instances of the discrete logarithm and integer factorization problems being computationally infeasable to solve for adversaries. </t>
 	  <t>However, when sufficiently large quantum computers become available these instances would no longer be computationally infeasable rendering the current key exchange and authentication methods in SSH insecure <xref target="I-D.hoffman-c2pq"/>. While large quantum computers are not available today an adversary can record the encrypted communication sent between the client and server in an SSH session and then later decrypt the communication when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. Record-and-harvest attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. </t>
