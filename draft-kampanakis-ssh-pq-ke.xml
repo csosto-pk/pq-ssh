@@ -33,7 +33,7 @@
     <!-- The abbreviated title is used in the page header - it is only necessary if the 
         full title is longer than 39 characters -->
 
-   <title abbrev="PQ SSH">Post-quantum Hybrid Key Exchange for the Secure Shell (SSH) Protocol</title>
+   <title abbrev="PQ SSH">Post-quantum Hybrid Key Exchange in SSH</title>
     <seriesInfo name="Internet-Draft" value="draft-kampanakis-curdle-ssh-pq-ke-00"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -77,7 +77,7 @@
    <!-- Meta-data Declarations -->
 
    <area>Security</area>
-    <workgroup>CURDLE</workgroup>
+    <workgroup>EDNOTE: New PQ WG</workgroup>
     <!-- WG name at the upperleft corner of the doc,
         IETF is fine for individual submissions. 
 	 If this element is not present, the default is "Network Working Group",
@@ -93,7 +93,7 @@
       <t>This document defines hybrid key exchange methods based on classical ECDH key exchange and post-quantum key encapsulation schemes. These methods are defined for use in the SSH Transport Layer Protocol. <!--TODO: Update to hybrid if we end up doing hybrid. --> <!-- It also defines post-quantum public key authentication methods based on post-quantum signature schemes These methods are defined for use in the SSH Authentication Protocol. --> </t>
     </abstract>
 	<note>
-	  <t>EDNOTE: The goal of this draft is to start the standardization of PQ algorithms in SSH early to mitigate the potential record-and-harvest later with a quantum computer attacks. This draft is not expected to be finalized before the NIST PQ Project has standardized PQ algorithms. After NIST has standardized then this document will replace TBD1, TBD3 with the appropriate algorithms and parameters before proceeding to ratification.</t>
+	  <!-- <t>EDNOTE: The goal of this draft is to start the standardization of PQ algorithms in SSH early to mitigate the potential record-and-harvest later with a quantum computer attacks. This draft is not expected to be finalized before the NIST PQ Project has standardized PQ algorithms. After NIST has standardized then this document will replace TBD1, TBD3 with the appropriate algorithms and parameters before proceeding to ratification.</t> -->
 	  
 	  <t>EDNOTE: Discussion of this work is encouraged to happen on the IETF WG Mailing List or in the GitHub repository which contains the draft: https://github.com/csosto-pk/pq-ssh/issues .</t>
 	 
@@ -117,9 +117,9 @@
           </dl>
 		
       <t>Secure Shell (SSH) <xref target="RFC4251" format="default">RFC4251</xref> performs key establishment using key exchange methods based exclusively on (Elliptic Curve) Diffie-Hellman style schemes. SSH <xref target="RFC4252" format="default">RFC4252</xref>, <xref target="RFC8332" format="default">RFC8332</xref>, <xref target="RFC5656" format="default">RFC5656</xref>, <xref target="RFC8709" format="default">RFC8709</xref> also defines public key authentication methods based on RSA or ECDSA/EdDSA signature schemes. The cryptographic security of these key exchange and signature schemes relies on certain instances of the discrete logarithm and integer factorization problems being computationally infeasable to solve for adversaries. </t>
-	  <t>However, when sufficiently large quantum computers become available these instances would no longer be computationally infeasable rendering the current key exchange and authentication methods in SSH insecure <xref target="I-D.hoffman-c2pq"/>. While large quantum computers are not available today an adversary can record the encrypted communication sent between the client and server in an SSH session and then later decrypt the communication when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. Record-and-harvest attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. </t>
+	  <t>However, when sufficiently large quantum computers become available these instances would no longer be computationally infeasable rendering the current key exchange and authentication methods in SSH insecure <xref target="I-D.hoffman-c2pq"/>. While large quantum computers are not available today an adversary can record the encrypted communication sent between the client and server in an SSH session and then later decrypt the communication when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. <!--Record-and-harvest attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. --></t>
 	  
-	  <t>This document proposes to address the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods. <!--and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref>  with public key methods based on post-quantum signature schemes--><!--TODO: Update to hybrid if we end up doing hybrid. -->. A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange method. This document follows the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. <xref target="PQ-PROOF" format="default"/> ontains proofs of security for such hybrid schemes.</t>
+	  <t>This document proposes to address the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods. <!--and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref>  with public key methods based on post-quantum signature schemes--><!--TODO: Update to hybrid if we end up doing hybrid. --> A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange. <xref target="PQ-PROOF" format="default"/> contains proofs of security for such hybrid schemes.</t>
 	  
       <t>In the context of the <xref target="NIST_PQ" format="default">NIST Post-Quantum Cryptography Standardization Project</xref>, key exchange algorithms are formulated as key encapsulation mechanisms (KEMs), which consist of three algorithms:</t>
       <ul>
@@ -161,7 +161,7 @@
        string C_INIT
 ]]></artwork>
 
-        <t>where C_INIT would be the concatenation of C_PQ and C_CL.</t>
+        <t>where C_INIT would be the concatenation of C_PQ and C_CL. C_CL and S_CL represent the ephemeral public key of the client and server respectively used for the classical (EC)DH key exchange which leads to K_CL, a classical shared secret for SSH.</t>
 		
         <t>The server sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -175,8 +175,6 @@
 
         <t>C_PQ represents the 'pk' output of the corresponding KEMs' 'KeyGen' at the client. S_PQ represents the ciphertext 'ct' output of the corresponding    KEMs' 'Encaps' algorithm generated by the server to the client's public key. The client decapsulates the ciphertext by using its private key which leads to K_PQ, a post-quantum shared secret for SSH.</t>
 
-        <t>C_CL and S_CL represent the ephemeral public key of the client and server respectively used for the classical (EC)DH key exchange which leads to K_CL, a classical shared secret for SSH.</t>
-
         <!--<t>For example, the C_CL is represented as a fixed length 32 byte string for Curve25519.</t> -->
     	</section>
 			
@@ -186,7 +184,7 @@
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = HASH(K_PQ, K_CL)
 ]]></artwork>
-		<t><!--is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name. K_CL and K_PQ MUST be encoded as octet strings. -->The resulting bytes are fed as to the key exchange method's hash function to generate encryption keys.</t>
+		<t><!--is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name. K_CL and K_PQ MUST be encoded as octet strings. -->The resulting bytes are fed as to the key exchange method's hash function to generate encryption keys. This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t>
 		
         <t><strong>FIPS-compliance of shared secret concatenation.</strong>
           <xref target="NIST-SP-800-56C" format="default"/> or <xref target="NIST-SP-800-135" format="default"/> give NIST recommendations for key derivation methods in key exchange protocols.  Some hybrid combinations may combine the shared secret from a NIST-approved algorithm (e.g., ECDH using the nistp256/secp256r1 curve) with a shared secret from a non-approved algorithm (e.g., post-quantum). <xref target="NIST-SP-800-56C" format="default"/> lists simple concatenation as an approved method for generation of a hybrid shared secret in which one of the constituent shared secret is from an approved method.</t>
