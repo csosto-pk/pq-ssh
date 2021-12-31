@@ -203,38 +203,33 @@
     	  <name>x25519-TBD1-sha256</name>
           <t>x25519-TBD1-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256) with SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> <!--instead of SHA-256 as the hash-->.</t>
 		
-		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are TBD1. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client private key [EDNOTE: Placeholder. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
+		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are TBD1. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Placeholder. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
     	  </section>
 		  
     	</section>
 
     	<section numbered="true" toc="default">
-    	<name>Shared Secret</name>
-    	<t>The shared secret, K, is defined in [RFC4253] and [RFC5656] as an
-   integer encoded as a multiple precision integer (mpint). 
-   The hybrid key exchange establishes two a binary strings K_CL and K_PQ which are [EDNOTE: the 32- or 56-byte
-   point obtained by scalar multiplication of the other side's public
-   key and the local private key scalar.] 
-   The SSH shared secret K is derived as the hash algorithm specified in the named hybrid key exchange method name over the concatenation of K_PQ and K_CL:</t>
+    	<name>Shared Secret K</name>
+    	<t>The shared secret, K, is defined in <xref target="RFC4253" format="default"/> and <xref target="RFC5656" format="default"/> as an integer encoded as a multiple precision integer (mpint). The hybrid key exchange establishes two a binary strings K_CL and K_PQ scalar multiplication and post-quantum KEM encapsulation ('Encaps'). K is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
-        K = HASH(K_PQ, K_CL)
+        K = K_CL || K_PQ
 ]]></artwork>
-		<t><!--is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is the order that the corresponding key exchange scheme appears in the hybrid key exchange method name. K_CL and K_PQ MUST be encoded as octet strings. -->The resulting bytes are fed as to the key exchange method's hash function to generate encryption keys. This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t>
-		
-	<t>[EDNOTE: From rfc8731 
-   The 32 or 56 bytes of X are
-   converted into K by interpreting the octets as an unsigned fixed-
-   length integer encoded in network byte big-endian order. The mpint K is then encoded using the process described in Section 5 of [RFC4251], and the resulting bytes are fed as described in
-   [RFC4253] to the key exchange method's hash function to generate
-   encryption keys.]</t>
+	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t>
+
+   <!--The SSH shared secret K is derived as the hash algorithm specified in the named hybrid key exchange method name over the concatenation of K_PQ and K_CL: 
+   <artwork align="left" name="" type="" alt=""><![CDATA[
+        K = HASH(K_PQ, K_CL) 
+        ]]></artwork>-->
+
+	<t>The concatenated bytes are converted into K by interpreting the octets as an unsigned fixed-length integer encoded in network byte order. The mpint K is then encoded using the process described in Section 5 of <xref target="RFC4251" format="default"/>, and the resulting bytes are fed as described in <xref target="RFC4253" format="default"/>. The resulting bytes are fed as to the key exchange method's hash function to generate encryption keys.  </t>
 		
         <t><strong>FIPS-compliance of shared secret concatenation.</strong>
           <xref target="NIST-SP-800-56C" format="default"/> or <xref target="NIST-SP-800-135" format="default"/> give NIST recommendations for key derivation methods in key exchange protocols.  Some hybrid combinations may combine the shared secret from a NIST-approved algorithm (e.g., ECDH using the nistp256/secp256r1 curve) with a shared secret from a non-approved algorithm (e.g., post-quantum). <xref target="NIST-SP-800-56C" format="default"/> lists simple concatenation as an approved method for generation of a hybrid shared secret in which one of the constituent shared secret is from an approved method.</t>
     </section>
  	
-		<section numbered="true" toc="default">
+    	<section numbered="true" toc="default">
     	<name>Key Derivation</name>
-        <t>The derivation of encryption keys MUST be done according to Section 7.2 in <xref target="RFC4253" format="default">RFC4253</xref> with a modification on the exchange hash H. </t>
+        <t>The derivation of encryption keys MUST be done from shared secret K according to Section 7.2 in <xref target="RFC4253" format="default"/> with a modification on the exchange hash H. </t>
         
         <t>The hybrid key exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named hybrid key exchange method name, over the concatenation of the following </t>
 
@@ -248,9 +243,8 @@
       string K, SSH shared secret
 ]]></artwork>
 		
-		<t>The HASH functions used for the definitions in this specification are SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Update here if necessary].</t>
+    	<t>The HASH functions used for the definitions in this specification are SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Update here if necessary].</t>
     	</section>
-			
  
 
     </section>
@@ -307,8 +301,7 @@
    
 	<section numbered="true" toc="default">
 	<name>Message Size</name>
-	<t>An implementation adhering to <xref target="RFC4253" format="default">RFC4253</xref> must be able to support packets with an uncompressed payload length of 32768 bytes or less and a total packet size of 35000 bytes or less (including
-   'packet_length', 'padding_length', 'payload', 'random padding', and 'mac'). These numbers represent what must be 'minimally supported' by implementations. This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH. This document does not define any named domain parameters (see Section 7) that cause any hybrid key exchange method related packets to exceed the minimally supported packet length. This document does not define behaviour in cases where a hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
+	<t>An implementation adhering to <xref target="RFC4253" format="default"/> must be able to support packets with an uncompressed payload length of 32768 bytes or less and a total packet size of 35000 bytes or less (including 'packet_length', 'padding_length', 'payload', 'random padding', and 'mac'). These numbers represent what must be 'minimally supported' by implementations. This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH. This document does not define any named domain parameters (<xref target="kex-methods" format="default"/>) that cause any hybrid key exchange method related packets to exceed the minimally supported packet length. This document does not define behaviour in cases where a hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
 	</section>
 
     <section anchor="Acknowledgements" numbered="true" toc="default">
@@ -318,14 +311,14 @@
 
    <section anchor="IANA" numbered="true" toc="default">
       <name>IANA Considerations</name>
-      <t>This memo includes requests of IANA for 
+      <t>This memo includes requests of IANA to register new messages 
       <!-- <t>All drafts are required to have an IANA considerations section (see
      RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the
      case (as above). If there are no requirements for IANA, the section will
      be removed during conversion into an RFC by the RFC Editor.</t> -->
-    SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY. </t>
+    SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY "Message Numbers" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
     
-    <t>The method names registered by this document are "ecdh-nistp256-TBD1-sha256", "x25519-TBD1-sha256".</t>
+    <t>It also requests for new method names "ecdh-nistp256-TBD1-sha256", "x25519-TBD1-sha256" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
@@ -389,7 +382,18 @@
 		<?rfc include="reference.RFC.7748.xml"?>
 		<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tls-hybrid-design.xml"?>
 		<?rfc include="https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.hoffman-c2pq.xml"?>
+		
+		
         <!-- the following is the minimum to make xml2rfc happy -->
+        <reference anchor="IANA-SSH" target="https://www.iana.org/assignments/ssh-parameters/ssh-parameters.xhtml">
+          <front>
+               <title>Secure Shell (SSH) Protocol Parameters</title>
+               <author>
+                 <organization>IANA</organization>
+               </author>
+               <date year="2021"/>
+             </front>
+        </reference>
         <reference anchor="NIST_PQ" target="https://csrc.nist.gov/projects/post-quantum-cryptography">
           <front>
                <title>Post-Quantum Cryptography</title>
