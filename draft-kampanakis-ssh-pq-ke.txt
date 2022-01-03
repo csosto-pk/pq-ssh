@@ -3,7 +3,7 @@
 
 
 EDNOTE: New PQ WG                                          P. Kampanakis
-Internet-Draft                                             Cisco Systems
+Internet-Draft                                                       AWS
 Intended status: Experimental                                 D. Stebila
 Expires: 6 July 2022                              University of Waterloo
                                                                M. Friedl
@@ -587,9 +587,9 @@ Internet-Draft                   PQ SSH                     January 2022
 Authors' Addresses
 
    Panos Kampanakis
-   Cisco Systems
+   AWS
 
-   Email: pkampana@cisco.com
+   Email: kpanos@amazon.com
 
 
    Douglas Stebila

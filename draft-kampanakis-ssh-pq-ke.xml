@@ -39,9 +39,9 @@
 
    <!-- <author fullname="Panos Kampanakis" initials="P." role="editor"  surname="Kampanakis"> -->
    <author fullname="Panos Kampanakis" initials="P." surname="Kampanakis">
-     <organization>Cisco Systems</organization>
+     <organization>AWS</organization>
      <address>
-        <email>pkampana@cisco.com</email>
+        <email>kpanos@amazon.com</email>
         <!-- uri and facsimile elements may also be added -->
      </address>
     </author>
