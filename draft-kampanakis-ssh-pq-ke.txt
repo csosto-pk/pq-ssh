@@ -5,12 +5,12 @@
 EDNOTE: New PQ WG                                          P. Kampanakis
 Internet-Draft                                             Cisco Systems
 Intended status: Experimental                                 D. Stebila
-Expires: 3 July 2022                              University of Waterloo
+Expires: 6 July 2022                              University of Waterloo
                                                                M. Friedl
                                                                  OpenSSH
                                                                T. Hansen
                                                                      AWS
-                                                        30 December 2021
+                                                          2 January 2022
 
 
                 Post-quantum Hybrid Key Exchange in SSH
@@ -43,19 +43,19 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 July 2022.
+   This Internet-Draft will expire on 6 July 2022.
 
 Copyright Notice
 
-   Copyright (c) 2021 IETF Trust and the persons identified as the
+   Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
 
 
 
-Kampanakis, et al.         Expires 3 July 2022                  [Page 1]
+Kampanakis, et al.         Expires 6 July 2022                  [Page 1]
 
-Internet-Draft                   PQ SSH                    December 2021
+Internet-Draft                   PQ SSH                     January 2022
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -75,14 +75,14 @@ Table of Contents
      2.1.  Hybrid Key Exchange Method Abstraction  . . . . . . . . .   4
      2.2.  Hybrid Key Exchange Method Names  . . . . . . . . . . . .   5
        2.2.1.  ecdh-nistp256-TBD1-sha256 . . . . . . . . . . . . . .   5
-       2.2.2.  x25519-TBD1-sha256  . . . . . . . . . . . . . . . . .   6
+       2.2.2.  x25519-TBD1-sha256  . . . . . . . . . . . . . . . . .   5
      2.3.  Shared Secret K . . . . . . . . . . . . . . . . . . . . .   6
-     2.4.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   7
+     2.4.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   6
    3.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   7
    4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      7.2.  Informative References  . . . . . . . . . . . . . . . . .   9
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Kampanakis, et al.         Expires 3 July 2022                  [Page 2]
+Kampanakis, et al.         Expires 6 July 2022                  [Page 2]
 
-Internet-Draft                   PQ SSH                    December 2021
+Internet-Draft                   PQ SSH                     January 2022
 
 
    insecure [I-D.hoffman-c2pq].  While large quantum computers are not
@@ -130,7 +130,7 @@ Internet-Draft                   PQ SSH                    December 2021
    that the hybrid key exchange method will always be at least as secure
    as the most secure key exchange scheme executed as part of the hybrid
    key exchange.  [PQ-PROOF] contains proofs of security for such hybrid
-   schemes.
+   key exchange schemes.
 
    In the context of the NIST Post-Quantum Cryptography Standardization
    Project [NIST_PQ], key exchange algorithms are formulated as key
@@ -165,9 +165,9 @@ Internet-Draft                   PQ SSH                    December 2021
 
 
 
-Kampanakis, et al.         Expires 3 July 2022                  [Page 3]
+Kampanakis, et al.         Expires 6 July 2022                  [Page 3]
 
-Internet-Draft                   PQ SSH                    December 2021
+Internet-Draft                   PQ SSH                     January 2022
 
 
 1.1.  Requirements Language
@@ -181,7 +181,7 @@ Internet-Draft                   PQ SSH                    December 2021
 2.1.  Hybrid Key Exchange Method Abstraction
 
    This section defines the abstract structure of a hybrid key exchange
-   method.  The structure must be instantiated with two key exchange
+   method.  This structure must be instantiated with two key exchange
    schemes.  The byte, string and mpint are to be interpreted in this
    document as described in [RFC4251].
 
@@ -194,8 +194,8 @@ Internet-Draft                   PQ SSH                    December 2021
    where C_INIT would be the concatenation of C_PK1 and C_PK2.  C_PK1
    and C_PK2 represent the ephemeral client public keys used for each
    key exchange of the hybrid mechanism.  C_PK1 represents a classical
-   key exchange public key (i.e., (EC)DH)).  C_PQ represents the 'pk'
-   output of the corresponding post-quantum KEMs' 'KeyGen' at the
+   key exchange public key (i.e., (EC)DH)).  C_PK2 represents the 'pk'
+   output of the corresponding post-quantum KEM's 'KeyGen' at the
    client.
 
    Instead of SSH_MSG_KEXDH_REPLY [RFC4253] or SSH_MSG_KEX_ECDH_REPLY
@@ -206,10 +206,9 @@ Internet-Draft                   PQ SSH                    December 2021
 
    where S_REPLY would be the concatenation of S_PK1 and S_CT2.  S_PK1
    represents the ephemeral (EC)DH server public key.  S_CT2 represents
-   the ciphertext 'ct' output of the corresponding KEMs' 'Encaps'
+   the ciphertext 'ct' output of the corresponding KEM's 'Encaps'
    algorithm generated by the server which encapsulates a secret to the
-   client public key C_PK2.  S_PK1 and S_CT2 are used for each key
-   exchange of the hybrid mechanism.
+   client public key C_PK2.
 
    [EDNOTE: Initially we were encoding the server and client client and
    server classical and post-quantum public key/ciphertext as its own
@@ -218,24 +217,24 @@ Internet-Draft                   PQ SSH                    December 2021
    This method concatenates the raw values rather than the length of
    each value plus the value.  The total length of the concatenation is
    still known, but the relative lengths of the individual values that
-
-
-
-Kampanakis, et al.         Expires 3 July 2022                  [Page 4]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
    were concatenated is no longer part of the representation.  If that
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                  [Page 4]
+
+Internet-Draft                   PQ SSH                     January 2022
+
+
    is the WG consensus we need to put a note of this in the Appendix for
    historical reference and expand on the concatenated string here in
    this section.]
 
    C_PK1, S_PK1, C_PK2, C_CT2 are used to establish two shared secrets,
    K_CL and K_PQ.  K_CL is the output from the classical (EC)DH exchange
-   using C_PK1 and S_PK1,. K_PQ which is the output of the post-quantum
-   KEM exchange using C_PK2 and C_CT2.  K_CL and K_PQ are used to
-   generate encryption keys.
+   using C_PK1 and S_PK1.  K_PQ is the output of the post-quantum KEM
+   exchange using C_PK2 and C_CT2.  K_CL and K_PQ are used to generate
+   SSH encryption keys.
 
 2.2.  Hybrid Key Exchange Method Names
 
@@ -268,20 +267,6 @@ Internet-Draft                   PQ SSH                    December 2021
    S_CT2 using the client private key [EDNOTE: Placeholder.  Update
    based on the algorithm identified after NIST Round 3 concludes.]
 
-
-
-
-
-
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2022                  [Page 5]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
 2.2.2.  x25519-TBD1-sha256
 
    x25519-TBD1-sha256 defines that the classical client and server
@@ -289,6 +274,14 @@ Internet-Draft                   PQ SSH                    December 2021
    Private and public keys are generated as described therein.  The
    public keys are defined as strings of 32 bytes.  The K_CL shared
    secret is generated from the exchanged C_PK1 and S_PK1 public keys as
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                  [Page 5]
+
+Internet-Draft                   PQ SSH                     January 2022
+
+
    defined in [RFC8731] (key agreement method curve25519-sha256) with
    SHA-256 [nist-sha2] [RFC4634] .
 
@@ -302,10 +295,10 @@ Internet-Draft                   PQ SSH                    December 2021
 
    The shared secret, K, is defined in [RFC4253] and [RFC5656] as an
    integer encoded as a multiple precision integer (mpint).  The hybrid
-   key exchange establishes two a binary strings K_CL and K_PQ scalar
-   multiplication and post-quantum KEM encapsulation ('Encaps').  K is
-   the concatenation of the two shared secrets K_CL and K_PQ.  The order
-   of concatenation is
+   key exchange establishes two a binary strings K_CL and K_PQ by using
+   scalar multiplication and post-quantum KEM decapsulation ('Decaps')
+   respectively.  K is the concatenation of the two shared secrets K_CL
+   and K_PQ as
 
            K = K_CL || K_PQ
 
@@ -316,9 +309,9 @@ Internet-Draft                   PQ SSH                    December 2021
    The concatenated bytes are converted into K by interpreting the
    octets as an unsigned fixed-length integer encoded in network byte
    order.  The mpint K is then encoded using the process described in
-   Section 5 of [RFC4251], and the resulting bytes are fed as described
-   in [RFC4253].  The resulting bytes are fed as to the key exchange
-   method's hash function to generate encryption keys.
+   Section 5 of [RFC4251], and the resulting bytes are fed to the key
+   exchange method's hash function to generate encryption keys as
+   described in [RFC4253].
 
    *FIPS-compliance of shared secret concatenation.* [NIST-SP-800-56C]
    or [NIST-SP-800-135] give NIST recommendations for key derivation
@@ -330,19 +323,20 @@ Internet-Draft                   PQ SSH                    December 2021
    shared secret in which one of the constituent shared secret is from
    an approved method.
 
-
-
-
-Kampanakis, et al.         Expires 3 July 2022                  [Page 6]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
 2.4.  Key Derivation
 
    The derivation of encryption keys MUST be done from shared secret K
    according to Section 7.2 in [RFC4253] with a modification on the
    exchange hash H.
+
+
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                  [Page 6]
+
+Internet-Draft                   PQ SSH                     January 2022
+
 
    The hybrid key exchange hash H is the result of computing the HASH,
    where HASH is the hash algorithm specified in the named hybrid key
@@ -381,21 +375,24 @@ Internet-Draft                   PQ SSH                    December 2021
 5.  IANA Considerations
 
    This memo includes requests of IANA to register new messages
-   SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY "Message Numbers" registry for
-   SSH [IANA-SSH].
+   SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY in the "Message Numbers" registry
+   for SSH [IANA-SSH].
 
    It also requests for new method names "ecdh-nistp256-TBD1-sha256",
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2022                  [Page 7]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
    "x25519-TBD1-sha256" to be registered by IANA in the "Key Exchange
    Method Names" registry for SSH [IANA-SSH].
+
+
+
+
+
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                  [Page 7]
+
+Internet-Draft                   PQ SSH                     January 2022
+
 
 6.  Security Considerations
 
@@ -443,14 +440,15 @@ Internet-Draft                   PQ SSH                    December 2021
    the algorithm identifier in the Method Names negotiation in
    Section 2.2).
 
-
-
-Kampanakis, et al.         Expires 3 July 2022                  [Page 8]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
 7.  References
+
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                  [Page 8]
+
+Internet-Draft                   PQ SSH                     January 2022
+
 
 7.1.  Normative References
 
@@ -498,15 +496,16 @@ Internet-Draft                   PQ SSH                    December 2021
               <https://tools.ietf.org/html/draft-ietf-tls-hybrid-design-
               03>.
 
-
-
-
-Kampanakis, et al.         Expires 3 July 2022                  [Page 9]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
    [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters", 2021,
+
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                  [Page 9]
+
+Internet-Draft                   PQ SSH                     January 2022
+
+
               <https://www.iana.org/assignments/ssh-parameters/ssh-
               parameters.xhtml>.
 
@@ -553,17 +552,16 @@ Internet-Draft                   PQ SSH                    December 2021
               (SHA and HMAC-SHA)", RFC 4634, DOI 10.17487/RFC4634, July
               2006, <https://www.rfc-editor.org/info/rfc4634>.
 
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2022                 [Page 10]
-
-Internet-Draft                   PQ SSH                    December 2021
-
-
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
               Integration in the Secure Shell Transport Layer",
+
+
+
+Kampanakis, et al.         Expires 6 July 2022                 [Page 10]
+
+Internet-Draft                   PQ SSH                     January 2022
+
+
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
 
@@ -613,4 +611,6 @@ Authors' Addresses
 
 
 
-Kampanakis, et al.         Expires 3 July 2022                 [Page 11]
+
+
+Kampanakis, et al.         Expires 6 July 2022                 [Page 11]

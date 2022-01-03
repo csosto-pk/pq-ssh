@@ -66,7 +66,7 @@
         <!-- uri and facsimile elements may also be added -->
      </address>
     </author>
-    <date year="2021"/>
+    <date year="2022"/>
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
         in the current day for you. If only the current year is specified, xml2rfc will fill 
 	 in the current day and month for you. If the year is not the current one, it is 
@@ -119,7 +119,7 @@
       <t>Secure Shell (SSH) <xref target="RFC4251" format="default">RFC4251</xref> performs key establishment using key exchange methods based exclusively on (Elliptic Curve) Diffie-Hellman style schemes. SSH <xref target="RFC4252" format="default"/> <xref target="RFC8332" format="default"/> <xref target="RFC5656" format="default"/> <xref target="RFC8709" format="default"/> also defines public key authentication methods based on RSA or ECDSA/EdDSA signature schemes. The cryptographic security of these key exchange and signature schemes relies on certain instances of the discrete logarithm and integer factorization problems being computationally infeasable to solve for adversaries. </t>
 	  <t>However, when sufficiently large quantum computers become available these instances would no longer be computationally infeasable rendering the current key exchange and authentication methods in SSH insecure <xref target="I-D.hoffman-c2pq"/>. While large quantum computers are not available today an adversary can record the encrypted communication sent between the client and server in an SSH session and then later decrypt the communication when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. <!--Record-and-harvest attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. --></t>
 	  
-	  <t>This document proposes to address the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods. <!--and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref>  with public key methods based on post-quantum signature schemes--><!--TODO: Update to hybrid if we end up doing hybrid. --> A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange. <xref target="PQ-PROOF" format="default"/> contains proofs of security for such hybrid schemes.</t>
+	  <t>This document proposes to address the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> with hybrid key exchange methods. <!--and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref>  with public key methods based on post-quantum signature schemes--><!--TODO: Update to hybrid if we end up doing hybrid. --> A hybrid key exchange method maintains the same level of security provided by current key exchange methods, but also adds quantum resistance. The security provided by the individual key exchange scheme in a hybrid key exchange method is independent. This means that the hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the hybrid key exchange. <xref target="PQ-PROOF" format="default"/> contains proofs of security for such hybrid key exchange schemes.</t>
 	  
       <t>In the context of the <xref target="NIST_PQ" format="default">NIST Post-Quantum Cryptography Standardization Project</xref>, key exchange algorithms are formulated as key encapsulation mechanisms (KEMs), which consist of three algorithms:</t>
       <ul>
@@ -153,7 +153,7 @@
 	
     	<section anchor="kex-abstr" numbered="true" toc="default">
     	<name>Hybrid Key Exchange Method Abstraction</name>
-    	<t>This section defines the abstract structure of a hybrid key exchange method. The structure must be instantiated with two key exchange schemes. The byte, string and mpint are to be interpreted in this document as described in <xref target="RFC4251" format="default">RFC4251</xref>.</t>
+    	<t>This section defines the abstract structure of a hybrid key exchange method. This  structure must be instantiated with two key exchange schemes. The byte, string and mpint are to be interpreted in this document as described in <xref target="RFC4251" format="default">RFC4251</xref>.</t>
 
         <t>Instead of SSH_MSG_KEXDH_INIT <xref target="RFC4253" format="default"/> or SSH_MSG_KEX_ECDH_INIT <xref target="RFC5656" format="default"/>, the client sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -161,7 +161,7 @@
        string C_INIT
 ]]></artwork>
 
-        <t>where C_INIT would be the concatenation of C_PK1 and C_PK2. C_PK1 and C_PK2 represent the ephemeral client public keys used for each key exchange of the hybrid mechanism. C_PK1 represents a classical key exchange public key (i.e., (EC)DH)). C_PQ represents the 'pk' output of the corresponding post-quantum KEMs' 'KeyGen' at the client. </t>
+        <t>where C_INIT would be the concatenation of C_PK1 and C_PK2. C_PK1 and C_PK2 represent the ephemeral client public keys used for each key exchange of the hybrid mechanism. C_PK1 represents a classical key exchange public key (i.e., (EC)DH)). C_PK2 represents the 'pk' output of the corresponding post-quantum KEM's 'KeyGen' at the client. </t>
 		
         <t>Instead of SSH_MSG_KEXDH_REPLY <xref target="RFC4253" format="default"/> or SSH_MSG_KEX_ECDH_REPLY <xref target="RFC5656" format="default"/>, the server sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -169,11 +169,11 @@
        string S_REPLY
 ]]></artwork>
 
-        <t>where S_REPLY would be the concatenation of S_PK1 and S_CT2. S_PK1 represents the ephemeral (EC)DH server public key. S_CT2 represents the ciphertext 'ct' output of the corresponding KEMs' 'Encaps' algorithm generated by the server which encapsulates a secret to the client public key C_PK2. S_PK1 and S_CT2 are used for each key exchange of the hybrid mechanism.<!--The client decapsulates the ciphertext by using its private key which leads to K_PQ, a post-quantum shared secret for SSH.--></t>
+        <t>where S_REPLY would be the concatenation of S_PK1 and S_CT2. S_PK1 represents the ephemeral (EC)DH server public key. S_CT2 represents the ciphertext 'ct' output of the corresponding KEM's 'Encaps' algorithm generated by the server which encapsulates a secret to the client public key C_PK2. <!--The client decapsulates the ciphertext by using its private key which leads to K_PQ, a post-quantum shared secret for SSH.--></t>
 
         <t>[EDNOTE: Initially we were encoding the server and client client and server classical and post-quantum public key/ciphertext as its own string. We since switched to an encoding method which concatenates them together as a single string in the C_INIT, S_REPLY message. This method concatenates the raw values rather than the length of each value plus the value. The total length of the concatenation is still known, but the relative lengths of the individual values that were concatenated is no longer part of the representation. If that is the WG consensus we need to put a note of this in the Appendix for historical reference and expand on the concatenated string here in this section.] <!-- For example, the C_CL is represented as a fixed length 32 byte string for Curve25519. --> </t>
         
-        <t>C_PK1, S_PK1, C_PK2, C_CT2 are used to establish two shared secrets, K_CL and K_PQ. K_CL is the output from the classical (EC)DH exchange using C_PK1 and S_PK1,. K_PQ which is the output of the post-quantum KEM exchange using C_PK2 and C_CT2. K_CL and K_PQ are used to generate encryption keys. </t>
+        <t>C_PK1, S_PK1, C_PK2, C_CT2 are used to establish two shared secrets, K_CL and K_PQ. K_CL is the output from the classical (EC)DH exchange using C_PK1 and S_PK1. K_PQ is the output of the post-quantum KEM exchange using C_PK2 and C_CT2. K_CL and K_PQ are used to generate SSH encryption keys. </t>
 
     	</section>
 
@@ -210,7 +210,7 @@
 
     	<section numbered="true" toc="default">
     	<name>Shared Secret K</name>
-    	<t>The shared secret, K, is defined in <xref target="RFC4253" format="default"/> and <xref target="RFC5656" format="default"/> as an integer encoded as a multiple precision integer (mpint). The hybrid key exchange establishes two a binary strings K_CL and K_PQ scalar multiplication and post-quantum KEM encapsulation ('Encaps'). K is the concatenation of the two shared secrets K_CL and K_PQ. The order of concatenation is </t> 
+    	<t>The shared secret, K, is defined in <xref target="RFC4253" format="default"/> and <xref target="RFC5656" format="default"/> as an integer encoded as a multiple precision integer (mpint). The hybrid key exchange establishes two a binary strings K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. K is the concatenation of the two shared secrets K_CL and K_PQ as </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = K_CL || K_PQ
 ]]></artwork>
@@ -221,7 +221,7 @@
         K = HASH(K_PQ, K_CL) 
         ]]></artwork>-->
 
-	<t>The concatenated bytes are converted into K by interpreting the octets as an unsigned fixed-length integer encoded in network byte order. The mpint K is then encoded using the process described in Section 5 of <xref target="RFC4251" format="default"/>, and the resulting bytes are fed as described in <xref target="RFC4253" format="default"/>. The resulting bytes are fed as to the key exchange method's hash function to generate encryption keys.  </t>
+	<t>The concatenated bytes are converted into K by interpreting the octets as an unsigned fixed-length integer encoded in network byte order. The mpint K is then encoded using the process described in Section 5 of <xref target="RFC4251" format="default"/>, and the resulting bytes are fed to the key exchange method's hash function to generate encryption keys as described in <xref target="RFC4253" format="default"/>.</t>
 		
         <t><strong>FIPS-compliance of shared secret concatenation.</strong>
           <xref target="NIST-SP-800-56C" format="default"/> or <xref target="NIST-SP-800-135" format="default"/> give NIST recommendations for key derivation methods in key exchange protocols.  Some hybrid combinations may combine the shared secret from a NIST-approved algorithm (e.g., ECDH using the nistp256/secp256r1 curve) with a shared secret from a non-approved algorithm (e.g., post-quantum). <xref target="NIST-SP-800-56C" format="default"/> lists simple concatenation as an approved method for generation of a hybrid shared secret in which one of the constituent shared secret is from an approved method.</t>
@@ -316,7 +316,7 @@
      RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the
      case (as above). If there are no requirements for IANA, the section will
      be removed during conversion into an RFC by the RFC Editor.</t> -->
-    SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY "Message Numbers" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
+    SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY in the "Message Numbers" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
     
     <t>It also requests for new method names "ecdh-nistp256-TBD1-sha256", "x25519-TBD1-sha256" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
     </section>
