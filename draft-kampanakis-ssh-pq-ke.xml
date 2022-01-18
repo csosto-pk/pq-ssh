@@ -184,8 +184,8 @@
 <artwork align="left" name="" type="" alt=""><![CDATA[
       ecdh-nistp256-TBD1-sha256
       x25519-TBD1-sha256
-      sntrup4591761x25519-sha512@tinyssh.org (currently implemented)
 ]]></artwork>
+      <!-- EDNOTE: sntrup4591761x25519-sha512@tinyssh.org (currently implemented in OpenSSH) -->
 		<t>These instantiate abstract hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 
 
