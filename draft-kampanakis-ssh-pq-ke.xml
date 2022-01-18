@@ -220,7 +220,7 @@
         K = K_CL || K_PQ
 ]]></artwork>
 	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t> 
-	<t> [EDNOTE: The keys are derived following the same SSH logic with some small performance overhead </t> 
+	<t> [EDNOTE: The keys are derived following the same SSH logic (as explained in the Key Derivation Section) with some small performance overhead </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	Initial IV c2s: HASH(K || H || "A" || session_id)
 	Initial IV s2c: HASH(K || H || "B" || session_id)
@@ -230,7 +230,7 @@
 	Integrity key s2c: HASH(K || H || "F" || session_id)
 ]]></artwork>
 	
-	<t> We need to decide how the keys should be derived from the hybrid shared secret K. Other key derivation options include Option 2) following SSH logic</t> 
+	<t>Other key derivation options include Option 2) following SSH logic</t> 
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	(2a) K = HASH(K_CL || K_PQ) or 
@@ -254,8 +254,8 @@
 	Integrity key s2c = 
 	      HKDF-HASH(K, H || session_id, 6(size(HASH) ) // Expand
 ]]></artwork>
-	<t> Note that (2b), (2c) and (3) this option deviates from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this hybrid draft.</t> 
-	<t> The options that end up not being chosen should be added in an Appendix as reference.]</t>
+	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this hybrid draft.</t> 
+	<t> We need to decide how the keys should be derived from the hybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference.]</t>
 
 	<t>The concatenated bytes are converted into K by interpreting the octets as an unsigned fixed-length integer encoded in network byte order. The mpint K is then encoded using the process described in Section 5 of <xref target="RFC4251" format="default"/>, and the resulting bytes are fed to the key exchange method's hash function to generate encryption keys as described in <xref target="RFC4253" format="default"/>.</t>
 		
@@ -360,7 +360,7 @@
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
 	  <t>The way the derived mpint binary secret string is encoded (i.e., adding or removing zero bytes for encoding) before it is hashed may lead to a variable-length secret which raises the potential for a side-channel attack. In broad terms, when the secret is longer, the hash function may need to process more blocks internally which could determine the length of what is hashed. This could leak the most significant bit of the derived secret and/or allow detection of when the most significant bytes are zero. In some unfortunate circumstances, this has led to timing attacks, e.g. the Lucky Thirteen <xref target="LUCKY13" format="default"/> and Raccoon <xref target="RACCOON" format="default"/> attacks.</t>
-      <t>[EDNOTE: We need to decide if we want to allow variable-length. RFC8731 decided not to address this potential problem due to backwards compatibility. In this spec we could do the same or say that this specification MUST only be used with algorithms which have fixed-length shared secrets (after the variant has been fixed by the algorithm identifier in the Method Names negotiation in <xref target="kex-methods" format="default"/>. Or we could mandate variable length keys be rejected. ]</t>
+      <t>[EDNOTE: We need to decide if we want to allow variable-length secret K. RFC8731 decided not to address this potential problem due to backwards compatibility. In this spec we could do the same or say that this specification MUST only be used with algorithms which have fixed-length shared secrets (after the variant has been fixed by the algorithm identifier in the Method Names negotiation in <xref target="kex-methods" format="default"/>. Or we could mandate variable length keys be rejected. ]</t>
 	  <t>[EDNOTE: The security considerations given in [RFC5656] therefore also applies to the ECDH key exchange scheme defined in this document. Similarly for the X25519 document. PQ Algorithms are newer and standardized by NIST. We should include text about the combination method for the KEM shared secrets. ] </t>
 	  <t>[EDNOTE: Discussion on whether an IND-CCA KEM is required or whether IND-CPA suffices.] Any KEM used in the manner described in this document MUST explicitly be designed to be secure in the event that the public key is re-used, such as achieving IND-CCA2 security or having a transform like the Fujisaki-Okamoto transform <xref target="FO" format="default"/><xref target="HHK" format="default"/> applied. While it is recommended that implementations avoid reuse of KEM public keys, implementations that do reuse KEM public keys MUST ensure that the number of reuses of a KEM public key abides by any bounds in the specification of the KEM or subsequent security analyses. Implementations MUST NOT reuse randomness in the generation of KEM ciphertexts.</t>
       <t><strong>Public keys, ciphertexts, and secrets should be constant length.</strong> This document assumes that the length of each public key, ciphertext, and shared secret is fixed once the algorithm is fixed.  This is the case for all NIST Round 3 finalists and alternate candidates.</t>
