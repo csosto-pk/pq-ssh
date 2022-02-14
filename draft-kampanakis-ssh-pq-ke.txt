@@ -1,12 +1,16 @@
+
+
+
+
 [EDNOTE: New PQ WG]                                        P. Kampanakis
 Internet-Draft                                                       AWS
 Intended status: Experimental                                 D. Stebila
-Expires: 11 August 2022                           University of Waterloo
+Expires: 18 August 2022                           University of Waterloo
                                                                M. Friedl
                                                                  OpenSSH
                                                                T. Hansen
                                                                      AWS
-                                                         7 February 2022
+                                                        14 February 2022
 
 
                 Post-quantum Hybrid Key Exchange in SSH
@@ -39,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 August 2022.
+   This Internet-Draft will expire on 18 August 2022.
 
 Copyright Notice
 
@@ -49,7 +53,7 @@ Copyright Notice
 
 
 
-Kampanakis, et al.       Expires 11 August 2022                 [Page 1]
+Kampanakis, et al.       Expires 18 August 2022                 [Page 1]
 
 Internet-Draft                   PQ SSH                    February 2022
 
@@ -59,9 +63,9 @@ Internet-Draft                   PQ SSH                    February 2022
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Revised BSD License text as
-   described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Revised BSD License.
+   extracted from this document must include Simplified BSD License text
+   as described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Simplified BSD License.
 
 Table of Contents
 
@@ -76,8 +80,8 @@ Table of Contents
      2.3.  Shared Secret K . . . . . . . . . . . . . . . . . . . . .   6
      2.4.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   8
    3.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   8
-   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
+   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
@@ -88,30 +92,28 @@ Table of Contents
 
    *Change Log* [EDNOTE: Remove before publicaton. ]
 
-   draft-kampanakis-curdle-ssh-pq-ke-00
-      *  Initial draft replacing draft-kampanakis-curdle-pq-ssh-00
+   draft-kampanakis-curdle-ssh-pq-ke-00  *  Initial draft replacing
+         draft-kampanakis-curdle-pq-ssh-00
 
-   Secure Shell (SSH) RFC4251 [RFC4251] performs key establishment using
-   key exchange methods based exclusively on (Elliptic Curve) Diffie-
-   Hellman style schemes.  SSH [RFC4252] [RFC8332] [RFC5656] [RFC8709]
-   also defines public key authentication methods based on RSA or ECDSA/
-   EdDSA signature schemes.  The cryptographic security of these key
-   exchange and signature schemes relies on certain instances of the
-   discrete logarithm and integer factorization problems being
-   computationally infeasable to solve for adversaries.
+   Secure Shell (SSH) [RFC4251] performs key establishment using key
+   exchange methods based exclusively on (Elliptic Curve) Diffie-Hellman
+   style schemes.  SSH [RFC4252] [RFC8332] [RFC5656] [RFC8709] also
+   defines public key authentication methods based on RSA or ECDSA/EdDSA
+   signature schemes.  The cryptographic security of these key exchange
+   and signature schemes relies on certain instances of the discrete
+   logarithm and integer factorization problems being computationally
+   infeasable to solve for adversaries.
+
+   However, when sufficiently large quantum computers become available
+   these instances would no longer be computationally infeasable
 
 
 
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                 [Page 2]
+Kampanakis, et al.       Expires 18 August 2022                 [Page 2]
 
 Internet-Draft                   PQ SSH                    February 2022
 
 
-   However, when sufficiently large quantum computers become available
-   these instances would no longer be computationally infeasable
    rendering the current key exchange and authentication methods in SSH
    insecure [I-D.hoffman-c2pq].  While large quantum computers are not
    available today an adversary can record the encrypted communication
@@ -120,16 +122,14 @@ Internet-Draft                   PQ SSH                    February 2022
    become available.  This kind of attack is known as a "record-and-
    harvest" attack.
 
-   This document proposes to address the problem by extending the SSH
-   Transport Layer Protocol RFC4253 [RFC4253] with hybrid key exchange
+   This document ddresses the problem by extending the SSH Transport
+   Layer Protocol [RFC4253] key exchange with hybrid key exchange
    methods.  The security provided by the individual key exchange scheme
    in a hybrid key exchange method is independent.  This means that the
    hybrid key exchange method will always be at least as secure as the
    most secure key exchange schemes executed as part of the hybrid key
    exchange.  [PQ-PROOF] contains proofs of security for such hybrid key
-   exchange schemes. [tbh/crockett: This paragraph needs to be re-
-   written.  The first sentence is good, but otherwise I'm not sure what
-   we are trying to say.  I removed some redundant (imo) text already.]
+   exchange schemes.
 
    In the context of the NIST Post-Quantum Cryptography Standardization
    Project [NIST_PQ], key exchange algorithms are formulated as key
@@ -161,7 +161,11 @@ Internet-Draft                   PQ SSH                    February 2022
 
 
 
-Kampanakis, et al.       Expires 11 August 2022                 [Page 3]
+
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                 [Page 3]
 
 Internet-Draft                   PQ SSH                    February 2022
 
@@ -179,7 +183,7 @@ Internet-Draft                   PQ SSH                    February 2022
    This section defines the abstract structure of a hybrid key exchange
    method.  This structure must be instantiated with two key exchange
    schemes.  The byte, string and mpint are to be interpreted in this
-   document as described in RFC4251 [RFC4251].
+   document as described in [RFC4251].
 
    Instead of SSH_MSG_KEXDH_INIT [RFC4253] or SSH_MSG_KEX_ECDH_INIT
    [RFC5656], the client sends
@@ -190,9 +194,9 @@ Internet-Draft                   PQ SSH                    February 2022
    where C_INIT is the concatenation of C_PK1 and C_PK2.  C_PK1 and
    C_PK2 represent the ephemeral client public keys used for each key
    exchange of the hybrid mechanism.  Typically, C_PK1 represents a
-   classical [tbh: "classical" undefined at this point] key exchange
-   public key (i.e., (EC)DH).  C_PK2 represents the 'pk' output of the
-   corresponding post-quantum KEM's 'KeyGen' at the client.
+   classical (i.e., ECDH) key exchange public key.  C_PK2 represents the
+   'pk' output of the corresponding post-quantum KEM's 'KeyGen' at the
+   client.
 
    Instead of SSH_MSG_KEXDH_REPLY [RFC4253] or SSH_MSG_KEX_ECDH_REPLY
    [RFC5656], the server sends
@@ -217,7 +221,7 @@ Internet-Draft                   PQ SSH                    February 2022
 
 
 
-Kampanakis, et al.       Expires 11 August 2022                 [Page 4]
+Kampanakis, et al.       Expires 18 August 2022                 [Page 4]
 
 Internet-Draft                   PQ SSH                    February 2022
 
@@ -273,7 +277,7 @@ Internet-Draft                   PQ SSH                    February 2022
 
 
 
-Kampanakis, et al.       Expires 11 August 2022                 [Page 5]
+Kampanakis, et al.       Expires 18 August 2022                 [Page 5]
 
 Internet-Draft                   PQ SSH                    February 2022
 
@@ -329,7 +333,7 @@ Internet-Draft                   PQ SSH                    February 2022
 
 
 
-Kampanakis, et al.       Expires 11 August 2022                 [Page 6]
+Kampanakis, et al.       Expires 18 August 2022                 [Page 6]
 
 Internet-Draft                   PQ SSH                    February 2022
 
@@ -361,8 +365,7 @@ Internet-Draft                   PQ SSH                    February 2022
    be viewed as too far from the current SSH design.  It probably would
    be a good approach for SSH to move from basic hashing everywhere to
    use proper KDFs with extract/expand, but that might be a separate
-   step from this hybrid draft [tbh/crockett: we should do the right
-   thing from the start?].
+   step from this hybrid draft.
 
    We need to decide how the keys should be derived from the hybrid
    shared secret K.  The options that end up not being chosen should be
@@ -375,21 +378,6 @@ Internet-Draft                   PQ SSH                    February 2022
    exchange method's hash function to generate encryption keys as
    described in [RFC4253].
 
-
-
-
-
-
-
-
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                 [Page 7]
-
-Internet-Draft                   PQ SSH                    February 2022
-
-
    *FIPS-compliance of shared secret concatenation.* [NIST-SP-800-56C]
    or [NIST-SP-800-135] give NIST recommendations for key derivation
    methods in key exchange protocols.  Some hybrid combinations may
@@ -397,6 +385,15 @@ Internet-Draft                   PQ SSH                    February 2022
    using the nistp256/secp256r1 curve) with a shared secret from a non-
    approved algorithm (e.g., post-quantum).  [NIST-SP-800-56C] lists
    simple concatenation as an approved method for generation of a hybrid
+
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                 [Page 7]
+
+Internet-Draft                   PQ SSH                    February 2022
+
+
    shared secret in which one of the constituent shared secret is from
    an approved method.
 
@@ -438,14 +435,6 @@ Internet-Draft                   PQ SSH                    February 2022
    cases where a hybrid key exchange message cause a packet to exceed
    the minimally supported packet length.
 
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                 [Page 8]
-
-Internet-Draft                   PQ SSH                    February 2022
-
-
 4.  Acknowledgements
 
 5.  IANA Considerations
@@ -454,11 +443,21 @@ Internet-Draft                   PQ SSH                    February 2022
    SSH_MSG_HBR_INIT, SSH_MSG_HBR_REPLY in the "Message Numbers" registry
    for SSH [IANA-SSH].
 
+
+
+Kampanakis, et al.       Expires 18 August 2022                 [Page 8]
+
+Internet-Draft                   PQ SSH                    February 2022
+
+
    It also requests for new method names "ecdh-nistp256-TBD1-sha256",
    "x25519-TBD1-sha256" to be registered by IANA in the "Key Exchange
    Method Names" registry for SSH [IANA-SSH].
 
 6.  Security Considerations
+
+   [PQ-PROOF] contains proofs of security for such hybrid key exchange
+   schemes.
 
    The way the derived mpint binary secret string is encoded (i.e.,
    adding or removing zero bytes for encoding) before it is hashed may
@@ -485,23 +484,6 @@ Internet-Draft                   PQ SSH                    February 2022
    newer and standardized by NIST.  We should include text about the
    combination method for the KEM shared secrets. ]
 
-
-
-
-
-
-
-
-
-
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                 [Page 9]
-
-Internet-Draft                   PQ SSH                    February 2022
-
-
    [EDNOTE: Discussion on whether an IND-CCA KEM is required or whether
    IND-CPA suffices.]  Any KEM used in the manner described in this
    document MUST explicitly be designed to be secure in the event that
@@ -516,6 +498,14 @@ Internet-Draft                   PQ SSH                    February 2022
 
    *Public keys, ciphertexts, and secrets should be constant length.*
    This document assumes that the length of each public key, ciphertext,
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                 [Page 9]
+
+Internet-Draft                   PQ SSH                    February 2022
+
+
    and shared secret is fixed once the algorithm is fixed.  This is the
    case for all NIST Round 3 finalists and alternate candidates.
 
@@ -548,16 +538,6 @@ Internet-Draft                   PQ SSH                    February 2022
               26, pp. 80-101, December 2011,
               <https://doi.org/10.1007/s00145-011-9114-1>.
 
-
-
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                [Page 10]
-
-Internet-Draft                   PQ SSH                    February 2022
-
-
    [HHK]      Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
               Analysis of the Fujisaki-Okamoto Transformation",
               DOI 10.1007/978-3-319-70500-2_12, Theory of
@@ -568,15 +548,22 @@ Internet-Draft                   PQ SSH                    February 2022
               Hoffman, P., "The Transition from Classical to Post-
               Quantum Cryptography", Work in Progress, Internet-Draft,
               draft-hoffman-c2pq-07, 26 May 2020,
-              <https://datatracker.ietf.org/doc/html/draft-hoffman-c2pq-
-              07>.
+              <https://tools.ietf.org/html/draft-hoffman-c2pq-07>.
 
    [I-D.ietf-tls-hybrid-design]
               Stebila, D., Fluhrer, S., and S. Gueron, "Hybrid key
               exchange in TLS 1.3", Work in Progress, Internet-Draft,
               draft-ietf-tls-hybrid-design-04, 11 January 2022,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              hybrid-design-04>.
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                [Page 10]
+
+Internet-Draft                   PQ SSH                    February 2022
+
+
+              <https://tools.ietf.org/html/draft-ietf-tls-hybrid-design-
+              04>.
 
    [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters", 2021,
               <https://www.iana.org/assignments/ssh-parameters/ssh-
@@ -604,16 +591,6 @@ Internet-Draft                   PQ SSH                    February 2022
               Establishment Schemes", August 2020,
               <https://doi.org/10.6028/NIST.SP.800-56Cr2>.
 
-
-
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                [Page 11]
-
-Internet-Draft                   PQ SSH                    February 2022
-
-
    [nist-sp800-186]
               NIST, "SP 800-186", 2019,
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
@@ -632,6 +609,15 @@ Internet-Draft                   PQ SSH                    February 2022
               September 2020, <https://raccoon-attack.com/>.
 
    [RFC4634]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
+
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                [Page 11]
+
+Internet-Draft                   PQ SSH                    February 2022
+
+
               (SHA and HMAC-SHA)", RFC 4634, DOI 10.17487/RFC4634, July
               2006, <https://www.rfc-editor.org/info/rfc4634>.
 
@@ -661,15 +647,6 @@ Internet-Draft                   PQ SSH                    February 2022
 
 Authors' Addresses
 
-
-
-
-
-Kampanakis, et al.       Expires 11 August 2022                [Page 12]
-
-Internet-Draft                   PQ SSH                    February 2022
-
-
    Panos Kampanakis
    AWS
 
@@ -686,6 +663,15 @@ Internet-Draft                   PQ SSH                    February 2022
    OpenSSH
 
    Email: markus@openbsd.org
+
+
+
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                [Page 12]
+
+Internet-Draft                   PQ SSH                    February 2022
 
 
    Torben Hansen
@@ -721,4 +707,22 @@ Internet-Draft                   PQ SSH                    February 2022
 
 
 
-Kampanakis, et al.       Expires 11 August 2022                [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kampanakis, et al.       Expires 18 August 2022                [Page 13]
