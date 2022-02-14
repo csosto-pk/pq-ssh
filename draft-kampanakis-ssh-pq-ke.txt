@@ -122,7 +122,7 @@ Internet-Draft                   PQ SSH                    February 2022
    become available.  This kind of attack is known as a "record-and-
    harvest" attack.
 
-   This document ddresses the problem by extending the SSH Transport
+   This document addresses the problem by extending the SSH Transport
    Layer Protocol [RFC4253] key exchange with hybrid key exchange
    methods.  The security provided by the individual key exchange scheme
    in a hybrid key exchange method is independent.  This means that the
