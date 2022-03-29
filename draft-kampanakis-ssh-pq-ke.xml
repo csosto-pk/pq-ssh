@@ -157,7 +157,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
        string C_INIT
 ]]></artwork>
 
-        <t>where C_INIT is the concatenation of C_PK1 and C_PK2. C_PK1 and C_PK2 represent the ephemeral client public keys used for each key exchange of the PQ-hybrid mechanism. Typically, C_PK1 represents a classical (i.e., (EC)DH) key exchange public key. C_PK2 represents the 'pk' output of the corresponding post-quantum KEM's 'KeyGen' at the client. </t>
+        <t>where C_INIT is the concatenation of C_PK1 and C_PK2. C_PK1 and C_PK2 represent the ephemeral client public keys used for each key exchange of the PQ-hybrid mechanism. Typically, C_PK1 represents a classical (i.e., ECDH) key exchange public key. C_PK2 represents the 'pk' output of the corresponding post-quantum KEM's 'KeyGen' at the client. </t>
 		
         <t>Instead of SSH_MSG_KEXDH_REPLY <xref target="RFC4253" format="default"/> or SSH_MSG_KEX_ECDH_REPLY <xref target="RFC5656" format="default"/>, the server sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -168,13 +168,13 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
         <t>[EDNOTE: Initially we were encoding the server and client client and server classical and post-quantum public key/ciphertext as its own string. We since switched to an encoding method which concatenates them together as a single string in the C_INIT, S_REPLY message. This method concatenates the raw values rather than the length of each value plus the value. The total length of the concatenation is still known, but the relative lengths of the individual values that were concatenated is no longer part of the representation. This assumes that the lengths of individual values are fixed once the algorithm is selected, which is the case for classical key exchange methods currently supported by SSH and all post-quantum KEMs in Round 3 of the NIST post-quantum standardization project. If that is the WG consensus we need to put a note of this in the Appendix for historical reference and expand on the concatenated string here in this section.] <!-- For example, the C_CL is represented as a fixed length 32 byte string for Curve25519. --> </t>
         
-        <t>C_PK1, S_PK1, C_PK2, C_CT2 are used to establish two shared secrets, K_CL and K_PQ. K_CL is the output from the classical (EC)DH exchange using C_PK1 and S_PK1. K_PQ is the output of the post-quantum KEM exchange using C_PK2 and C_CT2. K_CL and K_PQ are used together to generate the shared secret K according to Section 2.4. </t>
+        <t>C_PK1, S_PK1, C_PK2, C_CT2 are used to establish two shared secrets, K_CL and K_PQ. K_CL is the output from the classical ECDH exchange using C_PK1 and S_PK1. K_PQ is the output of the post-quantum KEM exchange using C_PK2 and C_CT2. K_CL and K_PQ are used together to generate the shared secret K according to Section 2.4. </t>
 
     	</section>
 
        <section anchor="message-numbers" numbered="true" toc="default">
     	<name>PQ-hybrid Key Exchange Message Numbers</name>
-         <t>The message numbers 30-49 are key-exchange-specific and in a private namespace defined in <xref target="RFC4250" format="default"/> that may be redefined by any key exchange method <xref target="RFC4253" format="default"/> without requiring an IANA registration process.<!-- EDNOTE: https://github.com/openssh/openssh-portable/blob/2dc328023f60212cd29504fc05d849133ae47355/ssh2.h#L100 includes the numbers for OpenSSH. --> </t> 
+         <t>The message numbers 30-49 are key-exchange-specific and in a private namespace defined in <xref target="RFC4250" format="default"/> that may be redefined by any key exchange method <xref target="RFC4253" format="default"/> without requiring an IANA registration process.<!-- EDNOTE: https://github.com/openssh/openssh-portable/blob/2dc328023f60212cd29504fc05d849133ae47355/ssh2.h#L100 includes the numbers for OpenSSH. Also a discussion about it in https://groups.google.com/g/comp.security.ssh/c/f5jNVb0fMe4/m/U93doB0Sfn4J --> </t> 
          
          <t>The following message numbers have been defined in this document:</t>
          <artwork align="left" name="" type="" alt=""><![CDATA[
