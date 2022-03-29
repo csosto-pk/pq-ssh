@@ -173,14 +173,13 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	</section>
 
        <section anchor="message-numbers" numbered="true" toc="default">
-    	<name>Message Numbers</name>
+    	<name>PQ-hybrid Key Exchange Message Numbers</name>
          <t>The message numbers 30-49 are key-exchange-specific and in a private namespace defined in <xref target="RFC4250" format="default"/> that may be redefined by any key exchange method <xref target="RFC4253" format="default"/> without requiring an IANA registration process.<!-- EDNOTE: https://github.com/openssh/openssh-portable/blob/2dc328023f60212cd29504fc05d849133ae47355/ssh2.h#L100 includes the numbers for OpenSSH. --> </t> 
          
          <t>The following message numbers have been defined in this document:</t>
-         
          <artwork align="left" name="" type="" alt=""><![CDATA[
       #define SSH_MSG_HBR_INIT               32
-      #define SSH_MSG_HBR_REPLY               33
+      #define SSH_MSG_HBR_REPLY              33
 ]]></artwork>
 
          
