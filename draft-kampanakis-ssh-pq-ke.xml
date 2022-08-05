@@ -175,7 +175,6 @@ Change Log [EDNOTE: Remove before publicaton. ]
       #define SSH_MSG_HBR_REPLY              31
 ]]></artwork>
 
-         
     	</section>
 
     	<section anchor="kex-methods" numbered="true" toc="default">
@@ -183,34 +182,35 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
 		<t>The PQ-hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
-      ecdh-nistp256-TBD1-sha256
-      x25519-TBD1-sha256
+      x25519-kyber512-sha512@amazon.com
+      ecdh-nistp256-Kyber512-sha512
 ]]></artwork>
-      <!-- [EDNOTE: sntrup4591761x25519-sha512@tinyssh.org (currently implemented in OpenSSH)] -->
 		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 
 
-
-		  <t>[EDNOTE: Placeholder. Algorithms will be identified after NIST Round 3 concludes.]</t>
-		  
     	  <section numbered="true" toc="default">
-    	  <name>ecdh-nistp256-TBD1-sha256</name>
-    	  <t>ecdh-nistp256-TBD1-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes [EDNOTE: Confirm representation ] for NIST P-256. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256) with SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> <!--instead of SHA-256 as the hash-->.</t>
-		  
-		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are TBD1. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client private key [EDNOTE: Placeholder. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
-    	  </section>
-		  
-    	  <section numbered="true" toc="default">
-    	  <name>x25519-TBD1-sha256</name>
-          <t>x25519-TBD1-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256) with SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> <!--instead of SHA-256 as the hash-->.</t>
+    	  <name>x25519-kyber512-sha512@amazon.com</name>
+          <t>x25519-kyber512-sha512@amazon.com defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha512) with SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> <!--instead of SHA-512 as the hash-->.</t>
 		
-		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are TBD1. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Placeholder. Update based on the algorithm identified after NIST Round 3 concludes.]</t>
+		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are from Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key. </t> 
+		  
+		  <t>[EDNOTE: Placeholder. x25519-kyber-sha256@aws.amazon.com is experimentally implemented. OpenSSH has experimentally implemented sntrup4591761x25519-sha512@tinyssh.org, but this draft uses Kyber which was picked by NIST in Round 3. Will update later if necessary.]</t>
+    	  </section>
+		  
+    	  <section numbered="true" toc="default">
+    	  <name>ecdh-nistp256-Kyber512-sha512-TBD1</name>
+    	  <t>ecdh-nistp256-Kyber512-sha512 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes [EDNOTE: Confirm representation ] for NIST P-256. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256) with SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> <!--instead of SHA-512 as the hash-->.</t>
+		  
+		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client private key.</t>
+		  
+		  <t>[EDNOTE: Placeholder. Using Kyber512 now. Will update if necessary.]</t>
     	  </section>
 
+        <!--
         <section numbered="true" toc="default">
     	  <name>sntrup4591761x25519-sha512@tinyssh.org</name>
     	  <t>TODO</t>
-        </section>
+        </section> -->
 		  
     	</section>
 
@@ -230,8 +230,8 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	Integrity key c2s: HASH(K || H || "E" || session_id)
 	Integrity key s2c: HASH(K || H || "F" || session_id)
 ]]></artwork>
-	
-	<t>Other key derivation options include Option 2) following SSH logic</t> 
+	<t>That is option 1 key derivation which is the same as the one implemented in OpenSSH experimentally when the sntrup4591761x25519-sha512@tinyssh.org method is used.  </t>
+	<t>Other key derivation options include (Option 2) the following SSH logic</t> 
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	(2a) K = HASH(K_CL || K_PQ) or 
@@ -246,7 +246,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 ]]></artwork>
        <t> Option (2a) resembles (1), but is slightly faster because SSH hashes the shared key K 6 times, so the larger the K, the more compression function invocations we will need.</t> 
 
-	<t> Or Option 3) using the dualPRF nd the Extract-and-Expand logic of TLS, NIST etc </t> 
+	<t> Or (Option 3) using the dualPRF and the Extract-and-Expand logic of TLS, NIST etc </t> 
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	K = HKDF-HASH(0, K_CL || K_PQ) // Extract
@@ -256,7 +256,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	      HKDF-HASH(K, H || session_id, 6(size(HASH) ) // Expand
 ]]></artwork>
 	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this PQ-hybrid draft.</t>
-	<t> We need to decide how the keys should be derived from the hPQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference.]</t>
+	<t> We need to decide how the keys should be derived from the hPQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference. Currently we picked option 1 to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]</t>
 
 	<t>The concatenated bytes are converted into K by interpreting the octets as an unsigned fixed-length integer encoded in network byte order. The mpint K is then encoded using the process described in Section 5 of <xref target="RFC4251" format="default"/>, and the resulting bytes are fed to the key exchange method's hash function to generate encryption keys as described in <xref target="RFC4253" format="default"/>.</t>
 		
@@ -278,7 +278,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       string K, SSH shared secret
 ]]></artwork>
 		
-    	<t>The HASH functions used for the definitions in this specification are SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Update here if necessary].</t>
+    	<t>The HASH functions used for the definitions in this specification are SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-512 for now as OpenSSH does. Update later if necessary].</t>
     	</section>
  
 
@@ -348,7 +348,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       <name>IANA Considerations</name>
 
       <!-- <t>All drafts are required to have an IANA considerations section (see RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the case (as above). If there are no requirements for IANA, the section will be removed during conversion into an RFC by the RFC Editor.</t> -->
-      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-TBD1-sha256", "x25519-TBD1-sha256" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
+      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-Kyber512-sha512", "x25519-Kyber512-sha512" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
