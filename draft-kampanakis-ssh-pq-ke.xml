@@ -178,8 +178,8 @@ Change Log [EDNOTE: Remove before publicaton. ]
          
          <t>The following message numbers have been defined in this document:</t>
          <artwork align="left" name="" type="" alt=""><![CDATA[
-      #define SSH_MSG_HBR_INIT               32
-      #define SSH_MSG_HBR_REPLY              33
+      #define SSH_MSG_HBR_INIT               30
+      #define SSH_MSG_HBR_REPLY              31
 ]]></artwork>
 
          
