@@ -52,13 +52,6 @@
         <!-- uri and facsimile elements may also be added -->
      </address>
     </author>
-   <author fullname="Markus Friedl" initials="M." surname="Friedl">
-     <organization>OpenSSH</organization>
-     <address>
-        <email>markus@openbsd.org</email>
-        <!-- uri and facsimile elements may also be added -->
-     </address>
-    </author>
    <author fullname="Torben Hansen" initials="T." surname="Hansen">
      <organization>AWS</organization>
      <address>

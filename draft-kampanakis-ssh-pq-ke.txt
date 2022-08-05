@@ -6,8 +6,6 @@
 Internet-Draft                                                       AWS
 Intended status: Experimental                                 D. Stebila
 Expires: 5 February 2023                          University of Waterloo
-                                                               M. Friedl
-                                                                 OpenSSH
                                                                T. Hansen
                                                                      AWS
                                                            4 August 2022
@@ -50,6 +48,8 @@ Copyright Notice
 
    Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
 
 
 
@@ -679,16 +679,16 @@ Internet-Draft                   PQ SSH                      August 2022
    Email: dstebila@uwaterloo.ca
 
 
-   Markus Friedl
-   OpenSSH
-
-   Email: markus@openbsd.org
-
-
    Torben Hansen
    AWS
 
    Email: htorben@amazon.com
+
+
+
+
+
+
 
 
 
