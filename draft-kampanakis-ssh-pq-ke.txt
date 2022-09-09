@@ -5,10 +5,10 @@
 [EDNOTE: New PQ WG]                                        P. Kampanakis
 Internet-Draft                                                       AWS
 Intended status: Experimental                                 D. Stebila
-Expires: 6 February 2023                          University of Waterloo
+Expires: 13 March 2023                            University of Waterloo
                                                                T. Hansen
                                                                      AWS
-                                                           5 August 2022
+                                                        9 September 2022
 
 
                 Post-quantum Hybrid Key Exchange in SSH
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 February 2023.
+   This Internet-Draft will expire on 13 March 2023.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 1]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 1]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -76,7 +76,7 @@ Table of Contents
      2.2.  PQ-hybrid Key Exchange Message Numbers  . . . . . . . . .   5
      2.3.  PQ-hybrid Key Exchange Method Names . . . . . . . . . . .   5
        2.3.1.  x25519-kyber512-sha512@amazon.com . . . . . . . . . .   5
-       2.3.2.  ecdh-nistp256-Kyber512-sha512-TBD1  . . . . . . . . .   6
+       2.3.2.  ecdh-nistp256-kyber-512-sha256  . . . . . . . . . . .   6
      2.4.  Shared Secret K . . . . . . . . . . . . . . . . . . . . .   6
      2.5.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   8
    3.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   8
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 2]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 2]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    insecure [I-D.hoffman-c2pq].  While large quantum computers are not
@@ -165,9 +165,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 3]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 3]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
 2.  PQ-hybrid Key Exchange
@@ -221,9 +221,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 4]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 4]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    historical reference and expand on the concatenated string here in
@@ -253,7 +253,7 @@ Internet-Draft                   PQ SSH                      August 2022
    be used in SSH_MSG_KEXINIT [RFC4253]) are
 
          x25519-kyber512-sha512@amazon.com
-         ecdh-nistp256-Kyber512-sha512
+         ecdh-nistp256-kyber-512-sha256
 
    These instantiate abstract PQ-hybrid key exchanges defined in
    Section 2.1.
@@ -272,37 +272,37 @@ Internet-Draft                   PQ SSH                      August 2022
    from Kyber512.  The K_PQ shared secret is decapsulated from the
    ciphertext S_CT2 using the client post-quantum KEM private key.
 
-   [EDNOTE: Placeholder. x25519-kyber-sha256@aws.amazon.com is
-   experimentally implemented.  OpenSSH has experimentally implemented
+   [EDNOTE: Placeholder. x25519-kyber512-sha512@amazon.com is
+   experimentally following OpehSSH's experimental implementation of the
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 5]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 5]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
-   sntrup4591761x25519-sha512@tinyssh.org, but this draft uses Kyber
-   which was picked by NIST in Round 3.  Will update later if
-   necessary.]
+   sntrup4591761x25519-sha512@tinyssh.org method name, but this draft
+   uses Kyber which was NIST's Round PQ KEM pick.  We will update later
+   if necessary.]
 
-2.3.2.  ecdh-nistp256-Kyber512-sha512-TBD1
+2.3.2.  ecdh-nistp256-kyber-512-sha256
 
-   ecdh-nistp256-Kyber512-sha512 defines that the classical client and
+   ecdh-nistp256-kyber-512-sha256 defines that the classical client and
    server public keys C_PK1, S_PK1 belong to the NIST P-256 curve
    [nist-sp800-186].  The private and public keys are generated as
-   described therein.  The public keys are defined as strings of 32
+   described therein.  The public keys are defined as strings of 64
    bytes [EDNOTE: Confirm representation ] for NIST P-256.  The K_CL
    shared secret is generated from the exchanged C_PK1 and S_PK1 public
    keys as defined in [RFC5656] (key agreement method ecdh-
-   sha2-nistp256) with SHA-512 [nist-sha2] [RFC4634] .
+   sha2-nistp256) with SHA-256 [nist-sha2] [RFC4634] as the hash.
 
    The post-quantum C_PK2 or S_CT2 string from the client and server are
    Kyber512.  The K_PQ shared secret is decapsulated from the ciphertext
    S_CT2 using the client private key.
 
-   [EDNOTE: Placeholder.  Using Kyber512 now.  Will update if
-   necessary.]
+   [EDNOTE: Placeholder. ecdh-nistp256-kyber-512-sha256 currently
+   follows OQS OpehSSH's method names.  We will update if necessary.]
 
 2.4.  Shared Secret K
 
@@ -333,9 +333,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 6]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 6]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    That is option 1 key derivation which is the same as the one
@@ -389,9 +389,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 7]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 7]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
 2.5.  Key Derivation
@@ -439,15 +439,15 @@ Internet-Draft                   PQ SSH                      August 2022
 5.  IANA Considerations
 
    This memo includes requests of IANA to register new method names
-   "ecdh-nistp256-Kyber512-sha512", "x25519-Kyber512-sha512" to be
-   registered by IANA in the "Key Exchange Method Names" registry for
-   SSH [IANA-SSH].
+   "ecdh-nistp256-kyber-512-sha256", "x25519-kyber512-sha512@amazon.com"
+   to be registered by IANA in the "Key Exchange Method Names" registry
+   for SSH [IANA-SSH].
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 8]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 8]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
 6.  Security Considerations
@@ -501,9 +501,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023                [Page 9]
+Kampanakis, et al.        Expires 13 March 2023                 [Page 9]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    ensure that the number of reuses of a KEM public key abides by any
@@ -557,9 +557,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023               [Page 10]
+Kampanakis, et al.        Expires 13 March 2023                [Page 10]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
               draft-hoffman-c2pq-07, 26 May 2020,
@@ -569,9 +569,9 @@ Internet-Draft                   PQ SSH                      August 2022
    [I-D.ietf-tls-hybrid-design]
               Stebila, D., Fluhrer, S., and S. Gueron, "Hybrid key
               exchange in TLS 1.3", Work in Progress, Internet-Draft,
-              draft-ietf-tls-hybrid-design-04, 11 January 2022,
+              draft-ietf-tls-hybrid-design-05, 28 August 2022,
               <https://www.ietf.org/archive/id/draft-ietf-tls-hybrid-
-              design-04.txt>.
+              design-05.txt>.
 
    [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters", 2021,
               <https://www.iana.org/assignments/ssh-parameters/ssh-
@@ -613,9 +613,9 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023               [Page 11]
+Kampanakis, et al.        Expires 13 March 2023                [Page 11]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    [RACCOON]  Merget, R., Brinkmann, M., Aviram, N., Somorovsky, J.,
@@ -669,9 +669,9 @@ Authors' Addresses
 
 
 
-Kampanakis, et al.       Expires 6 February 2023               [Page 12]
+Kampanakis, et al.        Expires 13 March 2023                [Page 12]
 
-Internet-Draft                   PQ SSH                      August 2022
+Internet-Draft                   PQ SSH                   September 2022
 
 
    University of Waterloo
@@ -725,4 +725,4 @@ Internet-Draft                   PQ SSH                      August 2022
 
 
 
-Kampanakis, et al.       Expires 6 February 2023               [Page 13]
+Kampanakis, et al.        Expires 13 March 2023                [Page 13]

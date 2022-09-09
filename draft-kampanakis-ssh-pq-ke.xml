@@ -183,7 +183,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 		<t>The PQ-hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
       x25519-kyber512-sha512@amazon.com
-      ecdh-nistp256-Kyber512-sha512
+      ecdh-nistp256-kyber-512-sha256
 ]]></artwork>
 		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 
@@ -194,24 +194,18 @@ Change Log [EDNOTE: Remove before publicaton. ]
 		
 		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are from Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key. </t> 
 		  
-		  <t>[EDNOTE: Placeholder. x25519-kyber-sha256@aws.amazon.com is experimentally implemented. OpenSSH has experimentally implemented sntrup4591761x25519-sha512@tinyssh.org, but this draft uses Kyber which was picked by NIST in Round 3. Will update later if necessary.]</t>
+		  <t>[EDNOTE: Placeholder. x25519-kyber512-sha512@amazon.com is experimentally following OpehSSH's experimental implementation of the sntrup4591761x25519-sha512@tinyssh.org method name, but this draft uses Kyber which was NIST's Round PQ KEM pick. We will update later if necessary.]</t>
     	  </section>
 		  
     	  <section numbered="true" toc="default">
-    	  <name>ecdh-nistp256-Kyber512-sha512-TBD1</name>
-    	  <t>ecdh-nistp256-Kyber512-sha512 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes [EDNOTE: Confirm representation ] for NIST P-256. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256) with SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> <!--instead of SHA-512 as the hash-->.</t>
+    	  <name>ecdh-nistp256-kyber-512-sha256</name>
+    	  <t>ecdh-nistp256-kyber-512-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as strings of 64 bytes [EDNOTE: Confirm representation ] for NIST P-256. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256) with SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> as the hash.</t>
 		  
 		  <t>The post-quantum C_PK2 or S_CT2 string from the client and server are Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client private key.</t>
 		  
-		  <t>[EDNOTE: Placeholder. Using Kyber512 now. Will update if necessary.]</t>
+		  <t>[EDNOTE: Placeholder. ecdh-nistp256-kyber-512-sha256 currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
-
-        <!--
-        <section numbered="true" toc="default">
-    	  <name>sntrup4591761x25519-sha512@tinyssh.org</name>
-    	  <t>TODO</t>
-        </section> -->
-		  
+	  
     	</section>
 
     	<section numbered="true" toc="default">
@@ -348,7 +342,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       <name>IANA Considerations</name>
 
       <!-- <t>All drafts are required to have an IANA considerations section (see RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the case (as above). If there are no requirements for IANA, the section will be removed during conversion into an RFC by the RFC Editor.</t> -->
-      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-Kyber512-sha512", "x25519-Kyber512-sha512" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
+      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-kyber-512-sha256", "x25519-kyber512-sha512@amazon.com" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
