@@ -267,6 +267,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       string V_S, server identification string (CR and LF excluded)
       string I_C, payload of the client's SSH_MSG_KEXINIT
       string I_S, payload of the server's SSH_MSG_KEXINIT
+      string K_S, server's public host key
       string C_INIT, client message octet string
       string S_REPLY, server message octet string
       string K, SSH shared secret
