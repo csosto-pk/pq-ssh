@@ -5,10 +5,10 @@
 [EDNOTE: New PQ WG]                                        P. Kampanakis
 Internet-Draft                                                       AWS
 Intended status: Experimental                                 D. Stebila
-Expires: 3 July 2023                              University of Waterloo
+Expires: 23 July 2023                             University of Waterloo
                                                                T. Hansen
                                                                      AWS
-                                                        30 December 2022
+                                                         19 January 2023
 
 
                 Post-quantum Hybrid Key Exchange in SSH
@@ -42,20 +42,20 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 July 2023.
+   This Internet-Draft will expire on 23 July 2023.
 
 Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
 
 
 
 
-Kampanakis, et al.         Expires 3 July 2023                  [Page 1]
+Kampanakis, et al.        Expires 23 July 2023                  [Page 1]
 
-Internet-Draft                   PQ SSH                    December 2022
+Internet-Draft                   PQ SSH                     January 2023
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -80,13 +80,13 @@ Table of Contents
      2.4.  Shared Secret K . . . . . . . . . . . . . . . . . . . . .   6
      2.5.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   8
    3.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   8
-   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Kampanakis, et al.         Expires 3 July 2023                  [Page 2]
+Kampanakis, et al.        Expires 23 July 2023                  [Page 2]
 
-Internet-Draft                   PQ SSH                    December 2022
+Internet-Draft                   PQ SSH                     January 2023
 
 
    insecure [I-D.hoffman-c2pq].  While large quantum computers are not
@@ -165,9 +165,9 @@ Internet-Draft                   PQ SSH                    December 2022
 
 
 
-Kampanakis, et al.         Expires 3 July 2023                  [Page 3]
+Kampanakis, et al.        Expires 23 July 2023                  [Page 3]
 
-Internet-Draft                   PQ SSH                    December 2022
+Internet-Draft                   PQ SSH                     January 2023
 
 
 2.  PQ-hybrid Key Exchange
@@ -182,7 +182,7 @@ Internet-Draft                   PQ SSH                    December 2022
    In a PQ-hybrid key exchange, instead of SSH_MSG_KEXDH_INIT [RFC4253]
    or SSH_MSG_KEX_ECDH_INIT [RFC5656], the client sends
 
-          byte SSH_MSG_HBR_INIT
+          byte SSH_MSG_KEX_HYBRID_INIT
           string C_INIT
 
    where C_INIT is the concatenation of C_PK1 and C_PK2.  C_PK1 and
@@ -195,8 +195,10 @@ Internet-Draft                   PQ SSH                    December 2022
    Instead of SSH_MSG_KEXDH_REPLY [RFC4253] or SSH_MSG_KEX_ECDH_REPLY
    [RFC5656], the server sends
 
-          byte SSH_MSG_HBR_REPLY
+          byte SSH_MSG_KEX_HYBRID_REPLY
+          string   K_S, server's public host key
           string S_REPLY
+          string   the signature on the exchange hash
 
    where S_REPLY is the concatenation of S_PK1 and S_CT2.  Typically,
    S_PK1 represents the ephemeral (EC)DH server public key.  S_CT2
@@ -216,16 +218,15 @@ Internet-Draft                   PQ SSH                    December 2022
    algorithm is selected, which is the case for classical key exchange
    methods currently supported by SSH and all post-quantum KEMs in Round
    3 of the NIST post-quantum standardization project.  If that is the
-   WG consensus we need to put a note of this in the Appendix for
 
 
 
-
-Kampanakis, et al.         Expires 3 July 2023                  [Page 4]
+Kampanakis, et al.        Expires 23 July 2023                  [Page 4]
 
-Internet-Draft                   PQ SSH                    December 2022
+Internet-Draft                   PQ SSH                     January 2023
 
 
+   WG consensus we need to put a note of this in the Appendix for
    historical reference and expand on the concatenated string here in
    this section.]
 
@@ -244,8 +245,8 @@ Internet-Draft                   PQ SSH                    December 2022
 
    The following message numbers have been defined in this document:
 
-         #define SSH_MSG_HBR_INIT               30
-         #define SSH_MSG_HBR_REPLY              31
+         #define SSH_MSG_KEX_HYBRID_INIT               30
+         #define SSH_MSG_KEX_HYBRID_REPLY              31
 
 2.3.  PQ-hybrid Key Exchange Method Names
 
@@ -272,16 +273,17 @@ Internet-Draft                   PQ SSH                    December 2022
    from Kyber512.  The K_PQ shared secret is decapsulated from the
    ciphertext S_CT2 using the client post-quantum KEM private key.
 
+
+
+
+
+Kampanakis, et al.        Expires 23 July 2023                  [Page 5]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
    [EDNOTE: Placeholder. x25519-kyber-512-sha256@amazon.com is
    experimentally following OpehSSH's experimental implementation of the
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                  [Page 5]
-
-Internet-Draft                   PQ SSH                    December 2022
-
-
    sntrup4591761x25519-sha512@tinyssh.org method name, but this draft
    uses Kyber which was NIST's Round PQ KEM pick.  We will update later
    if necessary.]
@@ -323,20 +325,25 @@ Internet-Draft                   PQ SSH                    December 2022
    explained in the Key Derivation Section) with some small performance
    overhead
 
+
+
+
+
+
+
+
+
+Kampanakis, et al.        Expires 23 July 2023                  [Page 6]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
            Initial IV c2s: HASH(K || H || "A" || session_id)
            Initial IV s2c: HASH(K || H || "B" || session_id)
            Encryption key c2s: HASH(K || H || "C" || session_id)
            Encryption key s2c: HASH(K || H || "D" || session_id)
            Integrity key c2s: HASH(K || H || "E" || session_id)
            Integrity key s2c: HASH(K || H || "F" || session_id)
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                  [Page 6]
-
-Internet-Draft                   PQ SSH                    December 2022
-
 
    That is option 1 key derivation which is the same as the one
    implemented in OpenSSH experimentally when the
@@ -380,19 +387,19 @@ Internet-Draft                   PQ SSH                    December 2022
    follow the logic in OpenSSH with method
    sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]
 
+
+
+Kampanakis, et al.        Expires 23 July 2023                  [Page 7]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
    The concatenated bytes are converted into K by interpreting the
    octets as an unsigned fixed-length integer encoded in network byte
    order.  The mpint K is then encoded using the process described in
    Section 5 of [RFC4251], and the resulting bytes are fed to the key
    exchange method's hash function to generate encryption keys as
    described in [RFC4253].
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                  [Page 7]
-
-Internet-Draft                   PQ SSH                    December 2022
-
 
 2.5.  Key Derivation
 
@@ -409,6 +416,7 @@ Internet-Draft                   PQ SSH                    December 2022
          string V_S, server identification string (CR and LF excluded)
          string I_C, payload of the client's SSH_MSG_KEXINIT
          string I_S, payload of the server's SSH_MSG_KEXINIT
+         string K_S, server's public host key
          string C_INIT, client message octet string
          string S_REPLY, server message octet string
          string K, SSH shared secret
@@ -434,6 +442,14 @@ Internet-Draft                   PQ SSH                    December 2022
    where a PQ-hybrid key exchange message cause a packet to exceed the
    minimally supported packet length.
 
+
+
+
+Kampanakis, et al.        Expires 23 July 2023                  [Page 8]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
 4.  Acknowledgements
 
 5.  IANA Considerations
@@ -442,13 +458,6 @@ Internet-Draft                   PQ SSH                    December 2022
    "ecdh-nistp256-kyber-512-sha256", "x25519-kyber-
    512-sha256@amazon.com" to be registered by IANA in the "Key Exchange
    Method Names" registry for SSH [IANA-SSH].
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                  [Page 8]
-
-Internet-Draft                   PQ SSH                    December 2022
-
 
 6.  Security Considerations
 
@@ -488,6 +497,15 @@ Internet-Draft                   PQ SSH                    December 2022
    [EDNOTE: The security considerations given in [RFC5656] therefore
    also applies to the ECDH key exchange scheme defined in this
    document.  Similarly for the X25519 document.  PQ Algorithms are
+
+
+
+
+Kampanakis, et al.        Expires 23 July 2023                  [Page 9]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
    newer and standardized by NIST.  We should include text about the
    combination method for the KEM shared secrets. ]
 
@@ -498,14 +516,6 @@ Internet-Draft                   PQ SSH                    December 2022
    having a transform like the Fujisaki-Okamoto transform [FO][HHK]
    applied.  While it is recommended that implementations avoid reuse of
    KEM public keys, implementations that do reuse KEM public keys MUST
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                  [Page 9]
-
-Internet-Draft                   PQ SSH                    December 2022
-
-
    ensure that the number of reuses of a KEM public key abides by any
    bounds in the specification of the KEM or subsequent security
    analyses.  Implementations MUST NOT reuse randomness in the
@@ -520,25 +530,22 @@ Internet-Draft                   PQ SSH                    December 2022
 
 7.1.  Normative References
 
-   [RFC2119]  Bradner, S. and RFC Publisher, "Key words for use in RFCs
-              to Indicate Requirement Levels", BCP 14, RFC 2119,
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC4251]  Ylonen, T., Lonvick, C., Ed., and RFC Publisher, "The
-              Secure Shell (SSH) Protocol Architecture", RFC 4251,
-              DOI 10.17487/RFC4251, January 2006,
-              <https://www.rfc-editor.org/info/rfc4251>.
+   [RFC4251]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
+              January 2006, <https://www.rfc-editor.org/info/rfc4251>.
 
-   [RFC4252]  Ylonen, T., Lonvick, C., Ed., and RFC Publisher, "The
-              Secure Shell (SSH) Authentication Protocol", RFC 4252,
-              DOI 10.17487/RFC4252, January 2006,
-              <https://www.rfc-editor.org/info/rfc4252>.
+   [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
+              January 2006, <https://www.rfc-editor.org/info/rfc4252>.
 
-   [RFC4253]  Ylonen, T., Lonvick, C., Ed., and RFC Publisher, "The
-              Secure Shell (SSH) Transport Layer Protocol", RFC 4253,
-              DOI 10.17487/RFC4253, January 2006,
-              <https://www.rfc-editor.org/info/rfc4253>.
+   [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
+              January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
 7.2.  Informative References
 
@@ -548,19 +555,18 @@ Internet-Draft                   PQ SSH                    December 2022
               26, pp. 80-101, December 2011,
               <https://doi.org/10.1007/s00145-011-9114-1>.
 
+
+
+Kampanakis, et al.        Expires 23 July 2023                 [Page 10]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
    [HHK]      Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
               Analysis of the Fujisaki-Okamoto Transformation",
               DOI 10.1007/978-3-319-70500-2_12, Theory of
               Cryptography pp. 341-371, 2017,
               <https://doi.org/10.1007/978-3-319-70500-2_12>.
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                 [Page 10]
-
-Internet-Draft                   PQ SSH                    December 2022
-
 
    [I-D.hoffman-c2pq]
               Hoffman, P. E., "The Transition from Classical to Post-
@@ -604,19 +610,20 @@ Internet-Draft                   PQ SSH                    December 2022
 
    [nist-sp800-186]
               NIST, "SP 800-186", 2019,
+
+
+
+Kampanakis, et al.        Expires 23 July 2023                 [Page 11]
+
+Internet-Draft                   PQ SSH                     January 2023
+
+
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
               NIST.SP.800-186-draft.pdf>.
 
    [NIST_PQ]  NIST, "Post-Quantum Cryptography", 2020,
               <https://csrc.nist.gov/projects/post-quantum-
               cryptography>.
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                 [Page 11]
-
-Internet-Draft                   PQ SSH                    December 2022
-
 
    [PQ-PROOF] Campagna, M. and A. Petcher, "Security of Hybrid Key
               Encapsulation", 2020, <https://eprint.iacr.org/2020/1364>.
@@ -626,53 +633,51 @@ Internet-Draft                   PQ SSH                    December 2022
               Exploiting Most-Significant-Bit-Oracles in TLS-DH(E)",
               September 2020, <https://raccoon-attack.com/>.
 
-   [RFC4250]  Lehtinen, S., Lonvick, C., Ed., and RFC Publisher, "The
-              Secure Shell (SSH) Protocol Assigned Numbers", RFC 4250,
+   [RFC4250]  Lehtinen, S. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Protocol Assigned Numbers", RFC 4250,
               DOI 10.17487/RFC4250, January 2006,
               <https://www.rfc-editor.org/info/rfc4250>.
 
-   [RFC4634]  Eastlake 3rd, D., Hansen, T., and RFC Publisher, "US
-              Secure Hash Algorithms (SHA and HMAC-SHA)", RFC 4634,
-              DOI 10.17487/RFC4634, July 2006,
-              <https://www.rfc-editor.org/info/rfc4634>.
+   [RFC4634]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
+              (SHA and HMAC-SHA)", RFC 4634, DOI 10.17487/RFC4634, July
+              2006, <https://www.rfc-editor.org/info/rfc4634>.
 
-   [RFC5656]  Stebila, D., Green, J., and RFC Publisher, "Elliptic Curve
-              Algorithm Integration in the Secure Shell Transport
-              Layer", RFC 5656, DOI 10.17487/RFC5656, December 2009,
+   [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
+              Integration in the Secure Shell Transport Layer",
+              RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
 
-   [RFC7748]  Langley, A., Hamburg, M., Turner, S., and RFC Publisher,
-              "Elliptic Curves for Security", RFC 7748,
-              DOI 10.17487/RFC7748, January 2016,
-              <https://www.rfc-editor.org/info/rfc7748>.
+   [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
+              for Security", RFC 7748, DOI 10.17487/RFC7748, January
+              2016, <https://www.rfc-editor.org/info/rfc7748>.
 
-   [RFC8332]  Bider, D. and RFC Publisher, "Use of RSA Keys with SHA-256
-              and SHA-512 in the Secure Shell (SSH) Protocol", RFC 8332,
+   [RFC8332]  Bider, D., "Use of RSA Keys with SHA-256 and SHA-512 in
+              the Secure Shell (SSH) Protocol", RFC 8332,
               DOI 10.17487/RFC8332, March 2018,
               <https://www.rfc-editor.org/info/rfc8332>.
 
-   [RFC8709]  Harris, B., Velvindron, L., and RFC Publisher, "Ed25519
-              and Ed448 Public Key Algorithms for the Secure Shell (SSH)
-              Protocol", RFC 8709, DOI 10.17487/RFC8709, February 2020,
+   [RFC8709]  Harris, B. and L. Velvindron, "Ed25519 and Ed448 Public
+              Key Algorithms for the Secure Shell (SSH) Protocol",
+              RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-   [RFC8731]  Adamantiadis, A., Josefsson, S., Baushke, M., and RFC
-              Publisher, "Secure Shell (SSH) Key Exchange Method Using
-              Curve25519 and Curve448", RFC 8731, DOI 10.17487/RFC8731,
-              February 2020, <https://www.rfc-editor.org/info/rfc8731>.
+   [RFC8731]  Adamantiadis, A., Josefsson, S., and M. Baushke, "Secure
+              Shell (SSH) Key Exchange Method Using Curve25519 and
+              Curve448", RFC 8731, DOI 10.17487/RFC8731, February 2020,
+              <https://www.rfc-editor.org/info/rfc8731>.
+
+
+
+
+Kampanakis, et al.        Expires 23 July 2023                 [Page 12]
+
+Internet-Draft                   PQ SSH                     January 2023
+
 
 Authors' Addresses
 
    Panos Kampanakis
    AWS
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                 [Page 12]
-
-Internet-Draft                   PQ SSH                    December 2022
-
 
    Email: kpanos@amazon.com
 
@@ -720,9 +725,4 @@ Internet-Draft                   PQ SSH                    December 2022
 
 
 
-
-
-
-
-
-Kampanakis, et al.         Expires 3 July 2023                 [Page 13]
+Kampanakis, et al.        Expires 23 July 2023                 [Page 13]
