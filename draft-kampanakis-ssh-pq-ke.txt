@@ -316,7 +316,7 @@ Internet-Draft                   PQ SSH                    February 2023
 
            K = K_PQ || K_CL
 
-   This is same logic as in [I-D.ietf-tls-hybrid-design] where the
+   This is the same logic as in [I-D.ietf-tls-hybrid-design] where the
    classical and post-quantum exchanged secrets are concatenated and
    used in the key schedule.
 

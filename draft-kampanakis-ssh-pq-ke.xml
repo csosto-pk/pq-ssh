@@ -216,7 +216,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = K_PQ || K_CL
 ]]></artwork>
-	<t>This is same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t> 
+	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t> 
 	<t> [EDNOTE: The keys are derived following the same SSH logic (as explained in the Key Derivation Section) with some small performance overhead </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	Initial IV c2s: HASH(K || H || "A" || session_id)
