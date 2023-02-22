@@ -214,10 +214,10 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	<name>Shared Secret K</name>
     	<t>The PQ-hybrid key exchange establishes two a binary strings K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the concatenation of the two shared secrets K_CL and K_PQ as </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
-        K = K_PQ || K_CL
+        K = HASH(K_PQ || K_CL)
 ]]></artwork>
 	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t> 
-	<t> [EDNOTE: The keys are derived following the same SSH logic (as explained in the Key Derivation Section) with some small performance overhead </t> 
+	<t> [EDNOTE: The keys are derived following the same SSH logic (as explained in the Key Derivation Section) </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	Initial IV c2s: HASH(K || H || "A" || session_id)
 	Initial IV s2c: HASH(K || H || "B" || session_id)
@@ -226,20 +226,14 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	Integrity key c2s: HASH(K || H || "E" || session_id)
 	Integrity key s2c: HASH(K || H || "F" || session_id)
 ]]></artwork>
-	<t>That is option 1 key derivation. </t>
+	<t>That is option 2a key derivation. </t>
 	
-	<t>Other key derivation options include (Option 2) the following SSH logic</t> 
+	<t>Other key derivation options include the following SSH logic</t> 
 	
 <artwork align="left" name="" type="" alt=""><![CDATA[
-	(2a) K = HASH(K_PQ || K_CL) or 
-	    (2b) K = HMAC-HASH(K_PQ, K_CL) or 
-	    (2c) K = HMAC-HASH(0, K_PQ || K_CL)
-	Initial IV c2s: HASH(K || H || "A" || session_id)
-	Initial IV s2c: HASH(K || H || "B" || session_id)
-	Encryption key c2s: HASH(K || H || "C" || session_id)
-	Encryption key s2c: HASH(K || H || "D" || session_id)
-	Integrity key c2s: HASH(K || H || "E" || session_id)
-	Integrity key s2c: HASH(K || H || "F" || session_id)
+	(1) K = K_PQ || K_CL or 
+	(2b) K = HMAC-HASH(K_PQ, K_CL) or 
+	(2c) K = HMAC-HASH(0, K_PQ || K_CL)
 ]]></artwork>
        <t> Option (2a) resembles (1), but is slightly faster because SSH hashes the shared key K 6 times, so the larger the K, the more compression function invocations we will need.</t> 
        <t>This is the option implemented in OpenSSH experimentally when the sntrup4591761x25519-sha512@tinyssh.org method is used.  </t>
