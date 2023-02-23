@@ -5,10 +5,10 @@
 [EDNOTE: New PQ WG]                                        P. Kampanakis
 Internet-Draft                                                       AWS
 Intended status: Experimental                                 D. Stebila
-Expires: 6 August 2023                            University of Waterloo
+Expires: 27 August 2023                           University of Waterloo
                                                                T. Hansen
                                                                      AWS
-                                                         2 February 2023
+                                                        23 February 2023
 
 
                 Post-quantum Hybrid Key Exchange in SSH
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 August 2023.
+   This Internet-Draft will expire on 27 August 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Kampanakis, et al.        Expires 6 August 2023                 [Page 1]
+Kampanakis, et al.       Expires 27 August 2023                 [Page 1]
 
 Internet-Draft                   PQ SSH                    February 2023
 
@@ -75,18 +75,18 @@ Table of Contents
      2.1.  PQ-hybrid Key Exchange Method Abstraction . . . . . . . .   4
      2.2.  PQ-hybrid Key Exchange Message Numbers  . . . . . . . . .   5
      2.3.  PQ-hybrid Key Exchange Method Names . . . . . . . . . . .   5
-       2.3.1.  x25519-kyber-512-sha256@amazon.com  . . . . . . . . .   5
-       2.3.2.  ecdh-nistp256-kyber-512-sha256  . . . . . . . . . . .   6
+       2.3.1.  ecdh-nistp256-kyber-512-sha256  . . . . . . . . . . .   5
+       2.3.2.  x25519-kyber-512-sha256@amazon.com  . . . . . . . . .   6
      2.4.  Shared Secret K . . . . . . . . . . . . . . . . . . . . .   6
      2.5.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .   8
    3.  Message Size  . . . . . . . . . . . . . . . . . . . . . . . .   8
-   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
+   4.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Kampanakis, et al.        Expires 6 August 2023                 [Page 2]
+Kampanakis, et al.       Expires 27 August 2023                 [Page 2]
 
 Internet-Draft                   PQ SSH                    February 2023
 
@@ -165,7 +165,7 @@ Internet-Draft                   PQ SSH                    February 2023
 
 
 
-Kampanakis, et al.        Expires 6 August 2023                 [Page 3]
+Kampanakis, et al.       Expires 27 August 2023                 [Page 3]
 
 Internet-Draft                   PQ SSH                    February 2023
 
@@ -221,7 +221,7 @@ Internet-Draft                   PQ SSH                    February 2023
 
 
 
-Kampanakis, et al.        Expires 6 August 2023                 [Page 4]
+Kampanakis, et al.       Expires 27 August 2023                 [Page 4]
 
 Internet-Draft                   PQ SSH                    February 2023
 
@@ -259,28 +259,60 @@ Internet-Draft                   PQ SSH                    February 2023
    These instantiate abstract PQ-hybrid key exchanges defined in
    Section 2.1.
 
-2.3.1.  x25519-kyber-512-sha256@amazon.com
+2.3.1.  ecdh-nistp256-kyber-512-sha256
+
+   ecdh-nistp256-kyber-512-sha256 defines that the classical client and
+   server public keys C_PK1, S_PK1 belong to the NIST P-256 curve
+   [nist-sp800-186].  The private and public keys are generated as
+   described therein.  The public keys are defined as octet strings for
+   NIST P-256 as per [RFC5656]; point compression may be used.
+
+   The K_CL shared secret is generated from the exchanged C_PK1 and
+   S_PK1 public keys as defined in [RFC5656] (key agreement method ecdh-
+   sha2-nistp256).
+
+   The post-quantum C_PK2 and S_CT2 strings from the client and server
+   respectively are Kyber512.  The K_PQ shared secret is decapsulated
+
+
+
+
+Kampanakis, et al.       Expires 27 August 2023                 [Page 5]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
+   from the ciphertext S_CT2 using the client post-quantum KEM private
+   key [EDNOTE: Add PQ KEM specification link here].
+
+   The HASH function used in the key exchange [RFC4253] is SHA-256
+   [nist-sha2] [RFC4634][EDNOTE: Keeping SHA-256 for now to align with
+   the Kyber security level.  Update later if necessary].
+
+   [EDNOTE: Placeholder. ecdh-nistp256-kyber-512-sha256 currently
+   follows OQS OpehSSH's method names.  We will update if necessary.]
+
+2.3.2.  x25519-kyber-512-sha256@amazon.com
 
    x25519-kyber-512-sha256@amazon.com defines that the classical client
    and server public keys C_PK1, S_PK1 belong to the Curve25519 curve
    [RFC7748].  Private and public keys are generated as described
-   therein.  The public keys are defined as strings of 32 bytes.  The
-   K_CL shared secret is generated from the exchanged C_PK1 and S_PK1
-   public keys as defined in [RFC8731] (key agreement method
-   curve25519-sha256) with SHA-256 [nist-sha2] [RFC4634].
+   therein.  The public keys are defined as strings of 32 bytes as per
+   [RFC8731] .
+
+   The K_CL shared secret is generated from the exchanged C_PK1 and
+   S_PK1 public keys as defined in [RFC8731] (key agreement method
+   curve25519-sha256).
 
    The post-quantum C_PK2 and S_CT2 strings from the client and server
    respectively are from Kyber512.  The K_PQ shared secret is
    decapsulated from the ciphertext S_CT2 using the client post-quantum
-   KEM private key.
+   KEM private key as defined in [EDNOTE: Add PQ KEM specification link
+   here].
 
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                 [Page 5]
-
-Internet-Draft                   PQ SSH                    February 2023
-
+   The HASH function used in the key exchange [RFC4253] is SHA-256
+   [nist-sha2] [RFC4634][EDNOTE: Keeping SHA-256 for now to align with
+   the Kyber security level.  Update later if necessary].
 
    [EDNOTE: Placeholder. x25519-kyber-512-sha256@amazon.com is
    experimentally following OpehSSH's experimental implementation of the
@@ -288,41 +320,37 @@ Internet-Draft                   PQ SSH                    February 2023
    uses Kyber which was NIST's Round PQ KEM pick.  We will update later
    if necessary.]
 
-2.3.2.  ecdh-nistp256-kyber-512-sha256
-
-   ecdh-nistp256-kyber-512-sha256 defines that the classical client and
-   server public keys C_PK1, S_PK1 belong to the NIST P-256 curve
-   [nist-sp800-186].  The private and public keys are generated as
-   described therein.  The public keys are defined as strings of 64
-   bytes [EDNOTE: Confirm representation ] for NIST P-256.  The K_CL
-   shared secret is generated from the exchanged C_PK1 and S_PK1 public
-   keys as defined in [RFC5656] (key agreement method ecdh-
-   sha2-nistp256) with SHA-256 [nist-sha2] [RFC4634] as the hash.
-
-   The post-quantum C_PK2 and S_CT2 strings from the client and server
-   respectively are Kyber512.  The K_PQ shared secret is decapsulated
-   from the ciphertext S_CT2 using the client post-quantum KEM private
-   key.
-
-   [EDNOTE: Placeholder. ecdh-nistp256-kyber-512-sha256 currently
-   follows OQS OpehSSH's method names.  We will update if necessary.]
-
 2.4.  Shared Secret K
 
    The PQ-hybrid key exchange establishes two a binary strings K_CL and
    K_PQ by using scalar multiplication and post-quantum KEM
    decapsulation ('Decaps') respectively.  The shared secret, K, is the
-   concatenation of the two shared secrets K_CL and K_PQ as
+   HASH output of the concatenation of the two shared secrets K_CL and
+   K_PQ as
 
-           K = K_PQ || K_CL
+           K = HASH(K_PQ || K_CL)
+
+
+
+
+Kampanakis, et al.       Expires 27 August 2023                 [Page 6]
+
+Internet-Draft                   PQ SSH                    February 2023
+
 
    This is the same logic as in [I-D.ietf-tls-hybrid-design] where the
    classical and post-quantum exchanged secrets are concatenated and
    used in the key schedule.
 
+   The ECDH shared secret was traditionally encoded as an integer as per
+   [RFC4253], [RFC5656], and [RFC8731] and used in deriving the key.  In
+   this specification, the two shared secrets, K_PQ and K_CL, are fed
+   into the hash function to derive K.  Thus, K_PQ and K_CL are encoded
+   as fixed-length byte arrays, not as integers.  Byte arrays are
+   defined in Section 5 of [RFC4251] padded to fixed-length.
+
    [EDNOTE: The keys are derived following the same SSH logic (as
-   explained in the Key Derivation Section) with some small performance
-   overhead
+   explained in the Key Derivation Section)
 
            Initial IV c2s: HASH(K || H || "A" || session_id)
            Initial IV s2c: HASH(K || H || "B" || session_id)
@@ -331,31 +359,17 @@ Internet-Draft                   PQ SSH                    February 2023
            Integrity key c2s: HASH(K || H || "E" || session_id)
            Integrity key s2c: HASH(K || H || "F" || session_id)
 
+   That is option 2a key derivation.
 
+   Other key derivation options include the following SSH logic
 
-Kampanakis, et al.        Expires 6 August 2023                 [Page 6]
-
-Internet-Draft                   PQ SSH                    February 2023
+           (1) K = K_PQ || K_CL or
+           (2b) K = HMAC-HASH(K_PQ, K_CL) or
+           (2c) K = HMAC-HASH(0, K_PQ || K_CL)
 
-
-   That is option 1 key derivation.
-
-   Other key derivation options include (Option 2) the following SSH
-   logic
-
-           (2a) K = HASH(K_PQ || K_CL) or
-               (2b) K = HMAC-HASH(K_PQ, K_CL) or
-               (2c) K = HMAC-HASH(0, K_PQ || K_CL)
-           Initial IV c2s: HASH(K || H || "A" || session_id)
-           Initial IV s2c: HASH(K || H || "B" || session_id)
-           Encryption key c2s: HASH(K || H || "C" || session_id)
-           Encryption key s2c: HASH(K || H || "D" || session_id)
-           Integrity key c2s: HASH(K || H || "E" || session_id)
-           Integrity key s2c: HASH(K || H || "F" || session_id)
-
-   Option (2a) resembles (1), but is slightly faster because SSH hashes
-   the shared key K 6 times, so the larger the K, the more compression
-   function invocations we will need.
+   Option (2a) resembles (1), but is slightly faster because the latter
+   hashes the shared key K 6 times, so the larger the K, the more
+   compression function invocations we will need.
 
    This is the option implemented in OpenSSH experimentally when the
    sntrup4591761x25519-sha512@tinyssh.org method is used.
@@ -372,35 +386,27 @@ Internet-Draft                   PQ SSH                    February 2023
    Note that (2b), (2c) and (3) deviate from SSH significantly and might
    be viewed as too far from the current SSH design.  It probably would
    be a good approach for SSH to move from basic hashing everywhere to
+
+
+
+Kampanakis, et al.       Expires 27 August 2023                 [Page 7]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
    use proper KDFs with extract/expand, but that might be a separate
    step from this PQ-hybrid draft.
 
-   We need to decide how the keys should be derived from the hPQ-ybrid
+   We need to decide how the keys should be derived from the PQ-ybrid
    shared secret K.  The options that end up not being chosen should be
    added in an Appendix as reference.  Currently we picked option 1 to
    follow the logic in OpenSSH with method
    sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]
 
-   The concatenated bytes are converted into K by interpreting the
-   octets as an unsigned fixed-length integer encoded in network byte
-   order.  K is then encoded as a string using the process described in
-   Section 5 of [RFC4251], and the resulting bytes are fed to the key
-
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                 [Page 7]
-
-Internet-Draft                   PQ SSH                    February 2023
-
-
-   exchange method's hash function to generate encryption keys as
-   described in [RFC4253].
-
 2.5.  Key Derivation
 
-   The derivation of encryption keys MUST be done from shared secret K
-   according to Section 7.2 in [RFC4253] with a modification on the
+   The derivation of encryption keys MUST be done from the shared secret
+   K according to Section 7.2 in [RFC4253] with a modification on the
    exchange hash H.
 
    The PQ-hybrid key exchange hash H is the result of computing the
@@ -417,9 +423,13 @@ Internet-Draft                   PQ SSH                    February 2023
          string S_REPLY, server message octet string
          string K, SSH shared secret
 
-   The HASH functions used for the definitions in this specification are
-   SHA-256 [nist-sha2] [RFC4634][EDNOTE: Keeping SHA-256 for now to
-   align with the Kyber security level.  Update later if necessary].
+   K, the shared secret used in H, was traditionally encoded as an
+   integer (mpint) as per [RFC4253], [RFC5656], and [RFC8731].  In this
+   specification, K is the hash output of the two concatenated byte
+   arrays (Section 2.4) which is not an integer.  Thus, K is encoded as
+   a string using the process described in Section 5 of [RFC4251] and is
+   then fed along with other data in H to the key exchange method's HASH
+   function to generate encryption keys.
 
 3.  Message Size
 
@@ -432,6 +442,14 @@ Internet-Draft                   PQ SSH                    February 2023
    quantum key exchange schemes because some post-quantum schemes can
    produce much larger messages than what is normally produced by
    existing key exchange methods defined for SSH.  This document does
+
+
+
+Kampanakis, et al.       Expires 27 August 2023                 [Page 8]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
    not define any method names (Section 2.3) that cause any PQ-hybrid
    key exchange method related packets to exceed the minimally supported
    packet length.  This document does not define behaviour in cases
@@ -439,16 +457,6 @@ Internet-Draft                   PQ SSH                    February 2023
    minimally supported packet length.
 
 4.  Acknowledgements
-
-
-
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                 [Page 8]
-
-Internet-Draft                   PQ SSH                    February 2023
-
 
 5.  IANA Considerations
 
@@ -489,6 +497,15 @@ Internet-Draft                   PQ SSH                    February 2023
    backwards compatibility.  In this spec we could do the same or say
    that this specification MUST only be used with algorithms which have
    fixed-length shared secrets (after the variant has been fixed by the
+
+
+
+
+Kampanakis, et al.       Expires 27 August 2023                 [Page 9]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
    algorithm identifier in the Method Names negotiation in Section 2.3.
    Or we could mandate variable length keys be rejected. ]
 
@@ -497,14 +514,6 @@ Internet-Draft                   PQ SSH                    February 2023
    document.  Similarly for the X25519 document.  PQ Algorithms are
    newer and standardized by NIST.  We should include text about the
    combination method for the KEM shared secrets. ]
-
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                 [Page 9]
-
-Internet-Draft                   PQ SSH                    February 2023
-
 
    [EDNOTE: Discussion on whether an IND-CCA KEM is required or whether
    IND-CPA suffices.]  Any KEM used in the manner described in this
@@ -546,6 +555,13 @@ Internet-Draft                   PQ SSH                    February 2023
 
 7.2.  Informative References
 
+
+
+Kampanakis, et al.       Expires 27 August 2023                [Page 10]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
    [FO]       Fujisaki, E. and T. Okamoto, "Secure Integration of
               Asymmetric and Symmetric Encryption Schemes",
               DOI 10.1007/s00145-011-9114-1, Journal of Cryptology Vol.
@@ -554,14 +570,6 @@ Internet-Draft                   PQ SSH                    February 2023
 
    [HHK]      Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
               Analysis of the Fujisaki-Okamoto Transformation",
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                [Page 10]
-
-Internet-Draft                   PQ SSH                    February 2023
-
-
               DOI 10.1007/978-3-319-70500-2_12, Theory of
               Cryptography pp. 341-371, 2017,
               <https://doi.org/10.1007/978-3-319-70500-2_12>.
@@ -570,15 +578,15 @@ Internet-Draft                   PQ SSH                    February 2023
               Hoffman, P. E., "The Transition from Classical to Post-
               Quantum Cryptography", Work in Progress, Internet-Draft,
               draft-hoffman-c2pq-07, 26 May 2020,
-              <https://www.ietf.org/archive/id/draft-hoffman-c2pq-
-              07.txt>.
+              <https://datatracker.ietf.org/doc/html/draft-hoffman-c2pq-
+              07>.
 
    [I-D.ietf-tls-hybrid-design]
               Stebila, D., Fluhrer, S., and S. Gueron, "Hybrid key
               exchange in TLS 1.3", Work in Progress, Internet-Draft,
               draft-ietf-tls-hybrid-design-05, 28 August 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-tls-hybrid-
-              design-05.txt>.
+              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
+              hybrid-design-05>.
 
    [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters", 2021,
               <https://www.iana.org/assignments/ssh-parameters/ssh-
@@ -602,6 +610,14 @@ Internet-Draft                   PQ SSH                    February 2023
 
    [NIST-SP-800-56C]
               National Institute of Standards and Technology (NIST),
+
+
+
+Kampanakis, et al.       Expires 27 August 2023                [Page 11]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
               "Recommendation for Key-Derivation Methods in Key-
               Establishment Schemes", August 2020,
               <https://doi.org/10.6028/NIST.SP.800-56Cr2>.
@@ -610,13 +626,6 @@ Internet-Draft                   PQ SSH                    February 2023
               NIST, "SP 800-186", 2019,
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
               NIST.SP.800-186-draft.pdf>.
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                [Page 11]
-
-Internet-Draft                   PQ SSH                    February 2023
-
 
    [NIST_PQ]  NIST, "Post-Quantum Cryptography", 2020,
               <https://csrc.nist.gov/projects/post-quantum-
@@ -658,21 +667,19 @@ Internet-Draft                   PQ SSH                    February 2023
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
+
+
+Kampanakis, et al.       Expires 27 August 2023                [Page 12]
+
+Internet-Draft                   PQ SSH                    February 2023
+
+
    [RFC8731]  Adamantiadis, A., Josefsson, S., and M. Baushke, "Secure
               Shell (SSH) Key Exchange Method Using Curve25519 and
               Curve448", RFC 8731, DOI 10.17487/RFC8731, February 2020,
               <https://www.rfc-editor.org/info/rfc8731>.
 
 Authors' Addresses
-
-
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                [Page 12]
-
-Internet-Draft                   PQ SSH                    February 2023
-
 
    Panos Kampanakis
    AWS
@@ -718,11 +725,4 @@ Internet-Draft                   PQ SSH                    February 2023
 
 
 
-
-
-
-
-
-
-
-Kampanakis, et al.        Expires 6 August 2023                [Page 13]
+Kampanakis, et al.       Expires 27 August 2023                [Page 13]
