@@ -189,34 +189,45 @@ Change Log [EDNOTE: Remove before publicaton. ]
 ]]></artwork>
 		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 
-
     	  <section numbered="true" toc="default">
     	  <name>x25519-kyber-512-sha256@amazon.com</name>
-          <t>x25519-kyber-512-sha256@amazon.com defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256) with SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>.</t>
-		
-		  <t>The post-quantum C_PK2 and S_CT2 strings from the client and server respectively are from Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key. </t> 
+		  <t>x25519-kyber-512-sha256@amazon.com defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes as per <xref target="RFC8731" format="default"/> . </t>
 		  
+		  <t>The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256).</t>
+
+	
+		  <t>The post-quantum C_PK2 and S_CT2 strings from the client and server respectively are from Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in [EDNOTE: Add PQ KEM specification link here].</t> 
+		  
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
+		  	  
 		  <t>[EDNOTE: Placeholder. x25519-kyber-512-sha256@amazon.com is experimentally following OpehSSH's experimental implementation of the sntrup4591761x25519-sha512@tinyssh.org method name, but this draft uses Kyber which was NIST's Round PQ KEM pick. We will update later if necessary.]</t>
     	  </section>
 		  
     	  <section numbered="true" toc="default">
     	  <name>ecdh-nistp256-kyber-512-sha256</name>
-    	  <t>ecdh-nistp256-kyber-512-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as strings of 64 bytes [EDNOTE: Confirm representation ] for NIST P-256. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256) with SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/> as the hash.</t>
+		  <t>ecdh-nistp256-kyber-512-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-256 as per <xref target="RFC5656" format="default"/>; point compression may be used. </t>
 		  
-		  <t>The post-quantum C_PK2 and S_CT2 strings from the client and server respectively are Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key.</t>
+		   <t>The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256).</t>
+    	  
+		  <t>The post-quantum C_PK2 and S_CT2 strings from the client and server respectively are Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
+
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
 		  
 		  <t>[EDNOTE: Placeholder. ecdh-nistp256-kyber-512-sha256 currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
 	  
     	</section>
 
-    	<section numbered="true" toc="default">
+    	<section  anchor="shared-secret" numbered="true" toc="default">
     	<name>Shared Secret K</name>
-    	<t>The PQ-hybrid key exchange establishes two a binary strings K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the concatenation of the two shared secrets K_CL and K_PQ as </t> 
+    	<t>The PQ-hybrid key exchange establishes two a binary strings K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the HASH output of the concatenation of the two shared secrets K_CL and K_PQ as </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = HASH(K_PQ || K_CL)
 ]]></artwork>
-	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule. </t> 
+	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule.</t> 
+	
+	<t>The ECDH shared secret was traditionally encoded as an integer as per <xref target="RFC4253" format="default"/>, <xref target="RFC5656" format="default"/>, and <xref target="RFC8731" format="default"/> and used in deriving the key. In this specification, the two shared secrets, K_PQ and K_CL, are fed into the hash function to derive K. Thus, K_PQ and K_CL are encoded as fixed-length byte arrays, not as integers. Byte arrays are defined in Section 5 of <xref target="RFC4251" format="default"/> padded to fixed-length.</t>
+
 	<t> [EDNOTE: The keys are derived following the same SSH logic (as explained in the Key Derivation Section) </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
 	Initial IV c2s: HASH(K || H || "A" || session_id)
@@ -235,7 +246,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	(2b) K = HMAC-HASH(K_PQ, K_CL) or 
 	(2c) K = HMAC-HASH(0, K_PQ || K_CL)
 ]]></artwork>
-       <t> Option (2a) resembles (1), but is slightly faster because SSH hashes the shared key K 6 times, so the larger the K, the more compression function invocations we will need.</t> 
+       <t> Option (2a) resembles (1), but is slightly faster because the latter hashes the shared key K 6 times, so the larger the K, the more compression function invocations we will need.</t> 
        <t>This is the option implemented in OpenSSH experimentally when the sntrup4591761x25519-sha512@tinyssh.org method is used.  </t>
 
 	<t> Or (Option 3) using the dualPRF and the Extract-and-Expand logic of TLS, NIST etc </t> 
@@ -248,15 +259,13 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	      HKDF-HASH(K, H || session_id, 6(size(HASH) ) // Expand
 ]]></artwork>
 	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this PQ-hybrid draft.</t>
-	<t> We need to decide how the keys should be derived from the hPQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference. Currently we picked option 1 to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]</t>
-
-	<t>The concatenated bytes are converted into K by interpreting the octets as an unsigned fixed-length integer encoded in network byte order. K is then encoded <!-- defined in <xref target="RFC4253" format="default"/> and <xref target="RFC5656" format="default"/> --> as a string using the process described in Section 5 of <xref target="RFC4251" format="default"/>, and the resulting bytes are fed to the key exchange method's hash function to generate encryption keys as described in <xref target="RFC4253" format="default"/>.</t>
+	<t> We need to decide how the keys should be derived from the PQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference. Currently we picked option 1 to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]</t>
 		
     </section>
  	
     	<section numbered="true" toc="default">
     	<name>Key Derivation</name>
-        <t>The derivation of encryption keys MUST be done from shared secret K according to Section 7.2 in <xref target="RFC4253" format="default"/> with a modification on the exchange hash H. </t>
+        <t>The derivation of encryption keys MUST be done from the shared secret K according to Section 7.2 in <xref target="RFC4253" format="default"/> with a modification on the exchange hash H. </t>
         
         <t>The PQ-hybrid key exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named PQ-hybrid key exchange method name, over the concatenation of the following </t>
 
@@ -270,8 +279,10 @@ Change Log [EDNOTE: Remove before publicaton. ]
       string S_REPLY, server message octet string
       string K, SSH shared secret
 ]]></artwork>
-		
-    	<t>The HASH functions used for the definitions in this specification are SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
+
+	<t>K, the shared secret used in H, was traditionally encoded as an integer (mpint) as per <xref target="RFC4253" format="default"/>, <xref target="RFC5656" format="default"/>, and <xref target="RFC8731" format="default"/>. In this specification, K is the hash output of the two concatenated byte arrays (<xref target="shared-secret" format="default"/>) which is not an integer. Thus, K is encoded as a string using the process described in Section 5 of <xref target="RFC4251" format="default"/> and is then fed along with other data in H to the key exchange method's HASH function to generate encryption keys.
+	</t>
+	
     	</section>
  
 
