@@ -191,11 +191,9 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
     	  <section numbered="true" toc="default">
     	  <name>ecdh-nistp256-kyber-512-sha256</name>
-		  <t>ecdh-nistp256-kyber-512-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-256 as per <xref target="RFC5656" format="default"/>; point compression may be used. </t>
-		  
-		   <t>The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256).</t>
+		  <t>ecdh-nistp256-kyber-512-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-256 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256).</t>
     	  
-		  <t>The post-quantum C_PK2 and S_CT2 strings from the client and server respectively are Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
+		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
 
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
 		  
@@ -204,12 +202,9 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
     	  <section numbered="true" toc="default">
     	  <name>x25519-kyber-512-sha256@amazon.com</name>
-		  <t>x25519-kyber-512-sha256@amazon.com defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes as per <xref target="RFC8731" format="default"/> . </t>
-		  
-		  <t>The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256).</t>
-
+		  <t>x25519-kyber-512-sha256@amazon.com defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes as per <xref target="RFC8731" format="default"/>. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256).</t>
 	
-		  <t>The post-quantum C_PK2 and S_CT2 strings from the client and server respectively are from Kyber512. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in [EDNOTE: Add PQ KEM specification link here].</t> 
+		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in [EDNOTE: Add PQ KEM specification link here].</t> 
 		  
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
 		  	  

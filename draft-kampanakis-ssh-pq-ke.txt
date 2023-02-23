@@ -265,14 +265,14 @@ Internet-Draft                   PQ SSH                    February 2023
    server public keys C_PK1, S_PK1 belong to the NIST P-256 curve
    [nist-sp800-186].  The private and public keys are generated as
    described therein.  The public keys are defined as octet strings for
-   NIST P-256 as per [RFC5656]; point compression may be used.
-
-   The K_CL shared secret is generated from the exchanged C_PK1 and
-   S_PK1 public keys as defined in [RFC5656] (key agreement method ecdh-
+   NIST P-256 as per [RFC5656]; point compression may be used.  The K_CL
+   shared secret is generated from the exchanged C_PK1 and S_PK1 public
+   keys as defined in [RFC5656] (key agreement method ecdh-
    sha2-nistp256).
 
-   The post-quantum C_PK2 and S_CT2 strings from the client and server
-   respectively are Kyber512.  The K_PQ shared secret is decapsulated
+   The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and
+   ciphertext from the the client and server respectively which are
+   encoded as octet strings.  The K_PQ shared secret is decapsulated
 
 
 
@@ -298,17 +298,15 @@ Internet-Draft                   PQ SSH                    February 2023
    and server public keys C_PK1, S_PK1 belong to the Curve25519 curve
    [RFC7748].  Private and public keys are generated as described
    therein.  The public keys are defined as strings of 32 bytes as per
-   [RFC8731] .
+   [RFC8731].  The K_CL shared secret is generated from the exchanged
+   C_PK1 and S_PK1 public keys as defined in [RFC8731] (key agreement
+   method curve25519-sha256).
 
-   The K_CL shared secret is generated from the exchanged C_PK1 and
-   S_PK1 public keys as defined in [RFC8731] (key agreement method
-   curve25519-sha256).
-
-   The post-quantum C_PK2 and S_CT2 strings from the client and server
-   respectively are from Kyber512.  The K_PQ shared secret is
-   decapsulated from the ciphertext S_CT2 using the client post-quantum
-   KEM private key as defined in [EDNOTE: Add PQ KEM specification link
-   here].
+   The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and
+   ciphertext from the the client and server respectively which are
+   encoded as octet strings The K_PQ shared secret is decapsulated from
+   the ciphertext S_CT2 using the client post-quantum KEM private key as
+   defined in [EDNOTE: Add PQ KEM specification link here].
 
    The HASH function used in the key exchange [RFC4253] is SHA-256
    [nist-sha2] [RFC4634][EDNOTE: Keeping SHA-256 for now to align with
@@ -330,6 +328,8 @@ Internet-Draft                   PQ SSH                    February 2023
 
            K = HASH(K_PQ || K_CL)
 
+   This is the same logic as in [I-D.ietf-tls-hybrid-design] where the
+
 
 
 
@@ -338,7 +338,6 @@ Kampanakis, et al.       Expires 27 August 2023                 [Page 6]
 Internet-Draft                   PQ SSH                    February 2023
 
 
-   This is the same logic as in [I-D.ietf-tls-hybrid-design] where the
    classical and post-quantum exchanged secrets are concatenated and
    used in the key schedule.
 
@@ -386,6 +385,7 @@ Internet-Draft                   PQ SSH                    February 2023
    Note that (2b), (2c) and (3) deviate from SSH significantly and might
    be viewed as too far from the current SSH design.  It probably would
    be a good approach for SSH to move from basic hashing everywhere to
+
 
 
 
