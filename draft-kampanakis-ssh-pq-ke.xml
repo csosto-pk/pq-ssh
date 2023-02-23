@@ -215,13 +215,13 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
     	<section  anchor="shared-secret" numbered="true" toc="default">
     	<name>Shared Secret K</name>
-    	<t>The PQ-hybrid key exchange establishes two a binary strings K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the HASH output of the concatenation of the two shared secrets K_CL and K_PQ as </t> 
+    	<t>The PQ-hybrid key exchange establishes K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the HASH output of the concatenation of the two shared secrets K_CL and K_PQ as </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = HASH(K_PQ || K_CL)
 ]]></artwork>
 	<t>This is the same logic as in <xref target="I-D.ietf-tls-hybrid-design"/> where the classical and post-quantum exchanged secrets are concatenated and used in the key schedule.</t> 
 	
-	<t>The ECDH shared secret was traditionally encoded as an integer as per <xref target="RFC4253" format="default"/>, <xref target="RFC5656" format="default"/>, and <xref target="RFC8731" format="default"/> and used in deriving the key. In this specification, the two shared secrets, K_PQ and K_CL, are fed into the hash function to derive K. Thus, K_PQ and K_CL are encoded as fixed-length byte arrays, not as integers. Byte arrays are defined in Section 5 of <xref target="RFC4251" format="default"/> padded to fixed-length.</t>
+	<t>The ECDH shared secret was traditionally encoded as an integer as per <xref target="RFC4253" format="default"/>, <xref target="RFC5656" format="default"/>, and <xref target="RFC8731" format="default"/> and used in deriving the key. In this specification, the two shared secrets, K_PQ and K_CL, are fed into the hash function to derive K. Thus, K_PQ and K_CL are encoded as fixed-length byte arrays, not as integers. Byte arrays are defined in Section 5 of <xref target="RFC4251" format="default"/>.</t>
 
 	<t> [EDNOTE: The keys are derived following the same SSH logic (as explained in the Key Derivation Section) </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[

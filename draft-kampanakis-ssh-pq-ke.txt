@@ -320,16 +320,16 @@ Internet-Draft                   PQ SSH                    February 2023
 
 2.4.  Shared Secret K
 
-   The PQ-hybrid key exchange establishes two a binary strings K_CL and
-   K_PQ by using scalar multiplication and post-quantum KEM
-   decapsulation ('Decaps') respectively.  The shared secret, K, is the
-   HASH output of the concatenation of the two shared secrets K_CL and
-   K_PQ as
+   The PQ-hybrid key exchange establishes K_CL and K_PQ by using scalar
+   multiplication and post-quantum KEM decapsulation ('Decaps')
+   respectively.  The shared secret, K, is the HASH output of the
+   concatenation of the two shared secrets K_CL and K_PQ as
 
            K = HASH(K_PQ || K_CL)
 
    This is the same logic as in [I-D.ietf-tls-hybrid-design] where the
-
+   classical and post-quantum exchanged secrets are concatenated and
+   used in the key schedule.
 
 
 
@@ -338,15 +338,12 @@ Kampanakis, et al.       Expires 27 August 2023                 [Page 6]
 Internet-Draft                   PQ SSH                    February 2023
 
 
-   classical and post-quantum exchanged secrets are concatenated and
-   used in the key schedule.
-
    The ECDH shared secret was traditionally encoded as an integer as per
    [RFC4253], [RFC5656], and [RFC8731] and used in deriving the key.  In
    this specification, the two shared secrets, K_PQ and K_CL, are fed
    into the hash function to derive K.  Thus, K_PQ and K_CL are encoded
    as fixed-length byte arrays, not as integers.  Byte arrays are
-   defined in Section 5 of [RFC4251] padded to fixed-length.
+   defined in Section 5 of [RFC4251].
 
    [EDNOTE: The keys are derived following the same SSH logic (as
    explained in the Key Derivation Section)
@@ -385,6 +382,9 @@ Internet-Draft                   PQ SSH                    February 2023
    Note that (2b), (2c) and (3) deviate from SSH significantly and might
    be viewed as too far from the current SSH design.  It probably would
    be a good approach for SSH to move from basic hashing everywhere to
+   use proper KDFs with extract/expand, but that might be a separate
+   step from this PQ-hybrid draft.
+
 
 
 
@@ -393,9 +393,6 @@ Kampanakis, et al.       Expires 27 August 2023                 [Page 7]
 
 Internet-Draft                   PQ SSH                    February 2023
 
-
-   use proper KDFs with extract/expand, but that might be a separate
-   step from this PQ-hybrid draft.
 
    We need to decide how the keys should be derived from the PQ-ybrid
    shared secret K.  The options that end up not being chosen should be
@@ -442,6 +439,9 @@ Internet-Draft                   PQ SSH                    February 2023
    quantum key exchange schemes because some post-quantum schemes can
    produce much larger messages than what is normally produced by
    existing key exchange methods defined for SSH.  This document does
+   not define any method names (Section 2.3) that cause any PQ-hybrid
+   key exchange method related packets to exceed the minimally supported
+   packet length.  This document does not define behaviour in cases
 
 
 
@@ -450,9 +450,6 @@ Kampanakis, et al.       Expires 27 August 2023                 [Page 8]
 Internet-Draft                   PQ SSH                    February 2023
 
 
-   not define any method names (Section 2.3) that cause any PQ-hybrid
-   key exchange method related packets to exceed the minimally supported
-   packet length.  This document does not define behaviour in cases
    where a PQ-hybrid key exchange message cause a packet to exceed the
    minimally supported packet length.
 
@@ -497,6 +494,9 @@ Internet-Draft                   PQ SSH                    February 2023
    backwards compatibility.  In this spec we could do the same or say
    that this specification MUST only be used with algorithms which have
    fixed-length shared secrets (after the variant has been fixed by the
+   algorithm identifier in the Method Names negotiation in Section 2.3.
+   Or we could mandate variable length keys be rejected. ]
+
 
 
 
@@ -505,9 +505,6 @@ Kampanakis, et al.       Expires 27 August 2023                 [Page 9]
 
 Internet-Draft                   PQ SSH                    February 2023
 
-
-   algorithm identifier in the Method Names negotiation in Section 2.3.
-   Or we could mandate variable length keys be rejected. ]
 
    [EDNOTE: The security considerations given in [RFC5656] therefore
    also applies to the ECDH key exchange scheme defined in this
@@ -555,6 +552,9 @@ Internet-Draft                   PQ SSH                    February 2023
 
 7.2.  Informative References
 
+   [FO]       Fujisaki, E. and T. Okamoto, "Secure Integration of
+              Asymmetric and Symmetric Encryption Schemes",
+
 
 
 Kampanakis, et al.       Expires 27 August 2023                [Page 10]
@@ -562,8 +562,6 @@ Kampanakis, et al.       Expires 27 August 2023                [Page 10]
 Internet-Draft                   PQ SSH                    February 2023
 
 
-   [FO]       Fujisaki, E. and T. Okamoto, "Secure Integration of
-              Asymmetric and Symmetric Encryption Schemes",
               DOI 10.1007/s00145-011-9114-1, Journal of Cryptology Vol.
               26, pp. 80-101, December 2011,
               <https://doi.org/10.1007/s00145-011-9114-1>.
@@ -610,6 +608,8 @@ Internet-Draft                   PQ SSH                    February 2023
 
    [NIST-SP-800-56C]
               National Institute of Standards and Technology (NIST),
+              "Recommendation for Key-Derivation Methods in Key-
+
 
 
 
@@ -618,7 +618,6 @@ Kampanakis, et al.       Expires 27 August 2023                [Page 11]
 Internet-Draft                   PQ SSH                    February 2023
 
 
-              "Recommendation for Key-Derivation Methods in Key-
               Establishment Schemes", August 2020,
               <https://doi.org/10.6028/NIST.SP.800-56Cr2>.
 
@@ -666,6 +665,7 @@ Internet-Draft                   PQ SSH                    February 2023
               Key Algorithms for the Secure Shell (SSH) Protocol",
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
+
 
 
 
