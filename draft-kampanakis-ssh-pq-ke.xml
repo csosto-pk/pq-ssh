@@ -184,8 +184,8 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
 		<t>The PQ-hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
-      x25519-kyber-512-sha256@amazon.com
       ecdh-nistp256-kyber-512-sha256
+      x25519-kyber-512-sha256@amazon.com
 ]]></artwork>
 		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 

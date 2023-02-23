@@ -253,8 +253,8 @@ Internet-Draft                   PQ SSH                    February 2023
    The PQ-hybrid key exchange method names defined in this document (to
    be used in SSH_MSG_KEXINIT [RFC4253]) are
 
-         x25519-kyber-512-sha256@amazon.com
          ecdh-nistp256-kyber-512-sha256
+         x25519-kyber-512-sha256@amazon.com
 
    These instantiate abstract PQ-hybrid key exchanges defined in
    Section 2.1.
