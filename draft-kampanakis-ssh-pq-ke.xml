@@ -254,7 +254,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	      HKDF-HASH(K, H || session_id, 6(size(HASH) ) // Expand
 ]]></artwork>
 	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this PQ-hybrid draft.</t>
-	<t> We need to decide how the keys should be derived from the PQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference. Currently we picked option 1 to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]</t>
+	<t> We need to decide how the keys should be derived from the PQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference. Currently we picked option 2a to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]</t>
 		
     </section>
  	
