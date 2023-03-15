@@ -185,6 +185,8 @@ Change Log [EDNOTE: Remove before publicaton. ]
 		<t>The PQ-hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
       ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org
+      ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org
+      ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org
       x25519-kyber-512r3-sha256-d00@amazon.com
 ]]></artwork>
 		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
@@ -198,6 +200,28 @@ Change Log [EDNOTE: Remove before publicaton. ]
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
 		  
 		  <t>[EDNOTE: Placeholder. ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
+    	  </section>
+
+    	  <section numbered="true" toc="default">
+    	  <name>ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org</name>
+		  <t>ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-384 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-384 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp384).</t>
+    	  
+		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
+
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-384 for now to align with the Kyber security level. Update later if necessary].</t>
+		  
+		  <t>[EDNOTE: Placeholder. ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
+    	  </section>
+
+    	  <section numbered="true" toc="default">
+    	  <name>ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org</name>
+		  <t>ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-521 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-521 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp521).</t>
+    	  
+		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
+
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-512 for now to align with the Kyber security level. Update later if necessary].</t>
+		  
+		  <t>[EDNOTE: Placeholder. ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
 
     	  <section numbered="true" toc="default">
@@ -347,7 +371,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       <name>IANA Considerations</name>
 
       <!-- <t>All drafts are required to have an IANA considerations section (see RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the case (as above). If there are no requirements for IANA, the section will be removed during conversion into an RFC by the RFC Editor.</t> -->
-      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org", "x25519-kyber-512r3-sha256-d00@amazon.com" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t>
+      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org", "ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org", "ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org", and "x25519-kyber-512r3-sha256-d00@amazon.com" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t> 
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
