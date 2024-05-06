@@ -421,7 +421,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 		<?rfc include="reference.RFC.5656.xml"?>
 		<?rfc include="reference.RFC.8332.xml"?>
 		<?rfc include="reference.RFC.8709.xml"?>
-		<?rfc include="reference.RFC.4634.xml"?>
+		<?rfc include="reference.RFC.6234.xml"?>
 		<?rfc include="reference.RFC.8731.xml"?>
 		<?rfc include="reference.RFC.7748.xml"?>
 		<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tls-hybrid-design.xml"?>
