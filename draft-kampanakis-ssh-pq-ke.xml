@@ -184,55 +184,43 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
 		<t>The PQ-hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
-      ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org
-      ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org
-      ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org
-      x25519-kyber-512r3-sha256-d00@amazon.com
+      mlkem768nistp256-sha256
+      mlkem1024nistp384-sha384
+      mlkem768x25519-sha256
 ]]></artwork>
 		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 
     	  <section numbered="true" toc="default">
-    	  <name>ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org</name>
-		  <t>ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-256 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256).</t>
-    	  
-		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
-
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
-		  
-		  <t>[EDNOTE: Placeholder. ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
-    	  </section>
-
-    	  <section numbered="true" toc="default">
-    	  <name>ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org</name>
-		  <t>ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-384 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-384 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp384).</t>
+    	  <name>mlkem768nistp256-sha256</name>
+		  <t>mlkem768nistp256-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-384 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-384 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp384).</t>
     	  
 		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
 
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-384 for now to align with the Kyber security level. Update later if necessary].</t>
 		  
-		  <t>[EDNOTE: Placeholder. ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
+		  <t>[EDNOTE: Placeholder. mlkem768nistp256-sha256 currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
 
     	  <section numbered="true" toc="default">
-    	  <name>ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org</name>
-		  <t>ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-521 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-521 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp521).</t>
+    	  <name>mlkem1024nistp384-sha384</name>
+		  <t>mlkem1024nistp384-sha384 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-521 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-521 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp521).</t>
     	  
 		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
 
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-512 for now to align with the Kyber security level. Update later if necessary].</t>
 		  
-		  <t>[EDNOTE: Placeholder. ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
+		  <t>[EDNOTE: Placeholder. mlkem1024nistp384-sha384 currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
 
     	  <section numbered="true" toc="default">
-    	  <name>x25519-kyber-512r3-sha256-d00@amazon.com</name>
-		  <t>x25519-kyber-512r3-sha256-d00@amazon.com defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes as per <xref target="RFC8731" format="default"/>. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256).</t>
+    	  <name>mlkem768x25519-sha256</name>
+		  <t>mlkem768x25519-sha256 defines that the classical client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes as per <xref target="RFC8731" format="default"/>. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256).</t>
 	
 		  <t>The post-quantum C_PK2 and S_CT2 represent Kyber512 public key and ciphertext from the the client and server respectively which are encoded as octet strings The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in [EDNOTE: Add PQ KEM specification link here].</t> 
 		  
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the Kyber security level. Update later if necessary].</t>
 		  	  
-		  <t>[EDNOTE: Placeholder. x25519-kyber-512r3-sha256-d00@amazon.com is experimentally following OpehSSH's experimental implementation of the sntrup4591761x25519-sha512@tinyssh.org method name, but this draft uses Kyber which was NIST's Round PQ KEM pick. We will update later if necessary.]</t>
+		  <t>[EDNOTE: Placeholder. mlkem768x25519-sha256 is experimentally following OpehSSH's experimental implementation of the sntrup4591761x25519-sha512@tinyssh.org method name, but this draft uses Kyber which was NIST's Round PQ KEM pick. We will update later if necessary.]</t>
     	  </section>
 	  
     	</section>
@@ -371,7 +359,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       <name>IANA Considerations</name>
 
       <!-- <t>All drafts are required to have an IANA considerations section (see RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the case (as above). If there are no requirements for IANA, the section will be removed during conversion into an RFC by the RFC Editor.</t> -->
-      <t>This memo includes requests of IANA to register new method names "ecdh-nistp256-kyber-512r3-sha256-d00@openquantumsafe.org", "ecdh-nistp384-kyber-768r3-sha384-d00@openquantumsafe.org", "ecdh-nistp521-kyber-1024r3-sha512-d00@openquantumsafe.org", and "x25519-kyber-512r3-sha256-d00@amazon.com" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t> 
+      <t>This memo includes requests of IANA to register new method names "mlkem768nistp256-sha256", "mlkem1024nistp384-sha384", and "mlkem768x25519-sha256" to be registered by IANA in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/>. </t> 
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
