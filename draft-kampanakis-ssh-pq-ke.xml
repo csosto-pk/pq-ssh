@@ -196,7 +196,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	  
 		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
 
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-384 for now to align with the ML-KEM security level. Update later if necessary].</t>
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="6234" format="default"/>[EDNOTE: Keeping SHA-384 for now to align with the ML-KEM security level. Update later if necessary].</t>
 		  
 		  <t>[EDNOTE: Placeholder. mlkem768nistp256-sha256 currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
@@ -207,7 +207,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	  
 		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-1024 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key [EDNOTE: Add PQ KEM specification link here].</t>
 
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-512 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-512 for now to align with the ML-KEM security level. Update later if necessary].</t>
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-512 <xref target="nist-sha2" format="default"/> <xref target="6234" format="default"/>[EDNOTE: Keeping SHA-512 for now to align with the ML-KEM security level. Update later if necessary].</t>
 		  
 		  <t>[EDNOTE: Placeholder. mlkem1024nistp384-sha384 currently follows OQS OpehSSH's method names. We will update if necessary.]</t>
     	  </section>
@@ -218,7 +218,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	
 		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the the client and server respectively which are encoded as octet strings The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in [EDNOTE: Add PQ KEM specification link here].</t> 
 		  
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC4634" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the ML-KEM security level. Update later if necessary].</t>
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="6234" format="default"/>[EDNOTE: Keeping SHA-256 for now to align with the ML-KEM security level. Update later if necessary].</t>
 		  	  
 		  <t>[EDNOTE: Placeholder. mlkem768x25519-sha256 is experimentally following OpehSSH's experimental implementation of the sntrup4591761x25519-sha512@tinyssh.org method name, but this draft uses ML-KEM which was NIST's Round PQ KEM pick. We will update later if necessary.]</t>
     	  </section>
