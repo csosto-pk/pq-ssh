@@ -9,7 +9,7 @@
 <rfc
       xmlns:xi="http://www.w3.org/2001/XInclude"
       category="exp"
-      docName="draft-kampanakis-curdle-ssh-pq-ke-00"
+      docName="draft-kampanakis-curdle-ssh-pq-ke-02"
       ipr="trust200902"
       obsoletes=""
       updates=""
@@ -33,8 +33,8 @@
     <!-- The abbreviated title is used in the page header - it is only necessary if the 
         full title is longer than 39 characters -->
 
-   <title abbrev="PQ SSH">Post-quantum Hybrid Key Exchange in SSH</title>
-    <seriesInfo name="Internet-Draft" value="draft-kampanakis-curdle-ssh-pq-ke-00"/>
+   <title abbrev="PQ SSH">PQ/T Hybrid Key Exchange in SSH</title>
+    <seriesInfo name="Internet-Draft" value="draft-kampanakis-curdle-ssh-pq-ke-02"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
    <!-- <author fullname="Panos Kampanakis" initials="P." role="editor"  surname="Kampanakis"> -->
@@ -83,7 +83,7 @@
         keywords will be used for the search engine. -->
 
    <abstract>
-      <t>This document defines post-quantum hybrid key exchange methods based on classical ECDH key exchange and post-quantum key encapsulation schemes. These methods are defined for use in the SSH Transport Layer Protocol. <!--TODO: Update to hybrid if we end up doing hybrid. --> <!-- It also defines post-quantum public key authentication methods based on post-quantum signature schemes These methods are defined for use in the SSH Authentication Protocol. --> </t>
+      <t>This document defines Post-Quantum Traditional (PQ/T) Hybrid key exchange methods based on classical ECDH key exchange and post-quantum key encapsulation schemes. These methods are defined for use in the SSH Transport Layer Protocol. <!--TODO: Update to hybrid if we end up doing hybrid. --> <!-- It also defines post-quantum public key authentication methods based on post-quantum signature schemes These methods are defined for use in the SSH Authentication Protocol. --> </t>
     </abstract>
 	<note>
 	  <!-- <t>[EDNOTE: The goal of this draft is to start the standardization of PQ algorithms in SSH early to mitigate the potential record-and-harvest later with a quantum computer attacks. This draft is not expected to be finalized before the NIST PQ Project has standardized PQ algorithms. After NIST has standardized then this document will replace TBD1, TBD3 with the appropriate algorithms and parameters before proceeding to ratification. ]</t> -->
@@ -108,7 +108,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
       <t>Secure Shell (SSH) <xref target="RFC4251" format="default">RFC4251</xref> performs key establishment using key exchange methods based on (Elliptic Curve) Diffie-Hellman style schemes. SSH <xref target="RFC4252" format="default"/> <xref target="RFC8332" format="default"/> <xref target="RFC5656" format="default"/> <xref target="RFC8709" format="default"/> also defines public key authentication methods based on RSA, ECDSA, or EdDSA signature schemes. The cryptographic security of these key exchange and signature schemes relies on certain instances of the discrete logarithm and integer factorization problems being computationally infeasible to solve for adversaries. </t>
 	  <t>However, if sufficiently large quantum computers become available these instances would no longer be computationally infeasible rendering the current key exchange and authentication methods in SSH insecure <xref target="I-D.hoffman-c2pq"/>. While large quantum computers are not available today an adversary could record the encrypted communication sent between the client and server in an SSH session and later decrypt it when sufficiently large quantum computers become available. This kind of attack is  known as a "record-and-harvest" attack. <!--Record-and-harvest attacks do not apply retroactively to authentication but a quantum computer could threaten SSH authentication by impersonating as a legitimate client or server. --></t>
 	  
-	  <t>This document addresses the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> key exchange with post-quantum (PQ) hybrid (PQ-hybrid)  key exchange methods. <!--and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref>  with public key methods based on post-quantum signature schemes--><!--TODO: Update to hybrid if we end up doing hybrid. --> The security provided by each individual key exchange scheme in a PQ-hybrid key exchange method is independent. This means that the PQ-hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the exchange. <xref target="PQ-PROOF" format="default"/> contains proofs of security for such PQ-hybrid key exchange schemes.</t>
+	  <t>This document addresses the problem by extending the SSH Transport Layer Protocol <xref target="RFC4253" format="default">RFC4253</xref> key exchange with Post-Quantum Traditional (PQ/T) Hybrid <xref target="I-D.ietf-pquip-pqt-hybrid-terminology-02"/> key exchange methods. <!--and the SSH Authentication Protocol <xref target="RFC4252" format="default">RFC4252</xref>  with public key methods based on post-quantum signature schemes--><!--TODO: Update to hybrid if we end up doing hybrid. --> The security provided by each individual key exchange scheme in a PQ/T Hybrid key exchange method is independent. This means that the PQ/T Hybrid key exchange method will always be at least as secure as the most secure key exchange scheme executed as part of the exchange. <xref target="PQ-PROOF" format="default"/> contains proofs of security for such PQ/T Hybrid key exchange schemes.</t>
 	  
       <t>In the context of the <xref target="NIST_PQ" format="default">NIST Post-Quantum Cryptography Standardization Project</xref>, key exchange algorithms are formulated as key encapsulation mechanisms (KEMs), which consist of three algorithms:</t>
       <ul>
@@ -124,10 +124,10 @@ Change Log [EDNOTE: Remove before publicaton. ]
         <li>'KeyGen() -> (pk, sk)': A probabilistic key generation algorithm, which generates a public key 'pk' and a secret key 'sk'.</li>
         <li>'Sign(m, sk) -> sig': A deterministic signing algorithm, which takes as input a message 'm' and a private key 'sk' and outputs a signature 'sig'. </li>
         <li>'Verify(m, pk, sigma) -> pass/fail': A verification algorithm, which takes as input a message 'm', a public key 'pk' and a signature 'sig' and outputs a verification pass or failure of the signature on the message.</li>
-      </ul> 
+      </ul> --> 
       
 	 
-	  <t>The post-quantum KEMs used for hybrid key exchange in the document are TBD1. The post-quantum signature algorithm used for key based authentication is TBD3. [EDNOTE: Placeholder. Algorithms will be identified after NIST Round 3 concludes.] The post-quantum algorithms are  defined in <xref target="NIST_PQ" format="default">NIST Post-quantum Project</xref>. [TODO: Update link reference ] [EDNOTE: Update link. Algorithms can change based on NIST's Round 3 standardization]. </t> --> 
+	  <t>The post-quantum KEM used in the document is ML-KEM. ML-KEM was standardized in 2024 <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ] </t> 
 	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -138,19 +138,19 @@ Change Log [EDNOTE: Remove before publicaton. ]
     </section>
 	
     <section anchor="kex" numbered="true" toc="default">
-	<name>PQ-hybrid Key Exchange</name>
+	<name>PQ/T Hybrid Key Exchange</name>
 	
     	<section anchor="kex-abstr" numbered="true" toc="default">
-    	<name>PQ-hybrid Key Exchange Method Abstraction</name>
-    	<t>This section defines the abstract structure of a PQ-hybrid key exchange method. This  structure must be instantiated with two key exchange schemes. The byte and string types are to be interpreted in this document as described in <xref target="RFC4251" format="default">RFC4251</xref>.</t>
+    	<name>PQ/T Hybrid Key Exchange Method Abstraction</name>
+    	<t>This section defines the abstract structure of a PQ/T Hybrid key exchange method. This  structure must be instantiated with two key exchange schemes. The byte and string types are to be interpreted in this document as described in <xref target="RFC4251" format="default">RFC4251</xref>.</t>
 
-        <t>In a PQ-hybrid key exchange, instead of SSH_MSG_KEXDH_INIT <xref target="RFC4253" format="default"/> or SSH_MSG_KEX_ECDH_INIT <xref target="RFC5656" format="default"/>, the client sends</t>
+        <t>In a PQ/T Hybrid key exchange, instead of SSH_MSG_KEXDH_INIT <xref target="RFC4253" format="default"/> or SSH_MSG_KEX_ECDH_INIT <xref target="RFC5656" format="default"/>, the client sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
        byte     SSH_MSG_KEX_HYBRID_INIT
        string   C_INIT
 ]]></artwork>
 
-        <t>where C_INIT is the concatenation of C_PK2 and C_PK1. C_PK1 and C_PK2 represent the ephemeral client public keys used for each key exchange of the PQ-hybrid mechanism. Typically, C_PK1 represents a classical (i.e., ECDH) key exchange public key. C_PK2 represents the 'pk' output of the corresponding post-quantum KEM's 'KeyGen' at the client. </t>
+        <t>where C_INIT is the concatenation of C_PK2 and C_PK1. C_PK1 and C_PK2 represent the ephemeral client public keys used for each key exchange of the PQ/T Hybrid mechanism. Typically, C_PK1 represents a classical (i.e., ECDH) key exchange public key. C_PK2 represents the 'pk' output of the corresponding post-quantum KEM's 'KeyGen' at the client. </t>
 		
         <t>Instead of SSH_MSG_KEXDH_REPLY <xref target="RFC4253" format="default"/> or SSH_MSG_KEX_ECDH_REPLY <xref target="RFC5656" format="default"/>, the server sends</t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -168,7 +168,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	</section>
 
        <section anchor="message-numbers" numbered="true" toc="default">
-    	<name>PQ-hybrid Key Exchange Message Numbers</name>
+    	<name>PQ/T Hybrid Key Exchange Message Numbers</name>
          <t>The message numbers 30-49 are key-exchange-specific and in a private namespace defined in <xref target="RFC4250" format="default"/> that may be redefined by any key exchange method <xref target="RFC4253" format="default"/> without requiring an IANA registration process.<!-- EDNOTE: https://github.com/openssh/openssh-portable/blob/2dc328023f60212cd29504fc05d849133ae47355/ssh2.h#L100 includes the numbers for OpenSSH. Also a discussion about it in https://groups.google.com/g/comp.security.ssh/c/f5jNVb0fMe4/m/U93doB0Sfn4J --> </t> 
          
          <t>The following message numbers have been defined in this document:</t>
@@ -180,15 +180,15 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	</section>
 
     	<section anchor="kex-methods" numbered="true" toc="default">
-    	<name>PQ-hybrid Key Exchange Method Names</name>
+    	<name>PQ/T Hybrid Key Exchange Method Names</name>
 
-		<t>The PQ-hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
+		<t>The PQ/T Hybrid key exchange method names defined in this document (to be used in SSH_MSG_KEXINIT <xref target="RFC4253" format="default"/>) are </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
       mlkem768nistp256-sha256
       mlkem1024nistp384-sha384
       mlkem768x25519-sha256
 ]]></artwork>
-		<t>These instantiate abstract PQ-hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
+		<t>These instantiate abstract PQ/T Hybrid key exchanges defined in <xref target="kex-abstr" format="default"/>. </t>
 
     	  <section numbered="true" toc="default">
     	  <name>mlkem768nistp256-sha256</name>
@@ -227,7 +227,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
     	<section  anchor="shared-secret" numbered="true" toc="default">
     	<name>Shared Secret K</name>
-    	<t>The PQ-hybrid key exchange establishes K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the HASH output of the concatenation of the two shared secrets K_CL and K_PQ as </t> 
+    	<t>The PQ/T Hybrid key exchange establishes K_CL and K_PQ by using scalar multiplication and post-quantum KEM decapsulation ('Decaps') respectively. The shared secret, K, is the HASH output of the concatenation of the two shared secrets K_CL and K_PQ as </t> 
 <artwork align="left" name="" type="" alt=""><![CDATA[
         K = HASH(K_PQ || K_CL)
 ]]></artwork>
@@ -265,7 +265,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
 	Integrity key s2c = 
 	      HKDF-HASH(K, H || session_id, 6(size(HASH) ) // Expand
 ]]></artwork>
-	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this PQ-hybrid draft.</t>
+	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this PQ/T Hybrid draft.</t>
 	<t> We need to decide how the keys should be derived from the PQ-ybrid shared secret K. The options that end up not being chosen should be added in an Appendix as reference. Currently we picked option 2a to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org, but that could change later.]</t>
 		
     </section>
@@ -274,7 +274,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
     	<name>Key Derivation</name>
         <t>The derivation of encryption keys MUST be done from the shared secret K according to Section 7.2 in <xref target="RFC4253" format="default"/> with a modification on the exchange hash H. </t>
         
-        <t>The PQ-hybrid key exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named PQ-hybrid key exchange method name, over the concatenation of the following </t>
+        <t>The PQ/T Hybrid key exchange hash H is the result of computing the HASH, where HASH is the hash algorithm specified in the named PQ/T Hybrid key exchange method name, over the concatenation of the following </t>
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
       string V_C, client identification string (CR and LF excluded)
@@ -347,7 +347,7 @@ Change Log [EDNOTE: Remove before publicaton. ]
    
 	<section numbered="true" toc="default">
 	<name>Message Size</name>
-	<t>An implementation adhering to <xref target="RFC4253" format="default"/> must be able to support packets with an uncompressed payload length of 32768 bytes or less and a total packet size of 35000 bytes or less (including 'packet_length', 'padding_length', 'payload', 'random padding', and 'mac'). These numbers represent what must be 'minimally supported' by implementations. This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH. This document does not define any method names (<xref target="kex-methods" format="default"/>) that cause any PQ-hybrid key exchange method related packets to exceed the minimally supported packet length. This document does not define behaviour in cases where a PQ-hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
+	<t>An implementation adhering to <xref target="RFC4253" format="default"/> must be able to support packets with an uncompressed payload length of 32768 bytes or less and a total packet size of 35000 bytes or less (including 'packet_length', 'padding_length', 'payload', 'random padding', and 'mac'). These numbers represent what must be 'minimally supported' by implementations. This can present a problem when using post-quantum key exchange schemes because some post-quantum schemes can produce much larger messages than what is normally produced by existing key exchange methods defined for SSH. This document does not define any method names (<xref target="kex-methods" format="default"/>) that cause any PQ/T Hybrid key exchange method related packets to exceed the minimally supported packet length. This document does not define behaviour in cases where a PQ/T Hybrid key exchange message cause a packet to exceed the minimally supported packet length.</t>
 	</section>
 
     <section anchor="Acknowledgements" numbered="true" toc="default">
@@ -364,8 +364,8 @@ Change Log [EDNOTE: Remove before publicaton. ]
 
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
-	  <t><xref target="PQ-PROOF" format="default"/> contains proofs of security for such PQ-hybrid key exchange schemes.</t>
-          <t><xref target="NIST-SP-800-56C" format="default"/> or <xref target="NIST-SP-800-135" format="default"/> give NIST recommendations for key derivation methods in key exchange protocols.  Some PQ-hybrid combinations may combine the shared secret from a NIST-approved algorithm (e.g., ECDH using the nistp256/secp256r1 curve) with a shared secret from a non-approved algorithm (e.g., post-quantum). <xref target="NIST-SP-800-56C" format="default"/> lists simple concatenation as an approved method for generation of a PQ-hybrid shared secret in which one of the constituent shared secret is from an approved method. [EDNOTE: Thus, the key exchange defined here is FIPS approved assuming the ECDH exchanged parameters are FIPS approved. ] </t>
+	  <t><xref target="PQ-PROOF" format="default"/> contains proofs of security for such PQ/T Hybrid key exchange schemes.</t>
+          <t><xref target="NIST-SP-800-56C" format="default"/> or <xref target="NIST-SP-800-135" format="default"/> give NIST recommendations for key derivation methods in key exchange protocols. Some PQ/T Hybrid combinations may combine the shared secret from a NIST-approved algorithm (e.g., ECDH using the nistp256/secp256r1 curve) with a shared secret from a non-approved algorithm (e.g., post-quantum). <xref target="NIST-SP-800-56C" format="default"/> lists simple concatenation as an approved method for generation of a PQ/T Hybrid shared secret in which one of the constituent shared secret is from an approved method. [EDNOTE: Thus, the key exchange defined here is FIPS approved assuming the ECDH exchanged parameters are FIPS approved. ] </t>
 	  <t>The way the derived binary secret string is encoded (i.e., adding or removing zero bytes for encoding) before it is hashed may lead to a variable-length secret which raises the potential for a side-channel attack. In broad terms, when the secret is longer, the hash function may need to process more blocks internally which could determine the length of what is hashed. This could leak the most significant bit of the derived secret and/or allow detection of when the most significant bytes are zero. In some unfortunate circumstances, this has led to timing attacks, e.g. the Lucky Thirteen <xref target="LUCKY13" format="default"/> and Raccoon <xref target="RACCOON" format="default"/> attacks.</t>
       <t>[EDNOTE: We need to decide if we want to allow variable-length secret K. RFC8731 decided not to address this potential problem due to backwards compatibility. In this spec we could do the same or say that this specification MUST only be used with algorithms which have fixed-length shared secrets (after the variant has been fixed by the algorithm identifier in the Method Names negotiation in <xref target="kex-methods" format="default"/>. Or we could mandate variable length keys be rejected. ]</t>
 	  <t>[EDNOTE: The security considerations given in [RFC5656] therefore also applies to the ECDH key exchange scheme defined in this document. Similarly for the X25519 document. PQ Algorithms are newer and standardized by NIST. We should include text about the combination method for the KEM shared secrets. ] </t>
@@ -398,6 +398,38 @@ Change Log [EDNOTE: Remove before publicaton. ]
             <?rfc include="reference.RFC.4251.xml"?>
 	     <?rfc include="reference.RFC.4252.xml"?>
 	     <?rfc include="reference.RFC.4253.xml"?>
+		 <reference anchor="FIPS203">
+           <front>
+             <title>*** BROKEN REFERENCE ***</title>
+             <author>
+               <organization/>
+             </author>
+             <date/>
+           </front>
+        </reference>
+        <reference anchor="FIPS203-ipd" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf">
+          <front>
+            <title>Module-Lattice-based Key-Encapsulation Mechanism Standard</title>
+            <author>
+              <organization>National Institute of Standards and Technology (NIST)</organization>
+            </author>
+            <date year="2023" month="August" day="24"/>
+          </front>
+          <seriesInfo name="NIST" value="Federal Information Processing Standards"/>
+        </reference>
+        <reference anchor="I-D.draft-cfrg-schwabe-kyber-04" target="https://datatracker.ietf.org/doc/html/draft-cfrg-schwabe-kyber-04">
+          <front>
+            <title>Kyber Post-Quantum KEM</title>
+            <author fullname="Peter Schwabe" initials="P." surname="Schwabe">
+              <organization>MPI-SP &amp; Radboud University</organization>
+            </author>
+            <author fullname="Bas Westerbaan" initials="B." surname="Westerbaan">
+              <organization>Cloudflare</organization>
+            </author>
+            <date month="January" day="2" year="2024"/>
+          </front>
+          <seriesInfo name="Internet-Draft" value="draft-cfrg-schwabe-kyber-04"/>
+        </reference>
         <!-- <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
              <front>
                <title>Key words for use in RFCs to Indicate Requirement Levels</title>
@@ -426,9 +458,16 @@ Change Log [EDNOTE: Remove before publicaton. ]
 		<?rfc include="reference.RFC.7748.xml"?>
 		<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tls-hybrid-design.xml"?>
 		<?rfc include="https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.hoffman-c2pq.xml"?>
-		
-		
-        <!-- the following is the minimum to make xml2rfc happy -->
+		<reference anchor="I-D.ietf-pquip-pqt-hybrid-terminology-02" target="https://datatracker.ietf.org/doc/html/draft-ietf-pquip-pqt-hybrid-terminology-02">
+		  <front>
+	        <title>Terminology for Post-Quantum Traditional Hybrid Schemes</title>
+	        <author initials="F." surname="D" fullname="Florence D">
+	          <organization>UK National Cyber Security Centre</organization>
+	        </author>
+	        <date month="February" day="2" year="2024"/>
+          </front>
+	      <seriesInfo name="Internet-Draft" value="draft-ietf-pquip-pqt-hybrid-terminology-02"/>
+		</reference>
         <reference anchor="IANA-SSH" target="https://www.iana.org/assignments/ssh-parameters/ssh-parameters.xhtml">
           <front>
                <title>Secure Shell (SSH) Protocol Parameters</title>
