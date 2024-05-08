@@ -188,7 +188,7 @@
     	  
 		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ]</t>
 
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.</t>
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>. <!-- We used SHA-256 here because of efficiency and because it is in all implementations. We considered SHAKE256 and its performance would be slightly worse but it would offer a better proof. We chose SHA-2 because of prevalence though. We did not use SHA-384 as it was not necessary to map to 192-bits of classical security because P-256 is 128 anyway. --></t>
 
     	  </section>
 
@@ -198,7 +198,7 @@
     	  
 		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-1024 public key and ciphertext from the the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ].</t>
 
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.</t>
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.<!-- We used SHA-384 here  in order to comply with NIST CNSA 2.0 has requirements. We considered SHAKE256 and its performance would be slightly worse but it would offer a better proof. We chose SHA-2 because of prevalence though. --></t>
 		  
 		  <t>This method is compliant with CNSA 2.0 requirements <xref target="CNSA2"/> until 2033. CNSA 2.0 requires support for ML-KEM-1024 in 2025 and makes it mandatory without any classical algorithm in the key exchange in 2033. </t>
     	  </section>
@@ -209,7 +209,7 @@
 	
 		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the the client and server respectively which are encoded as octet strings The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ].</t> 
 		  
-		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.</t>
+		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.<!-- We used SHA-256 here because of efficiency and because it is in all implementations. We considered SHAKE256 and its performance would be slightly worse but it would offer a better proof. We chose SHA-2 because of prevalence though. We did not use SHA-384 as it was not necessary to map to 192-bits of classical security because P-256 is 128 anyway. --></t>
     	  </section>
 	  
     	</section>
