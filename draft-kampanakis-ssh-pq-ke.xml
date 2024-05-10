@@ -221,29 +221,7 @@
         K = HASH(K_PQ || K_CL)
 ]]></artwork>
 	<t>This is similar, but not the same, logic (for efficiency) <!-- The cost of just concatenating and using in the SSH key derivation because SSH key derivation hashes the shared key K 6 times, so the larger the K, the more compression function invocations we will need. --> as in TLS 1.3 <xref target="I-D.ietf-tls-hybrid-design"/>. In <xref target="I-D.ietf-tls-hybrid-design"/>, the classical and post-quantum exchanged secrets are concatenated and used in the key schedule whereas in this document they are concatenated and hashed before being used in SSH's key derivation methodology.</t> 
-	<t>The ECDH shared secret was traditionally encoded as an integer as per <xref target="RFC4253" format="default"/>, <xref target="RFC5656" format="default"/>, and <xref target="RFC8731" format="default"/> and used in deriving the key. In this specification, the two shared secrets, K_PQ and K_CL, are fed into the hash function to derive K. Thus, K_PQ and K_CL are encoded as fixed-length byte arrays, not as integers. Byte arrays are defined in Section 5 of <xref target="RFC4251" format="default"/>.</t>
-
-
-	<t>[ EDNOTE: We need to move the below options not used in the Appendix as reference. Currently we picked option 2a to follow the logic in OpenSSH with method sntrup4591761x25519-sha512@tinyssh.org. ]</t>
-
-	<t>Other key derivation options include the following SSH logic</t> 
-<artwork align="left" name="" type="" alt=""><![CDATA[
-	(1) K = K_PQ || K_CL or 
-	(2b) K = HMAC-HASH(K_PQ, K_CL) or 
-	(2c) K = HMAC-HASH(0, K_PQ || K_CL)
-]]></artwork>
-       <t> K = HASH(K_PQ || K_CL) is option (2a). Option (2a) resembles (1), but is slightly faster because the latter hashes the shared key K 6 times, so the larger the K, the more compression function invocations we will need. This is the option implemented in OpenSSH experimentally when the sntrup4591761x25519-sha512@tinyssh.org method is used. </t>
-	<t> Or (Option 3) using the dualPRF and the Extract-and-Expand logic of TLS, NIST etc.</t> 
-
-<artwork align="left" name="" type="" alt=""><![CDATA[
-	K = HKDF-HASH(0, K_PQ || K_CL) // Extract
-	Initial IV c2s || Initial IV s2c || Encryption key c2s || 
-	Encryption key s2c || Integrity key c2s || 
-	Integrity key s2c = 
-	      HKDF-HASH(K, H || session_id, 6(size(HASH) ) // Expand
-]]></artwork>
-	<t> Note that (2b), (2c) and (3) deviate from SSH significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate step from this PQ/T Hybrid draft.</t>
-		
+	<t>The ECDH shared secret was traditionally encoded as an integer as per <xref target="RFC4253" format="default"/>, <xref target="RFC5656" format="default"/>, and <xref target="RFC8731" format="default"/> and used in deriving the key. In this specification, the two shared secrets, K_PQ and K_CL, are fed into the hash function to derive K. Thus, K_PQ and K_CL are encoded as fixed-length byte arrays, not as integers. Byte arrays are defined in Section 5 of <xref target="RFC4251" format="default"/>.</t>		
     </section>
  	
     	<section numbered="true" toc="default">
@@ -343,7 +321,7 @@
 	  <t>The security considerations given in <xref target="RFC5656" format="default"/> also apply to the ECDH key exchange schemes useddefined in this document. Similarly for the X25519 document.</t>
 	  <t>The way the derived binary secret string is encoded (i.e., adding or removing zero bytes for encoding) before it is hashed may lead to a variable-length secret which raises the potential for a side-channel attack. In broad terms, when the secret is longer, the hash function may need to process more blocks internally which could determine the length of what is hashed. This could leak the most significant bit of the derived secret and/or allow detection of when the most significant bytes are zero. In some unfortunate circumstances, this has led to timing attacks, e.g. the Lucky Thirteen <xref target="LUCKY13" format="default"/> and Raccoon <xref target="RACCOON" format="default"/> attacks. In <xref target="RFC8731" format="default"/> and <xref target="RFC5656" format="default"/>, the ECDH shared secrets were mpint and fixed-length integer encoded respectively which raised a potential for such side-channel attacks. This problem is addressed in this document by encoding K_PQ and K_CL as fixed-length byte arrays and K as a string. Implementations MUST use these encodings for K_PQ, K_CL, and K.</t>
       <t><xref target="NIST-SP-800-56C" format="default"/> and <xref target="NIST-SP-800-135" format="default"/> gives NIST recommendations for key derivation methods in key exchange protocols. Some PQ/T Hybrid combinations may combine the shared secret from a NIST-approved algorithm (e.g., ECDH using the nistp256/secp256r1 curve or ML-KEM) with a shared secret from a non-approved algorithm (e.g., X25519). <xref target="NIST-SP-800-56C" format="default"/> lists simple concatenation as an approved method for generation of a PQ/T Hybrid shared secret in which one of the constituent shared secret is from an approved method. Thus, the combination of the two shared secrets in this document is FIPS-approved assuming the ECDH curve and ML-KEM negotiated parameters are FIPS approved. <xref target="NIST-SP-800-135"/> also approves the key derivation used in SSH. This method is the same used in this document to derive keys from the quantum-resistant shared secret for use in SSH. Thus, the keys derived from the PQ/T Hybrid key exchange in this document are FIPS approved.</t>
-	  <t><xref target="PQ-PROOF" format="default"/> <xref target="PQ-PROOF2" format="default"/> contain proofs of security for such PQ/T Hybrid key exchange schemes. <xref target="PQ-PROOF2" format="default"/> discussed how the key combination and derivation used in this document can be proven IND-CPA and IND-CCA2 secure with some assumptions. IND-CPA is achieved if we assume the HASH calls perform as a KDF which is a reasonable assumption. IND-CCA2 security is achieved by assuming the HASH is a random oracle which is a stronger assumption especially for hash functions like SHA-2 which permit length extension concerns. Regardless, SSH's key derivation is not proven to be IND-CCA2 secure today. Generating an ephemeral key exchange keypair for ECDH and ML-KEM is still REQUIRED. Implementations also MUST NOT reuse randomness in the generation of KEM ciphertexts.</t>
+	  <t><xref target="PQ-PROOF" format="default"/> <xref target="PQ-PROOF2" format="default"/> contain proofs of security for such PQ/T Hybrid key exchange schemes. <xref target="PQ-PROOF2" format="default"/> discuss how the key combination to derive K and derivation of SSH symmetric keys in this document can be proven IND-CPA and IND-CCA2 secure with some assumptions. IND-CPA is achieved if we assume the HASH calls perform as a KDF which is a reasonable assumption. IND-CCA2 security is achieved by assuming the HASH is a random oracle which is a stronger assumption especially for hash functions like SHA-2 which permit length extension concerns. To leverage a hash function which is more suitable as a random oracle, we could use SHAKE256 as the HASH or introduce HMAC-SHA-256 as proposed in options (2b) and (2c) in the <xref target="appendix"/>. <!-- EDNOTE: Even if the K combiner was IND-CCA2 (i.e. if we used connolly-cfrg-xwing-kem or josefsson-chempat combiner, the rest of the key derivation would not be. --> Regardless, although SSH's key derivation is not proven to be IND-CCA2 secure today, the SSH KDF is FIPS 140 approved <xref target="NIST-SP-800-135" format="default"/>. As with (EC)DH keys today, generating an ephemeral key exchange keypair for ECDH and ML-KEM is still REQUIRED per connection by this specification. Implementations also MUST NOT reuse randomness in the generation of KEM ciphertexts.</t>
     </section>
   </middle>
   <!--  *****BACK MATTER ***** -->
@@ -595,11 +573,56 @@
             <date year="2023"/>
           </front>
         </reference>		
+        <reference anchor="I-D.connolly-cfrg-xwing-kem" target="https://datatracker.ietf.org/doc/html/draft-connolly-cfrg-xwing-kem-02">
+          <front>
+          <title>X-Wing: general-purpose hybrid post-quantum KEM</title>
+          <author initials="D." surname="Connolly" fullname="Deirdre Connolly">
+          <organization>SandboxAQ</organization>
+          </author>
+          <author initials="P." surname="Schwabe" fullname="Peter Schwabe">
+          <organization>MPI-SP, Radboud University</organization>
+          </author>
+          <author initials="B." surname="Westerbaan" fullname="Bas Westerbaan">
+          <organization>Cloudflare</organization>
+          </author>
+          <date month="March" day="26" year="2024"/>
+          <abstract>
+          <t> This memo defines X-Wing, a general-purpose post-quantum/traditional hybrid key encapsulation mechanism (PQ/T KEM) built on X25519 and ML- KEM-768. </t>
+          </abstract>
+          </front>
+          <seriesInfo name="Internet-Draft" value="draft-connolly-cfrg-xwing-kem-02"/>
+        </reference>
+        <reference anchor="I-D.josefsson-chempat" target="https://datatracker.ietf.org/doc/html/draft-josefsson-chempat-01">
+          <front>
+          <title>Chempat: Generic Instantiated PQ/T Hybrid Key Encapsulation Mechanisms</title>
+          <author initials="S." surname="Josefsson" fullname="Simon Josefsson"> </author>
+          <date month="April" day="14" year="2024"/>
+          <abstract>
+          <t> This document specify Chempat as a generic family of instantiated Post-Quantum/Traditional (PQ/T) Hybrid Key Exchange Methods (KEMs). The goal is to provide a generic combiner construct that can be analysed separately for security assurance, and to offer concrete instantiated algorithms for integration into protocol and implementations. Identified instances are provided based on traditional Diffie-Hellman key agreement using curves P-256, P-384, X25519, X448, brainpoolP256, brainpoolP384 combined with post quantum methods ML-KEM-768, ML-KEM-1024, Streamlined NTRU Prime sntrup761, and Classic McEliece. </t>
+          </abstract>
+          </front>
+          <seriesInfo name="Internet-Draft" value="draft-josefsson-chempat-01"/>
+        </reference>
       </references>
     </references>
-    <!-- <section anchor="app-additional" numbered="true" toc="default">
-      <name>Additional Stuff</name>
-      <t>This becomes an Appendix.</t>
-    </section> -->
+    <section anchor="appendix" numbered="true" toc="default">
+      <name>Other Combiners</name>
+	  <t>Other combiners to derive K and the SSH keys were considered while working on this document. These include the following SSH logic</t>
+        <ol type="(%d)">
+		  <li>K = K_PQ || K_CL. All SSH keys are derived from K as defined in Section 7.2 in <xref target="RFC4253" format="default"/>.</li>
+		  <li><t>All SSH keys are derived from K as defined in Section 7.2 in <xref target="RFC4253" format="default"/>. </t>
+		     <ol type="(%c)">
+			   <li>K = HASH(K_PQ, K_CL). This is the option adopted in this specification.</li>
+			   <li>K = HMAC-HASH(K_PQ, K_CL)</li>
+			   <li>K = HMAC-HASH(0, K_PQ || K_CL)</li>
+			 </ol>
+		  </li>
+		  <li>K = HKDF-HASH_Extract(0, K_PQ || K_CL). SSH keys are now derived from K using HKDF-HASH(K, H || session_id, 6*sizeof(HASH)).</li>
+		</ol>
+
+	  <t>Option (3) follows the Extract-and-Expand logic described in <xref target="NIST-SP-800-56C" format="default"/>. It deviates from existing SSH key derivation significantly and might be viewed as too far from the current SSH design. It probably would be a good approach for SSH to move from basic hashing everywhere to use proper KDFs with extract/expand, but that might be a separate effort.</t>	
+	  
+	  <t>We also considered combiners like the ones proposed in <xref target="I-D.josefsson-chempat" format="default"/> and <xref target="I-D.connolly-cfrg-xwing-kem" format="default"/>. <xref target="I-D.connolly-cfrg-xwing-kem" format="default"/> has a separate IND-CCA2 security proof. Although such combiners may be proven IND-CCA2 secure, the SSH key derivation would still require the assumptions laid out in <xref target="PQ-PROOF2" format="default"/> and discussed in <xref target="Security" format="default"/>.</t>
+    </section>
  </back>
 </rfc>
