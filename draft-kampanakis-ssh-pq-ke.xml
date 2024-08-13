@@ -119,7 +119,7 @@
         <li>'Verify(m, pk, sigma) -> pass/fail': A verification algorithm, which takes as input a message 'm', a public key 'pk' and a signature 'sig' and outputs a verification pass or failure of the signature on the message.</li>
       </ul> --> 
 	 
-	  <t>The post-quantum KEM used in the document is ML-KEM. ML-KEM was standardized in 2024 <xref target="FIPS203"/> with three parameter variants, ML-KEM-512, ML-KEM-768 and ML-KEM-1024. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ] </t> 
+	  <t>The post-quantum KEM used in the document is ML-KEM. ML-KEM was standardized in 2024 <xref target="FIPS203"/> with three parameter variants, ML-KEM-512, ML-KEM-768 and ML-KEM-1024.</t> 
 	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
@@ -186,7 +186,7 @@
     	  <name>mlkem768nistp256-sha256</name>
 		  <t>mlkem768nistp256-sha256 defines that the traditional client and server public keys C_PK1, S_PK1 belong to the NIST P-256 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-256 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp256).</t>
     	  
-		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ]</t>
+		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. </t>
 
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>. <!-- We used SHA-256 here because of efficiency and because it is in all implementations. We considered SHAKE256 and its performance would be slightly worse but it would offer a better proof. We chose SHA-2 because of prevalence though. We did not use SHA-384 as it was not necessary to map to 192-bits of classical security because P-256 is 128 anyway. --></t>
 
@@ -196,7 +196,7 @@
     	  <name>mlkem1024nistp384-sha384</name>
 		  <t>mlkem1024nistp384-sha384 defines that the classical client and server public keys C_PK1, S_PK1 belong to the NIST P-384 curve <xref target="nist-sp800-186" format="default"/>. The private and public keys are generated as described therein. The public keys are defined as octet strings for NIST P-384 as per <xref target="RFC5656" format="default"/>; point compression may be used. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC5656" format="default"/> (key agreement method ecdh-sha2-nistp384).</t>
     	  
-		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-1024 public key and ciphertext from the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ].</t>
+		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-1024 public key and ciphertext from the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>.</t>
 
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-384 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.<!-- We used SHA-384 here  in order to comply with NIST CNSA 2.0 has requirements. We considered SHAKE256 and its performance would be slightly worse but it would offer a better proof. We chose SHA-2 because of prevalence though. --></t>
 		  
@@ -207,7 +207,7 @@
     	  <name>mlkem768x25519-sha256</name>
 		  <t>mlkem768x25519-sha256 defines that the traditional client and server public keys C_PK1, S_PK1 belong to the Curve25519 curve <xref target="RFC7748" format="default"/>. Private and public keys are generated as described therein. The public keys are defined as strings of 32 bytes as per <xref target="RFC8731" format="default"/>. The K_CL shared secret is generated from the exchanged C_PK1 and S_PK1 public keys as defined in <xref target="RFC8731" format="default"/> (key agreement method curve25519-sha256).</t>
 	
-		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>. [ EDNOTE: Reference normatively the ratified version <xref target="I-D.draft-cfrg-schwabe-kyber-04"/> if it is ever ratified. Otherwise keep a normative reference of <xref target="FIPS203"/>. And remove the reference to <xref target="FIPS203-ipd"/>. ].</t> 
+		  <t>The post-quantum C_PK2 and S_CT2 represent ML-KEM-768 public key and ciphertext from the client and server respectively which are encoded as octet strings. The K_PQ shared secret is decapsulated from the ciphertext S_CT2 using the client post-quantum KEM private key as defined in <xref target="FIPS203"/>.</t> 
 		  
 		  <t>The HASH function used in the key exchange <xref target="RFC4253" format="default"/> is SHA-256 <xref target="nist-sha2" format="default"/> <xref target="RFC6234" format="default"/>.<!-- We used SHA-256 here because of efficiency and because it is in all implementations. We considered SHAKE256 and its performance would be slightly worse but it would offer a better proof. We chose SHA-2 because of prevalence though. We did not use SHA-384 as it was not necessary to map to 192-bits of classical security because P-256 is 128 anyway. --></t>
     	  </section>
@@ -350,37 +350,15 @@
          <?rfc include="reference.RFC.4251.xml"?>
 	     <!--<?rfc include="reference.RFC.4252.xml"?> -->
 	     <?rfc include="reference.RFC.4253.xml"?>
-		 <reference anchor="FIPS203">
-           <front>
-             <title>*** BROKEN REFERENCE ***</title>
-             <author>
-               <organization/>
-             </author>
-             <date/>
-           </front>
-        </reference>
-        <reference anchor="FIPS203-ipd" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf">
+        <reference anchor="FIPS203" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf">
           <front>
-            <title>Module-Lattice-based Key-Encapsulation Mechanism Standard</title>
+            <title>Module-Lattice-Based Key-Encapsulation Mechanism Standard</title>
             <author>
               <organization>National Institute of Standards and Technology (NIST)</organization>
             </author>
-            <date year="2023" month="August" day="24"/>
+            <date year="2024" month="August" day="13"/>
           </front>
           <seriesInfo name="NIST" value="Federal Information Processing Standards"/>
-        </reference>
-        <reference anchor="I-D.draft-cfrg-schwabe-kyber-04" target="https://datatracker.ietf.org/doc/html/draft-cfrg-schwabe-kyber-04">
-          <front>
-            <title>Kyber Post-Quantum KEM</title>
-            <author fullname="Peter Schwabe" initials="P." surname="Schwabe">
-              <organization>MPI-SP &amp; Radboud University</organization>
-            </author>
-            <author fullname="Bas Westerbaan" initials="B." surname="Westerbaan">
-              <organization>Cloudflare</organization>
-            </author>
-            <date month="January" day="2" year="2024"/>
-          </front>
-          <seriesInfo name="Internet-Draft" value="draft-cfrg-schwabe-kyber-04"/>
         </reference>
         <!-- <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
              <front>
