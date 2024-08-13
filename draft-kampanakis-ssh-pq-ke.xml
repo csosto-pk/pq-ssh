@@ -9,7 +9,7 @@
 <rfc
       xmlns:xi="http://www.w3.org/2001/XInclude"
       category="exp"
-      docName="draft-kampanakis-curdle-ssh-pq-ke-02"
+      docName="draft-kampanakis-curdle-ssh-pq-ke-03"
       ipr="trust200902"
       obsoletes=""
       updates=""
@@ -34,7 +34,7 @@
         full title is longer than 39 characters -->
 
    <title abbrev="PQ SSH">PQ/T Hybrid Key Exchange in SSH</title>
-    <seriesInfo name="Internet-Draft" value="draft-kampanakis-curdle-ssh-pq-ke-02"/>
+    <seriesInfo name="Internet-Draft" value="draft-kampanakis-curdle-ssh-pq-ke-03"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
    <!-- <author fullname="Panos Kampanakis" initials="P." role="editor"  surname="Kampanakis"> -->
