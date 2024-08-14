@@ -350,7 +350,7 @@
          <?rfc include="reference.RFC.4251.xml"?>
 	     <!--<?rfc include="reference.RFC.4252.xml"?> -->
 	     <?rfc include="reference.RFC.4253.xml"?>
-        <reference anchor="FIPS203" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf">
+        <reference anchor="FIPS203" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf">
           <front>
             <title>Module-Lattice-Based Key-Encapsulation Mechanism Standard</title>
             <author>
