@@ -119,7 +119,7 @@
         <li>'Verify(m, pk, sigma) -> pass/fail': A verification algorithm, which takes as input a message 'm', a public key 'pk' and a signature 'sig' and outputs a verification pass or failure of the signature on the message.</li>
       </ul> --> 
 	 
-	  <t>The post-quantum KEM used in the document is ML-KEM. ML-KEM was standardized in 2024 <xref target="FIPS203"/> with three parameter variants, ML-KEM-512, ML-KEM-768 and ML-KEM-1024.</t> 
+	  <t>The post-quantum KEM used in the document is ML-KEM. ML-KEM was standardized in 2024 <xref target="FIPS203"/> with three parameter variants, ML-KEM-512, ML-KEM-768, and ML-KEM-1024.</t> 
 	  
       <section numbered="true" toc="default">
         <name>Requirements Language</name>
