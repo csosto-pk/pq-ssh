@@ -347,10 +347,10 @@
       <references>
         <name>Normative References</name>
         <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
-         <?rfc include="reference.RFC.2119.xml"?>
-         <?rfc include="reference.RFC.4251.xml"?>
-	     <!--<?rfc include="reference.RFC.4252.xml"?> -->
-	     <?rfc include="reference.RFC.4253.xml"?>
+        <?rfc include="reference.RFC.2119.xml"?>
+	<?rfc include="reference.RFC.4251.xml"?>
+	<!-- <?rfc include="reference.RFC.4252.xml"?> -->
+	<?rfc include="reference.RFC.4253.xml"?>
         <reference anchor="FIPS203" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf">
           <front>
             <title>Module-Lattice-Based Key-Encapsulation Mechanism Standard</title>
@@ -361,50 +361,21 @@
           </front>
           <seriesInfo name="NIST" value="Federal Information Processing Standards"/>
         </reference>
-        <!-- <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
-             <front>
-               <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-               <seriesInfo name="DOI" value="10.17487/RFC2119"/>
-               <seriesInfo name="RFC" value="2119"/>
-               <seriesInfo name="BCP" value="14"/>
-               <author initials="S." surname="Bradner" fullname="S. Bradner">
-                 <organization/>
-               </author>
-               <date year="1997" month="March"/>
-               <abstract>
-                 <t>In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
-               </abstract>
-             </front>
-        </reference> -->
       </references>
       <references>
         <name>Informative References</name>
         <!-- Here we use entities that we defined at the beginning. -->
-		<?rfc include="reference.RFC.4250.xml"?>
-		<?rfc include="reference.RFC.5656.xml"?>
-		<!--<?rfc include="reference.RFC.8332.xml"?>-->
-		<!--<?rfc include="reference.RFC.8709.xml"?>-->
-		<?rfc include="reference.RFC.6234.xml"?>
-		<?rfc include="reference.RFC.8731.xml"?>
-		<?rfc include="reference.RFC.7748.xml"?>
-		<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tls-hybrid-design.xml"?>
-		<?rfc include="https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.hoffman-c2pq.xml"?>
-		<reference anchor="I-D.ietf-pquip-pqt-hybrid-terminology" target="https://datatracker.ietf.org/doc/html/draft-ietf-pquip-pqt-hybrid-terminology-04">
-		  <front>
-		    <title>Terminology for Post-Quantum Traditional Hybrid Schemes</title>
-		    <author initials="F." surname="D" fullname="Florence D">
-		      <organization>UK National Cyber Security Centre</organization>
-		    </author>
-		    <author initials="M." surname="P" fullname="Michael P">
-		      <organization>UK National Cyber Security Centre</organization>
-		    </author>
-		    <author initials="B." surname="Hale" fullname="Britta Hale">
-		      <organization>Naval Postgraduate School</organization>
-		    </author>
-		    <date month="September" day="10" year="2024"/>
-		  </front>
-		  <seriesInfo name="Internet-Draft" value="draft-ietf-pquip-pqt-hybrid-terminology-04"/>
-		</reference>
+	<?rfc include="reference.RFC.4250.xml"?>
+	<?rfc include="reference.RFC.5656.xml"?>
+	<!--<?rfc include="reference.RFC.8332.xml"?>-->
+	<!--<?rfc include="reference.RFC.8709.xml"?>-->
+	<?rfc include="reference.RFC.6234.xml"?>
+	<?rfc include="reference.RFC.8731.xml"?>
+	<?rfc include="reference.RFC.7748.xml"?>
+	<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tls-hybrid-design.xml"?>
+	<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-pquip-pqt-hybrid-terminology.xml"?>
+	<?rfc include="https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.hoffman-c2pq.xml"?>
+	<?rfc include="https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.connolly-cfrg-xwing-kem.xml"?>
         <reference anchor="IANA-SSH" target="https://www.iana.org/assignments/ssh-parameters/ssh-parameters.xhtml">
           <front>
                <title>Secure Shell (SSH) Protocol Parameters</title>
@@ -559,25 +530,6 @@
             <date year="2023"/>
           </front>
         </reference>		
-        <reference anchor="I-D.connolly-cfrg-xwing-kem" target="https://datatracker.ietf.org/doc/html/draft-connolly-cfrg-xwing-kem-02">
-          <front>
-          <title>X-Wing: general-purpose hybrid post-quantum KEM</title>
-          <author initials="D." surname="Connolly" fullname="Deirdre Connolly">
-          <organization>SandboxAQ</organization>
-          </author>
-          <author initials="P." surname="Schwabe" fullname="Peter Schwabe">
-          <organization>MPI-SP, Radboud University</organization>
-          </author>
-          <author initials="B." surname="Westerbaan" fullname="Bas Westerbaan">
-          <organization>Cloudflare</organization>
-          </author>
-          <date month="March" day="26" year="2024"/>
-          <abstract>
-          <t> This memo defines X-Wing, a general-purpose post-quantum/traditional hybrid key encapsulation mechanism (PQ/T KEM) built on X25519 and ML- KEM-768. </t>
-          </abstract>
-          </front>
-          <seriesInfo name="Internet-Draft" value="draft-connolly-cfrg-xwing-kem-02"/>
-        </reference>
 	<?rfc include="https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sshm-ntruprime-ssh.xml"?>
         <reference anchor="I-D.josefsson-chempat" target="https://datatracker.ietf.org/doc/html/draft-josefsson-chempat-01">
           <front>
