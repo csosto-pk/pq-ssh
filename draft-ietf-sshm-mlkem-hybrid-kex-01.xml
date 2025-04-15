@@ -9,7 +9,7 @@
 <rfc
       xmlns:xi="http://www.w3.org/2001/XInclude"
       category="std"
-      docName="draft-ietf-sshm-mlkem-hybrid-kex-02"
+      docName="draft-ietf-sshm-mlkem-hybrid-kex-01"
       ipr="trust200902"
       obsoletes=""
       updates=""
@@ -34,7 +34,7 @@
         full title is longer than 39 characters -->
 
    <title abbrev="PQ SSH">PQ/T Hybrid Key Exchange in SSH</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-sshm-mlkem-hybrid-kex-02"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-sshm-mlkem-hybrid-kex-01"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
    <!-- <author fullname="Panos Kampanakis" initials="P." role="editor"  surname="Kampanakis"> -->
@@ -315,7 +315,7 @@
       <name>IANA Considerations</name>
 
       <!-- <t>All drafts are required to have an IANA considerations section (see RFC5226 Guidelines for Writing an IANA Considerations Section in RFCs for a guide). If the draft does not require IANA to do anything, the section contains an explicit statement that this is the case (as above). If there are no requirements for IANA, the section will be removed during conversion into an RFC by the RFC Editor.</t> -->
-      <t>This memo requests IANA to register new method names "mlkem768nistp256-sha256", "mlkem1024nistp384-sha384", and "mlkem768x25519-sha256" in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/> with a "Reference" field to this RFC and the "OK to implement" field of "SHOULD". <!-- as per consensus summarized in https://mailarchive.ietf.org/arch/msg/ssh/NU4KkOw-kqLh39PeIgzbuBTos90/ -->  </t> 
+      <t>This memo requests IANA to register new method names "mlkem768nistp256-sha256", "mlkem1024nistp384-sha384", and "mlkem768x25519-sha256" in the "Key Exchange Method Names" registry for SSH <xref target="IANA-SSH" format="default"/> with a "Reference" field to this RFC and the "OK to implement" field of "MAY". <!-- as per consensus summarized in https://mailarchive.ietf.org/arch/msg/ssh/NU4KkOw-kqLh39PeIgzbuBTos90/ -->  </t> 
     </section>
 
     <section anchor="Security" numbered="true" toc="default">
