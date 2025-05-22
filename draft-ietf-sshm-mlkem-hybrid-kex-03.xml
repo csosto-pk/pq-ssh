@@ -33,7 +33,7 @@
     <!-- The abbreviated title is used in the page header - it is only necessary if the 
         full title is longer than 39 characters -->
 
-   <title abbrev="PQ SSH">PQ/T Hybrid Key Exchange in SSH</title>
+   <title abbrev="PQ SSH">PQ/T Hybrid Key Exchange with ML-KEM in SSH</title>
     <seriesInfo name="Internet-Draft" value="draft-ietf-sshm-mlkem-hybrid-kex-02"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
