@@ -307,7 +307,7 @@
 
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
-	  <t>The authors want to thank Gerardo Ravago from AWS for implementing the draft and finding issues. We also want to thank Damien Miller and Markus Friedl for their feedback and for bringing some of the SSH key exchange methods in this document in OpenSSH. And a special acknowledgement to Simon Tatham from Putty for his valuable suggestions.</t>
+	  <t>The authors want to thank Gerardo Ravago from AWS for implementing the draft and finding issues. We also want to thank Damien Miller and Markus Friedl for their feedback and for bringing some of the SSH key exchange methods in this document in OpenSSH. And special acknowledgements to Simon Tatham from Putty and Loganaden Velvindron for their valuable suggestions.</t>
     </section>
     <!-- Possibly a 'Contributors' section ... -->
 
