@@ -345,6 +345,7 @@
         <name>Normative References</name>
         <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
         <?rfc include="reference.RFC.2119.xml"?>
+		<?rfc include="reference.RFC.8174.xml"?>
 	    <?rfc include="reference.RFC.4251.xml"?>
 	    <!-- <?rfc include="reference.RFC.4252.xml"?> -->
 	    <?rfc include="reference.RFC.4253.xml"?>
