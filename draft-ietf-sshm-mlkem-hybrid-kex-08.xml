@@ -59,7 +59,7 @@
         <!-- uri and facsimile elements may also be added -->
      </address>
     </author>
-    <date year="2025"/>
+    <date year="2026"/>
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
         in the current day for you. If only the current year is specified, xml2rfc will fill 
 	 in the current day and month for you. If the year is not the current one, it is 
