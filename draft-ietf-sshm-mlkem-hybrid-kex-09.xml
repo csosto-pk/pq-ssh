@@ -160,9 +160,7 @@
 
        <section anchor="message-numbers" numbered="true" toc="default">
     	<name>PQ/T Hybrid Key Exchange Message Numbers</name>
-         <t>The message numbers 30-49 are key-exchange-specific and in a private namespace defined in <xref target="RFC4250"/> that may be redefined by any key exchange method <xref target="RFC4253"/> without requiring an IANA registration process.<!-- EDNOTE: https://github.com/openssh/openssh-portable/blob/2dc328023f60212cd29504fc05d849133ae47355/ssh2.h#L100 includes the numbers for OpenSSH. Also a discussion about it in https://groups.google.com/g/comp.security.ssh/c/f5jNVb0fMe4/m/U93doB0Sfn4J --> </t> 
-         
-         <t>The following private namespace message numbers are defined in this document:</t>
+         <t>The message numbers 30-49 are key exchange method specific as specified in <xref target="RFC4250"/>. These numbers may be redefined by any key exchange method <xref target="RFC4253"/> without requiring an IANA registration process. <!-- EDNOTE: https://github.com/openssh/openssh-portable/blob/2dc328023f60212cd29504fc05d849133ae47355/ssh2.h#L100 includes the numbers for OpenSSH. Also a discussion about it in https://groups.google.com/g/comp.security.ssh/c/f5jNVb0fMe4/m/U93doB0Sfn4J --> This document defines the following key exchange message numbers:</t>
          <artwork align="left" name="" type="" alt=""><![CDATA[
       #define SSH_MSG_KEX_HYBRID_INIT               30
       #define SSH_MSG_KEX_HYBRID_REPLY              31
