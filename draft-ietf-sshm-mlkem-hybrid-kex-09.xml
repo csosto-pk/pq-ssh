@@ -347,7 +347,8 @@
 	    <?rfc include="reference.RFC.4251.xml"?>
 	    <!-- <?rfc include="reference.RFC.4252.xml"?> -->
 	    <?rfc include="reference.RFC.4253.xml"?>
-	    <?rfc include="reference.RFC.5656.xml"?> <!-- EDNOTE: Normative References related to using curves in SSH. --> 
+	    <?rfc include="reference.RFC.5656.xml"?> <!-- EDNOTE: Normative References related to using curves in SSH. -->
+	    <?rfc include="reference.RFC.6234.xml"?> 
 	    <?rfc include="reference.RFC.8731.xml"?>
         <reference anchor="FIPS203" target="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf">
           <front>
@@ -368,7 +369,6 @@
 
 	<!--<?rfc include="reference.RFC.8332.xml"?>-->
 	<!--<?rfc include="reference.RFC.8709.xml"?>-->
-	<?rfc include="reference.RFC.6234.xml"?> <!-- EDNOTE: Informative References related to general crypto functions, not SSH specific. --> 
 	<?rfc include="reference.RFC.7748.xml"?>
 	<?rfc include="reference.RFC.9794.xml"?>
 	<?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tls-hybrid-design.xml"?>
