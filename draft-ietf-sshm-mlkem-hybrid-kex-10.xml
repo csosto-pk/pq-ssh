@@ -83,7 +83,7 @@
         keywords will be used for the search engine. -->
 
    <abstract>
-      <t>This document defines Post-Quantum Traditional (PQ/T) Hybrid key exchange methods based on the quantum-resistant the Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) standard and traditional Elliptic-curve Diffie–Hellman (ECDH) key exchange schemes. These methods are defined for use in the SSH Transport Layer Protocol.</t>
+      <t>This document defines Post-Quantum Traditional (PQ/T) Hybrid key exchange methods based on the quantum-resistant Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) standard and traditional Elliptic-curve Diffie–Hellman (ECDH) key exchange schemes. These methods are defined for use in the SSH Transport Layer Protocol.</t>
     </abstract>
 	<!-- <note>
 	  <t>[EDNOTE: The goal of this draft is to start the standardization of PQ algorithms in SSH early to mitigate the potential record-and-harvest later with a quantum computer attacks. This draft is not expected to be finalized before the NIST PQ Project has standardized PQ algorithms. After NIST has standardized then this document will replace TBD1, TBD3 with the appropriate algorithms and parameters before proceeding to ratification. ]</t> 
